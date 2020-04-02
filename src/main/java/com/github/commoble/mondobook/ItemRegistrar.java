@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ItemRegistrar
 {
 
-	private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Mondobook.MODID);
+	private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MondobookMod.MODID);
 
 	public static void registerRegistry(IEventBus modBus)
 	{
