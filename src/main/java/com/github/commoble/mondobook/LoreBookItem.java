@@ -31,7 +31,7 @@ public class LoreBookItem extends Item
 		{
 			PacketHandler.INSTANCE.send(
 				PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player),
-				new OpenLoreBookS2CPacket(new ResourceLocation("magus:test_book")));
+				new OpenLoreBookS2CPacket(new ResourceLocation("mondobook:lorem_ipsum")));
 		}	
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}

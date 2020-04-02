@@ -84,7 +84,7 @@ public class MatchedPair<T>
 	}
 	
 	/** Applies the consumer to the left values of this pair and the other pair, then applies the consumer to the right values **/
-	public <Other> void consume(MatchedPair<Other> other, BiConsumer<T,Other> consumer)
+	public <Other> void consumeWith(MatchedPair<Other> other, BiConsumer<T,Other> consumer)
 	{
 		consumer.accept(this.getLeft(), other.getLeft());
 		consumer.accept(this.getRight(), other.getRight());
