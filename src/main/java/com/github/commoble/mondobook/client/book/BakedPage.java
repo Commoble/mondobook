@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import com.github.commoble.mondobook.client.book.raw.Paragraph;
+import com.github.commoble.mondobook.data.raw.Element;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class BakedPage
 {
@@ -24,12 +26,12 @@ public class BakedPage
 		return this.lines;
 	}
 	
-	public static List<BakedPage> fromParagraphs(List<Paragraph> paragraphs, int maxLinesOnPage, int textWidth, FontRenderer font)
+	public static List<BakedPage> fromParagraphs(List<Element> elements, int maxLinesOnPage, int textWidth, FontRenderer font)
 	{
 		Deque<BakedPage> pageDeck = new ArrayDeque<>();
 		Deque<ITextComponent> lineDeck = new ArrayDeque<>();
 		
-		paragraphs.stream().forEach(paragraph -> lineDeck.addAll(paragraph.toLines(textWidth, font)));
+		elements.stream().forEach(paragraph -> lineDeck.addAll(getLinesFromParagraph(paragraph, textWidth, font)));
 		PageBuilder builder = new PageBuilder(maxLinesOnPage);
 		while (!lineDeck.isEmpty())
 		{
@@ -51,6 +53,11 @@ public class BakedPage
 			pageDeck.add(builder.build());
 		}
 		return new ArrayList<>(pageDeck);
+	}
+	
+	public static List<ITextComponent> getLinesFromParagraph(Element paragraph, int textWidth, FontRenderer font)
+	{
+		return RenderComponentsUtil.splitText(new StringTextComponent(paragraph.getText()), textWidth, font, true, true);
 	}
 		
 	

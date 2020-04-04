@@ -3,7 +3,7 @@ package com.github.commoble.mondobook.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.commoble.mondobook.client.book.raw.RawBook;
+import com.github.commoble.mondobook.data.raw.RawBook;
 import com.github.commoble.mondobook.util.MapUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

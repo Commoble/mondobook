@@ -2,7 +2,7 @@ package com.github.commoble.mondobook.client.book;
 
 import java.util.List;
 
-import com.github.commoble.mondobook.client.book.raw.RawBook;
+import com.github.commoble.mondobook.data.raw.RawBook;
 
 import net.minecraft.client.gui.FontRenderer;
 
