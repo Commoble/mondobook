@@ -12,9 +12,12 @@ public class RawElement
 	private RawElement[] children;
 	private String data;
 	private String type;
+	private String id;	// CSS-like optional identifier string for use with style selectors
+	private String[] classes;	// CSS-like style classes
 	
 	private transient ResourceLocation typeID;
 	private transient List<RawElement> childList;
+	private transient List<String> classList;
 	
 	public String getData()
 	{
@@ -44,6 +47,24 @@ public class RawElement
 		return this.childList;
 	}
 	
+	public String getID()
+	{
+		if (this.id == null)
+		{
+			this.id = "";
+		}
+		return this.id;
+	}
+	
+	public List<String> getStyleClasses()
+	{
+		if (this.classList == null)
+		{
+			this.classList = ImmutableList.copyOf(this.getStyleClassArray());
+		}
+		return this.classList;
+	}
+	
 	private String getTypeString()
 	{
 		if (this.type == null)
@@ -60,5 +81,14 @@ public class RawElement
 			this.children = new RawElement[0];
 		}
 		return this.children;
+	}
+	
+	private String[] getStyleClassArray()
+	{
+		if (this.classes == null)
+		{
+			this.classes = new String[0];
+		}
+		return this.classes;
 	}
 }

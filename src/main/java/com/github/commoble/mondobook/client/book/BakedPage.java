@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
+import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.assets.RawElement;
-import com.github.commoble.mondobook.client.api.DrawableRegistry;
 
 public class BakedPage
 {
@@ -59,7 +59,7 @@ public class BakedPage
 	
 	public static List<Drawable> getDrawables(RawElement raw, DrawableRenderer renderer, int textWidth)
 	{
-		return DrawableRegistry.getFactory(raw.getTypeID()).apply(raw).getAsDrawables(renderer, textWidth);
+		return AssetFactories.ELEMENTS.getFactory(raw.getTypeID()).apply(raw).getAsDrawables(renderer, textWidth);
 	}
 	
 	public static class PageBuilder

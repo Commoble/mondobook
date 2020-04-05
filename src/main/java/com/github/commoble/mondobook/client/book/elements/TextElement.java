@@ -5,19 +5,20 @@ import java.util.stream.Collectors;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.assets.RawElement;
-import com.github.commoble.mondobook.client.api.DrawableFactory;
 import com.github.commoble.mondobook.client.book.drawables.TextLineDrawable;
 
 import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.util.text.StringTextComponent;
 
-public class TextElement implements DrawableFactory
+public class TextElement extends Element
 {
 	private final String text;
 	
 	public TextElement(RawElement raw)
 	{
+		super(raw);
 		this.text = raw.getData();
 	}
 

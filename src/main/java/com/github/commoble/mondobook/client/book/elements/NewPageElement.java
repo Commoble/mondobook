@@ -4,11 +4,19 @@ import java.util.List;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.client.api.Element;
+import com.github.commoble.mondobook.client.assets.RawElement;
 import com.google.common.collect.ImmutableList;
 
-public class NewPageElement
+public class NewPageElement extends Element
 {
-	public static List<Drawable> getNewPage(DrawableRenderer renderer, int textWidth)
+	public NewPageElement(RawElement raw)
+	{
+		super(raw);
+	}
+	
+	@Override
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int textWidth)
 	{
 		return NEW_PAGE_DRAWABLE;
 	}
