@@ -1,10 +1,11 @@
 package com.github.commoble.mondobook.client;
 
-import com.github.commoble.mondobook.data.BookDataManager;
+import com.github.commoble.mondobook.MondobookMod;
+import com.github.commoble.mondobook.client.api.DrawableRegistry;
+import com.github.commoble.mondobook.client.book.elements.ImageElement;
+import com.github.commoble.mondobook.client.book.elements.NewPageElement;
+import com.github.commoble.mondobook.client.book.elements.TextElement;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -14,15 +15,13 @@ public class ClientEventHandler
 	{
 		modBus.addListener(ClientEventHandler::onClientSetup);
 
-		IResourceManager manager = Minecraft.getInstance().getResourceManager();
-		if (manager instanceof IReloadableResourceManager)
-		{
-			IReloadableResourceManager reloader = (IReloadableResourceManager)manager;
-			reloader.addReloadListener(BookDataManager.INSTANCE);
-		}
+		AssetManagers.onClientInit();
 	}
 
 	private static void onClientSetup(FMLClientSetupEvent event)
 	{
+		DrawableRegistry.register(MondobookMod.MODID, "new_page", element -> NewPageElement::getNewPage);
+		DrawableRegistry.register(MondobookMod.MODID, "text", TextElement::new);
+		DrawableRegistry.register(MondobookMod.MODID, "image", ImageElement::new);
 	}
 }

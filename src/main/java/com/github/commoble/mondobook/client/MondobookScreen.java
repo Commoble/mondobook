@@ -3,25 +3,26 @@ package com.github.commoble.mondobook.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.commoble.mondobook.client.api.Drawable;
+import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.book.BakedBook;
 import com.github.commoble.mondobook.client.book.BakedPage;
 import com.github.commoble.mondobook.client.util.KeyUtil;
-import com.github.commoble.mondobook.data.BookDataManager;
-import com.github.commoble.mondobook.util.ListUtil;
 import com.github.commoble.mondobook.util.MatchedPair;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class LoreBookScreen extends Screen
+public class MondobookScreen extends Screen implements DrawableRenderer
 {
 	public static final ResourceLocation BOOK_TEXTURES = new ResourceLocation("textures/gui/book.png");
 
@@ -38,9 +39,10 @@ public class LoreBookScreen extends Screen
 	public static final float PAGE_NUMBER_Y_START = 18F;
 	public static final int LEFT_PAGE_OFFSET = BOOK_TEXTURE_WIDTH;
 	public static final int RIGHTWARD_SHIFT = LEFT_PAGE_OFFSET / 2;
-	public static final int MAX_LINES_ON_PAGE = 14;
+//	public static final int MAX_LINES_ON_PAGE = 14;
 	public static final int PAGE_TEXT_START = 32;
-	public static final int LINE_HEIGHT = 9;
+//	public static final int LINE_HEIGHT = 9;
+	public static final int PAGE_HEIGHT_IN_PIXELS = 128;	// the space we can put page content into
 	public static final int TEXT_OFFSET_FROM_BOOK_CENTER = 10;
 	public static final int BLACK = 0x0;
 
@@ -50,12 +52,12 @@ public class LoreBookScreen extends Screen
 	private int cachedPage = -1; // the left page!
 	private int currentPage = 0; // also the left page
 
-	private MatchedPair<List<ITextComponent>> cachedPageLines = MatchedPair.of(ArrayList::new);
+	private MatchedPair<List<Drawable>> cachedPageDrawables = MatchedPair.of(ArrayList::new);
 
 	private final ResourceLocation bookID;
 	private BakedBook book;
 
-	public LoreBookScreen(ResourceLocation bookID)
+	public MondobookScreen(ResourceLocation bookID)
 	{
 		super(new TranslationTextComponent(bookID.toString()));
 		this.bookID = bookID;
@@ -66,7 +68,7 @@ public class LoreBookScreen extends Screen
 	protected void init()
 	{
 		super.init();
-		this.book = new BakedBook(BookDataManager.INSTANCE.getBook(this.bookID), MAX_LINES_ON_PAGE, TEXT_WIDTH, this.font);
+		this.book = new BakedBook(AssetManagers.BOOK_DATA.getData(this.bookID), PAGE_HEIGHT_IN_PIXELS, TEXT_WIDTH, this);
 		this.addDoneButton();
 		this.addChangePageButtons();
 	}
@@ -81,7 +83,6 @@ public class LoreBookScreen extends Screen
 	protected void addChangePageButtons()
 	{
 		int i = (this.width - 192) / 2;
-		int j = 2;
 		this.buttonNextPage = this.addButton(new ChangePageButton(i + 116, 159, true, (p_214159_1_) -> {
 			this.nextPage();
 		}, true));
@@ -174,7 +175,6 @@ public class LoreBookScreen extends Screen
 	{
 		this.renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bindTexture(BOOK_TEXTURES);
 		int screenX = (this.width - BOOK_TEXTURE_WIDTH) / 2;
 		int screenY = 2;
 		int imageX = BOOK_TEXTURE_START_X;
@@ -193,11 +193,12 @@ public class LoreBookScreen extends Screen
 		// refresh the cache if necessary
 		if (this.cachedPage != this.currentPage)
 		{
-			this.cachedPageLines = pageNumbers.map(this::getPageText);
+			this.cachedPageDrawables = pageNumbers.map(this::getPageDrawables);
 		}
 
 		this.cachedPage = this.currentPage;
 
+		this.minecraft.getTextureManager().bindTexture(BOOK_TEXTURES);
 		// draw the left page
 		RenderSystem.pushMatrix();
 		RenderSystem.translatef(this.width - LEFT_PAGE_OFFSET, 0, 0);
@@ -221,7 +222,7 @@ public class LoreBookScreen extends Screen
 																																									// PAGE_TEXT_START_X
 																																									// + 10);
 
-		this.cachedPageLines.consumeWith(pageTextOffsets, this::drawPageLines);
+		this.cachedPageDrawables.consumeWith(pageTextOffsets, this::drawPageDrawables);
 
 		// this next part seems to be for rendering tooltips but it doesn't seem to work
 		// ITextComponent itextcomponent2 = this.func_214154_c((double) p_render_1_,
@@ -234,9 +235,15 @@ public class LoreBookScreen extends Screen
 		super.render(mouseX, mouseY, partialTicks);
 	}
 
-	protected void drawPageLines(List<ITextComponent> lines, int xOffset)
+	protected void drawPageDrawables(List<Drawable> drawables, int xOffset)
 	{
-		ListUtil.forEachIndex(lines, (line, i) -> this.font.drawString(line.getFormattedText(), xOffset, PAGE_TEXT_START + LINE_HEIGHT * i, 0));
+		int yStart = PAGE_TEXT_START;
+		for (Drawable drawable : drawables)
+		{
+			drawable.render(this, xOffset, yStart);
+			yStart += drawable.getHeight();
+		}
+		//ListUtil.forEachIndex(lines, (line, i) -> this.font.drawString(line.getFormattedText(), xOffset, PAGE_TEXT_START + LINE_HEIGHT * i, 0));
 	}
 
 	// public ITextComponent getPageText(int page)
@@ -253,10 +260,10 @@ public class LoreBookScreen extends Screen
 	// ᚨᛚᛁᛝᚢᛁᛈ ᛖᚦ ᛖᚨ ᚲᛟᛗᛗᛟᛞᛟ ᚲᛟᚾᛋᛖᛝᚢᚨᛏ ᛞᚢᛁᛋ ᚨᚢᛏᛖ ᛁᚱᚢᚱᛖ ᛞᛟᛚᛟᚱ ᛁᚾ ᚱᛖᛈᚱᛖᚻᛖᚾᛞᛖᚱᛁᛏ ᛁᚾ");
 	// }
 
-	public List<ITextComponent> getPageText(int page)
+	public List<Drawable> getPageDrawables(int page)
 	{
 		List<BakedPage> pages = this.book.getPages();
-		return page < pages.size() ? this.book.getPages().get(page).getLines() : Lists.newArrayList();
+		return page < pages.size() ? this.book.getPages().get(page).getDrawables() : Lists.newArrayList();
 		// return RenderComponentsUtil.splitText(this.getPageText(page), TEXT_WIDTH,
 		// this.font, true, true);
 	}
@@ -290,5 +297,17 @@ public class LoreBookScreen extends Screen
 	public int getStringWidth(String s)
 	{
 		return this.font.getStringWidth(this.font.getBidiFlag() ? this.font.bidiReorder(s) : s);
+	}
+
+	@Override
+	public FontRenderer getFont()
+	{
+		return this.font;
+	}
+
+	@Override
+	public AbstractGui getGUI()
+	{
+		return this;
 	}
 }

@@ -20,7 +20,7 @@ public class ClientPacketHandlers
 	{
 		handlePacket(context, () ->
 		{
-			Minecraft.getInstance().displayGuiScreen(new LoreBookScreen(packet.getBookID()));
+			Minecraft.getInstance().displayGuiScreen(new MondobookScreen(packet.getBookID()));
 		});
 	}
 }

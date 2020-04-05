@@ -3,22 +3,23 @@
 	"body":
 	[
 		{
-			"text": "§lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",		
-			"children":
-			[
-				{
-					"text": "first child"
-				},
-				{
-				
-					"text": "second child"
-				},
-				
-				{
-				
-					"text": "third child"
-				}
-			]
-		}	
+			"data": "This is a block of text. Lorkem ipsum balor fnard et polokus bar the whales from san margle fnord illuminati freemasons tomatoes and radio wire-- oh no a page break is coming up!",		
+			"type": "mondobook:text"
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "Oh wow we're on page 2 now"
+		},
+		{
+			"type": "mondobook:image",
+			"data": "mondobook:fancy_banner"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "dabdfa lkfewtoiu more come back but he was ne iapano to be or to be not but however we hear no more kings without this cloak of yesterday but come no back again today we're lost and gone without his crown no smiles rest upon this clown for all that we have gone without my heart gives way to seeds of doubt but shine a light upon the wall and all we see within is what remains to fall"
+		}
 	]
 }

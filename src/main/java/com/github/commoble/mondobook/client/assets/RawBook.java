@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.data.raw;
+package com.github.commoble.mondobook.client.assets;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 public class RawBook
 {
 	private Head head;
-	private Element[] body;
+	private RawElement[] body;
 	
-	public List<Element> getElements()
+	public List<RawElement> getElements()
 	{
 		return Arrays.asList(this.body);
 	}

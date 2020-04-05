@@ -5,95 +5,101 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import com.github.commoble.mondobook.data.raw.Element;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.RenderComponentsUtil;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import com.github.commoble.mondobook.client.api.Drawable;
+import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.client.assets.RawElement;
+import com.github.commoble.mondobook.client.api.DrawableRegistry;
 
 public class BakedPage
 {
-	private final List<ITextComponent> lines;
+	private final List<Drawable> drawables;
 	
-	public BakedPage(List<ITextComponent> lines)
+	public BakedPage(List<Drawable> drawables)
 	{
-		this.lines = lines;
+		this.drawables = drawables;
 	}
 	
-	public List<ITextComponent> getLines()
+	public List<Drawable> getDrawables()
 	{
-		return this.lines;
+		return this.drawables;
 	}
 	
-	public static List<BakedPage> fromParagraphs(List<Element> elements, int maxLinesOnPage, int textWidth, FontRenderer font)
+	public static List<BakedPage> fromRaws(List<RawElement> raws, int pageHeightInPixels, int pageWidth, DrawableRenderer renderer)
 	{
-		Deque<BakedPage> pageDeck = new ArrayDeque<>();
-		Deque<ITextComponent> lineDeck = new ArrayDeque<>();
-		
-		elements.stream().forEach(paragraph -> lineDeck.addAll(getLinesFromParagraph(paragraph, textWidth, font)));
-		PageBuilder builder = new PageBuilder(maxLinesOnPage);
-		while (!lineDeck.isEmpty())
+		List<BakedPage> pages = new ArrayList<>();
+		Deque<Drawable> drawables = new ArrayDeque<>();
+
+		raws.forEach(raw -> drawables.addAll(getDrawables(raw, renderer, pageWidth)));
+//		elements.stream()
+//			.map(raw -> getDrawables(raw, renderer, textWidth))
+//			.forEach(drawables -> lineDeck.addAll(drawables));
+		//elements.stream().forEach(paragraph -> lineDeck.addAll(getLinesFromParagraph(paragraph, textWidth, font)));
+		PageBuilder builder = new PageBuilder(pageHeightInPixels);
+		while (!drawables.isEmpty())
 		{
-			ITextComponent line = lineDeck.pollFirst();
-			if (builder.canAddLines(1))
+			Drawable drawable = drawables.pollFirst();
+			if (builder.canAddDrawable(drawable))
 			{
-				builder.addLine(line);
+				builder.addDrawable(drawable);
 			}
 			else
 			{
-				pageDeck.add(builder.build());
-				builder = new PageBuilder(maxLinesOnPage);
-				builder.addLine(line);
+				pages.add(builder.build());
+				builder = new PageBuilder(pageHeightInPixels);
+				builder.addDrawable(drawable);
 			}
 		}
 		// make sure we add the last page
 		if (!builder.lines.isEmpty())
 		{
-			pageDeck.add(builder.build());
+			pages.add(builder.build());
 		}
-		return new ArrayList<>(pageDeck);
+		return pages;
 	}
 	
-	public static List<ITextComponent> getLinesFromParagraph(Element paragraph, int textWidth, FontRenderer font)
+	public static List<Drawable> getDrawables(RawElement raw, DrawableRenderer renderer, int textWidth)
 	{
-		return RenderComponentsUtil.splitText(new StringTextComponent(paragraph.getText()), textWidth, font, true, true);
+		return DrawableRegistry.getFactory(raw.getTypeID()).apply(raw).getAsDrawables(renderer, textWidth);
 	}
-		
 	
 	public static class PageBuilder
 	{
-		private List<ITextComponent> lines = new ArrayList<>();
+		private List<Drawable> lines = new ArrayList<>();
 		private int currentHeight = 0;
 		
-		private final int maxLinesOnPage;
+		private final int maxPixelHeight;
 		
-		public PageBuilder(int maxLinesOnPage)
+		public PageBuilder(int maxPixelHeight)
 		{
-			this.maxLinesOnPage = maxLinesOnPage;
+			this.maxPixelHeight = maxPixelHeight;
 		}
 		
-		public boolean canAddLines(int numberOfLinesToAdd)
+		public boolean canAddDrawable(Drawable drawable)
 		{
-			return this.currentHeight == 0 || this.currentHeight + numberOfLinesToAdd <= this.maxLinesOnPage;
+			return this.currentHeight == 0 || ( drawable.canAddToList(this.lines) && this.currentHeight + drawable.getHeight() <= this.maxPixelHeight);
 		}
 		
-		public boolean canAddLines(List<ITextComponent> lines)
+//		public boolean canAddLines(int numberOfLinesToAdd)
+//		{
+//			return this.currentHeight == 0 || this.currentHeight + numberOfLinesToAdd <= this.maxLinesOnPage;
+//		}
+//		
+//		public boolean canAddLines(List<Drawable> lines)
+//		{
+//			return this.canAddLines(lines.size());
+//		}
+		
+		public void addDrawable(Drawable drawable)
 		{
-			return this.canAddLines(lines.size());
+			this.lines.add(drawable);
+			this.currentHeight += drawable.getHeight();
 		}
 		
-		public void addLine(ITextComponent line)
-		{
-			this.lines.add(line);
-			this.currentHeight++;
-		}
-		
-		public void addLines(List<ITextComponent> lines)
-		{
-			this.lines.addAll(lines);
-			this.currentHeight += lines.size();
-		}
+//		public void addLines(List<Drawable> lines)
+//		{
+//			this.lines.addAll(lines);
+//			this.currentHeight += lines.size();
+//		}
 		
 		public BakedPage build()
 		{
