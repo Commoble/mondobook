@@ -1,9 +1,9 @@
 package com.github.commoble.mondobook.client;
 
-import com.github.commoble.mondobook.client.assets.ImageData;
-import com.github.commoble.mondobook.client.assets.RawBook;
-import com.github.commoble.mondobook.client.assets.RawStyle;
-import com.github.commoble.mondobook.data.SimpleJsonDataManager;
+import com.github.commoble.mondobook.SimpleJsonDataManager;
+import com.github.commoble.mondobook.client.book.RawBook;
+import com.github.commoble.mondobook.client.elements.ImageData;
+import com.github.commoble.mondobook.client.styles.RawStyle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IReloadableResourceManager;

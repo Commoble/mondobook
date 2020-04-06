@@ -1,7 +1,7 @@
 package com.github.commoble.mondobook.client.api;
 
-import com.github.commoble.mondobook.client.assets.RawElement;
-import com.github.commoble.mondobook.client.assets.RawSelector;
+import com.github.commoble.mondobook.client.elements.RawElement;
+import com.github.commoble.mondobook.client.selectors.RawSelector;
 import com.github.commoble.mondobook.client.selectors.Selectors;
 import com.github.commoble.mondobook.client.selectors.SimpleSelector;
 

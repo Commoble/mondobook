@@ -6,9 +6,9 @@ import com.github.commoble.mondobook.MondobookMod;
 import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.client.book.elements.ImageElement;
-import com.github.commoble.mondobook.client.book.elements.NewPageElement;
-import com.github.commoble.mondobook.client.book.elements.TextElement;
+import com.github.commoble.mondobook.client.elements.ImageElement;
+import com.github.commoble.mondobook.client.elements.NewPageElement;
+import com.github.commoble.mondobook.client.elements.TextElement;
 import com.github.commoble.mondobook.client.selectors.Selectors;
 import com.github.commoble.mondobook.client.selectors.SimpleSelector;
 

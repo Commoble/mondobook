@@ -3,7 +3,6 @@ package com.github.commoble.mondobook.client.book;
 import java.util.List;
 
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.client.assets.RawBook;
 
 public class BakedBook
 {

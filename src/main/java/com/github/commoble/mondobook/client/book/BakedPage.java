@@ -8,7 +8,7 @@ import java.util.List;
 import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.client.assets.RawElement;
+import com.github.commoble.mondobook.client.elements.RawElement;
 
 public class BakedPage
 {

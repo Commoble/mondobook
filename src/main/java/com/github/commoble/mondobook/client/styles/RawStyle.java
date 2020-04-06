@@ -1,6 +1,6 @@
-package com.github.commoble.mondobook.client.assets;
+package com.github.commoble.mondobook.client.styles;
 
-import com.github.commoble.mondobook.client.styles.BookStyle;
+import com.github.commoble.mondobook.client.selectors.RawSelector;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;

@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.book.elements;
+package com.github.commoble.mondobook.client.elements;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.client.assets.RawElement;
-import com.github.commoble.mondobook.client.book.drawables.TextLineDrawable;
 
 import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.util.text.StringTextComponent;

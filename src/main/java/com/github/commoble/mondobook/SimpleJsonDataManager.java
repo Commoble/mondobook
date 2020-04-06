@@ -24,7 +24,7 @@ SOFTWARE.
 
  */
 
-package com.github.commoble.mondobook.data;
+package com.github.commoble.mondobook;
 
 import java.util.HashMap;
 import java.util.Map;

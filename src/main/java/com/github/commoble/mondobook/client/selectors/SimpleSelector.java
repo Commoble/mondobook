@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.client.assets.RawSelector;
 
 public class SimpleSelector extends Selector
 {
