@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.selectors;
+package com.github.commoble.mondobook.client.content;
 
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;

@@ -1,10 +1,11 @@
-package com.github.commoble.mondobook.client.selectors;
+package com.github.commoble.mondobook.client.content;
 
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
+import com.github.commoble.mondobook.client.book.RawSelector;
 
 public class SimpleSelector extends Selector
 {

@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.elements;
+package com.github.commoble.mondobook.client.content;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
@@ -7,14 +7,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-// to be serialized via JSON
+// to be serialized via a standard GSON parser
 public class ImageData implements Drawable
 {
 	private String texture; // the ResourceLocation of a texture file
-	private int u; // the x of the top-left coordinate to read the texture from
-	private int v; // the y of the top-left coordinate to read the texture from
-	private int width; // how much of the texture to draw in width
-	private int height; // how much of the texture to draw in height
+	private int u; // the x of the top-left coordinate to read the texture from, defaults to 0
+	private int v; // the y of the top-left coordinate to read the texture from, defaults to 0
+	private int width; // how much of the texture to draw in width, defaults to 0
+	private int height; // how much of the texture to draw in height, defaults to 0
 	private boolean translucent; // false if omitted, allows translucency in textures
 
 	private transient ResourceLocation textureID;

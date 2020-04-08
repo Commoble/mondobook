@@ -4,14 +4,18 @@ import java.util.function.BiPredicate;
 
 import com.github.commoble.mondobook.MondobookMod;
 import com.github.commoble.mondobook.client.api.AssetFactories;
+import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.client.elements.ImageElement;
-import com.github.commoble.mondobook.client.elements.NewPageElement;
-import com.github.commoble.mondobook.client.elements.TextElement;
-import com.github.commoble.mondobook.client.selectors.Selectors;
-import com.github.commoble.mondobook.client.selectors.SimpleSelector;
+import com.github.commoble.mondobook.client.content.ImageElement;
+import com.github.commoble.mondobook.client.content.NewPageElement;
+import com.github.commoble.mondobook.client.content.Selectors;
+import com.github.commoble.mondobook.client.content.SimpleSelector;
+import com.github.commoble.mondobook.client.content.TextElement;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -21,7 +25,14 @@ public class ClientEventHandler
 	{
 		modBus.addListener(ClientEventHandler::onClientSetup);
 
-		AssetManagers.onClientInit();
+		IResourceManager manager = Minecraft.getInstance().getResourceManager();
+		if (manager instanceof IReloadableResourceManager)
+		{
+			IReloadableResourceManager reloader = (IReloadableResourceManager)manager;
+			reloader.addReloadListener(AssetManagers.BOOK_DATA);
+			reloader.addReloadListener(AssetManagers.IMAGE_DATA);
+			reloader.addReloadListener(AssetManagers.STYLE_DATA);
+		}
 	}
 
 	private static void onClientSetup(FMLClientSetupEvent event)

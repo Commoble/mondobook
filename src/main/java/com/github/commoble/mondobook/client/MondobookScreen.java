@@ -3,6 +3,7 @@ package com.github.commoble.mondobook.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.book.BakedBook;

@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.styles;
+package com.github.commoble.mondobook.client.book;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;

@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.selectors;
+package com.github.commoble.mondobook.client.book;
 
 import java.util.List;
 

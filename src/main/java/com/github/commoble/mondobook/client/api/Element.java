@@ -2,7 +2,7 @@ package com.github.commoble.mondobook.client.api;
 
 import java.util.List;
 
-import com.github.commoble.mondobook.client.elements.RawElement;
+import com.github.commoble.mondobook.client.book.RawElement;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;
