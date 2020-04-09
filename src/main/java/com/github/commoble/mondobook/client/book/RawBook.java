@@ -1,5 +1,6 @@
 package com.github.commoble.mondobook.client.book;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,6 @@ public class RawBook
 	
 	public List<RawStyle> getStyles()
 	{
-		return Arrays.asList(this.styles);
+		return this.styles != null ? Arrays.asList(this.styles) : new ArrayList<>();
 	}
 }
