@@ -13,4 +13,6 @@ public class BookStyle
 		this.fontID = fontID;
 		this.textStyle = textStyle;
 	}
+	
+	
 }

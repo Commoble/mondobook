@@ -2,6 +2,8 @@ package com.github.commoble.mondobook.util;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ListUtil
 {
@@ -13,5 +15,10 @@ public class ListUtil
 		{
 			indexer.accept(list.get(i), i);
 		}
+	}
+	
+	public static <In, Out> List<Out> map(List<In> list, Function<In, Out> mapper)
+	{
+		return list.stream().map(mapper).collect(Collectors.toList());
 	}
 }

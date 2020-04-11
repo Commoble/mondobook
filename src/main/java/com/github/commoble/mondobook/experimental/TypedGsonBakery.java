@@ -20,7 +20,8 @@ public class TypedGsonBakery<Raw, Baked> extends GsonBakery<Raw, Baked>
 	
 	/** Map of subtype ResourceLocation to subclass of Baked **/
 	private final Map<ResourceLocation, Function<Raw, ? extends Baked>> typeFactories = new HashMap<>();
-	
+
+	private final @Nonnull Function<Raw, Baked> fallbackFactory;
 	/**
 	 * 
 	 * @param folder This is the name of the folders that the resource loader looks in, e.g. assets/modid/FOLDER
@@ -29,10 +30,11 @@ public class TypedGsonBakery<Raw, Baked> extends GsonBakery<Raw, Baked>
 	 * an instance of Baked or a subclass thereof.
 	 * @param emptyFactory A function to default to when a baked-instance-factory is not present for a given typeKey. Invalid/missing typeKeys will be logged.
 	 */
-	public TypedGsonBakery(@Nonnull String folder, @Nonnull Class<Raw> rawClass, @Nonnull Function<Raw, ResourceLocation> keyFactory, @Nonnull Function<Raw, Baked> emptyFactory, Supplier<Baked> fallbackSupplier)
+	public TypedGsonBakery(@Nonnull String folder, @Nonnull Class<Raw> rawClass, @Nonnull Function<Raw, ResourceLocation> keyFactory, @Nonnull Function<Raw, Baked> fallbackFactory, Supplier<Baked> fallbackSupplier)
 	{
-		super(folder, rawClass, emptyFactory, fallbackSupplier);
+		super(folder, rawClass, fallbackSupplier);
 		this.keyFactory = keyFactory;
+		this.fallbackFactory = fallbackFactory;
 	}
 
 	/**
@@ -48,6 +50,6 @@ public class TypedGsonBakery<Raw, Baked> extends GsonBakery<Raw, Baked>
 	@Override
 	protected Function<Raw, ? extends Baked> getFactory(Raw raw)
 	{
-		return this.typeFactories.getOrDefault(this.keyFactory.apply(raw), this.getDefaultFactory());
+		return this.typeFactories.getOrDefault(this.keyFactory.apply(raw), this.fallbackFactory);
 	}
 }

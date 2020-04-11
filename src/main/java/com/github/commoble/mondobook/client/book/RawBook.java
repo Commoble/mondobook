@@ -14,7 +14,7 @@ public class RawBook
 	
 	public List<RawElement> getElements()
 	{
-		return Arrays.asList(this.body);
+		return this.body != null? Arrays.asList(this.body) : new ArrayList<>();
 	}
 	
 	public List<RawStyle> getStyles()

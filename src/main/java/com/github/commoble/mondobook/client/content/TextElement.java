@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
+import com.github.commoble.mondobook.client.book.BookStyle;
 import com.github.commoble.mondobook.client.book.RawElement;
 
 import net.minecraft.client.gui.RenderComponentsUtil;
@@ -22,7 +23,7 @@ public class TextElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int textWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth)
 	{
 		return RenderComponentsUtil.splitText(new StringTextComponent(this.text), textWidth, renderer.getFont(), true, true)
 			.stream()

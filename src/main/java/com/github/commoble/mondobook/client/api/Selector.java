@@ -31,6 +31,8 @@ public abstract class Selector implements Predicate<Element>
 	@Override
 	public abstract boolean test(Element element);
 	
+	public abstract Specificity getSpecificity(Element element);
+	
 	public ResourceLocation getTypeID()
 	{
 		return this.typeID;

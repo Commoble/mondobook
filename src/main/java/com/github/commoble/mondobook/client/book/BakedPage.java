@@ -2,9 +2,7 @@ package com.github.commoble.mondobook.client.book;
 
 import java.util.List;
 
-import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Drawable;
-import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
 public class BakedPage
 {
@@ -20,9 +18,9 @@ public class BakedPage
 		return this.drawables;
 	}
 	
-	public static List<Drawable> getDrawables(RawElement raw, DrawableRenderer renderer, int textWidth)
-	{
-		return AssetFactories.ELEMENTS.apply(raw).getAsDrawables(renderer, textWidth);
-	}
+//	public static List<Drawable> getDrawables(RawElement raw, DrawableRenderer renderer, int textWidth)
+//	{
+//		return AssetFactories.ELEMENTS.apply(raw).getAsDrawables(renderer, textWidth);
+//	}
 
 }
