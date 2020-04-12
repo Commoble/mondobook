@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.github.commoble.mondobook.client.book.RawSelector;
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -21,11 +22,20 @@ public abstract class Selector implements Predicate<Element>
 	
 	public Selector(RawSelector raw)
 	{
-		this.typeID = raw.getTypeID();
-		this.matchString = raw.getMatchString();
-		this.children = raw.getChildList().stream()
-			.map(AssetFactories.SELECTORS)
-			.collect(Collectors.toList());
+		if (raw == null)
+		{
+			this.typeID = new ResourceLocation("mondobook:all");
+			this.matchString = "";
+			this.children = ImmutableList.of();
+		}
+		else
+		{
+			this.typeID = raw.getTypeID();
+			this.matchString = raw.getMatchString();
+			this.children = raw.getChildList().stream()
+				.map(AssetFactories.SELECTORS)
+				.collect(Collectors.toList());
+		}
 	}
 	
 	@Override

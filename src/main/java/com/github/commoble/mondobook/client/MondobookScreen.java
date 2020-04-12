@@ -14,7 +14,6 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
@@ -298,12 +297,6 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	public int getStringWidth(String s)
 	{
 		return this.font.getStringWidth(this.font.getBidiFlag() ? this.font.bidiReorder(s) : s);
-	}
-
-	@Override
-	public FontRenderer getFont()
-	{
-		return this.font;
 	}
 
 	@Override

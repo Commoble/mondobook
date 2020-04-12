@@ -2,13 +2,33 @@
 	"styles":
 	[
 		{
-			"bold": "true"
-		}	
+			"bold": false,
+			"selector":
+			{
+				"type": "mondobook:id",
+				"match": "first"
+			}
+		},
+		{
+			"bold": true
+		},
+		{
+			"strikethrough": true,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "wow"
+			}
+		}
 	],
 	"body":
 	[
 		{
-			"data": "This is a block of text. Lorkem ipsum balor fnard et polokus bar the whales from san margle fnord illuminati freemasons tomatoes and radio wire-- oh no a page break is coming up!",		
+			"data": "This is a block of text. We've made everything except this one bold.",
+			"id": "first"
+		},
+		{
+			"data": "This is also a block of text. Lorkem ipsum balor freemasons tomatoes and radio wire-- oh no a page break is coming up!",		
 			"type": "mondobook:text"
 		},
 		{
@@ -16,7 +36,8 @@
 		},
 		{
 			"type": "mondobook:text",
-			"data": "Oh wow we're on page 2 now"
+			"data": "Oh wow we're on page 2 now",
+			"classes":["wow"]
 		},
 		{
 			"type": "mondobook:image",

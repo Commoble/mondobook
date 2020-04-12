@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
+import com.github.commoble.mondobook.client.book.BookStyle;
 import com.github.commoble.mondobook.client.book.RawElement;
 import com.google.common.collect.ImmutableList;
 
@@ -16,7 +17,7 @@ public class NewPageElement extends Element
 	}
 	
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int textWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth)
 	{
 		return NEW_PAGE_DRAWABLE;
 	}

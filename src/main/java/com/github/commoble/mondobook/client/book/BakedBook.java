@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.util.ListUtil;
 
 public class BakedBook
 {
@@ -25,13 +22,8 @@ public class BakedBook
 		List<BakedPage> pages = new ArrayList<>();
 		Deque<Drawable> drawables = new ArrayDeque<>();
 		
-		List<BookStyle> styles = ListUtil.map(rawBook.getStyles(), RawStyle::toBookStyle);
-		List<Element> elements = ListUtil.map(rawBook.getElements(), AssetFactories.ELEMENTS);
-
-		// take the styles, and for a given element, figure out what ultimately applies to that element
-		
-		
-		rawElements.forEach(raw -> drawables.addAll(AssetFactories.ELEMENTS.apply(raw).getAsDrawables(renderer, maxLineWidth)));
+		List<StyledElement> styledElements = rawBook.getStyledElements();
+		styledElements.forEach(styledElement -> drawables.addAll(styledElement.getAsDrawables(renderer, maxLineWidth)));
 
 		PageBuilder builder = new PageBuilder(pageHeightInPixels);
 		while (!drawables.isEmpty())

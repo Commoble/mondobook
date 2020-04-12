@@ -16,8 +16,8 @@ import net.minecraft.util.text.TextFormatting;
 // to be serialized via a basic GSON parser
 public class RawStyle
 {
-	private RawSelector rawSelector;	// a selector that will be compared to an element or elements
-	private transient Selector selector;
+	private RawSelector selector;	// a selector that will be compared to an element or elements
+	private transient Selector bakedSelector;
 	/**
 	 * This represents a ResourceLocation for a Font;
 	 * The Fonts included with vanilla minecraft are "minecraft:default" and "minecraft:alt"
@@ -36,18 +36,18 @@ public class RawStyle
 	
 	public Selector getSelector()
 	{
-		if (this.selector == null)
+		if (this.bakedSelector == null)
 		{
-			if (this.rawSelector == null)
+			if (this.selector == null)
 			{
-				this.selector = AssetFactories.SELECTORS.getFactory(new ResourceLocation("mondobook:all")).apply(null);
+				this.bakedSelector = AssetFactories.SELECTORS.getFactory(new ResourceLocation("mondobook:all")).apply(null);
 			}
 			else
 			{
-				this.selector = AssetFactories.SELECTORS.apply(this.rawSelector);
+				this.bakedSelector = AssetFactories.SELECTORS.apply(this.selector);
 			}
 		}
-		return this.selector;
+		return this.bakedSelector;
 	}
 	
 	@Nullable

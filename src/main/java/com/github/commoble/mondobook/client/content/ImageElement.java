@@ -6,6 +6,7 @@ import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
+import com.github.commoble.mondobook.client.book.BookStyle;
 import com.github.commoble.mondobook.client.book.RawElement;
 import com.google.common.collect.ImmutableList;
 
@@ -22,7 +23,7 @@ public class ImageElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int textWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth)
 	{
 		return ImmutableList.of(this.image);
 	}
