@@ -10,13 +10,15 @@ public class BookStyle
 {
 	private final @Nonnull ResourceLocation fontID;
 	private final @Nullable Style textStyle;
-	private final int color;
+	private final int textColor;
+	private final Margins margins;
 	
-	public BookStyle(ResourceLocation fontID, Style textStyle, int color)
+	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor, Margins margins)
 	{
 		this.fontID = fontID;
 		this.textStyle = textStyle;
-		this.color = color;
+		this.textColor = textColor;
+		this.margins = margins;
 	}
 	
 	public ResourceLocation getFont()
@@ -31,6 +33,11 @@ public class BookStyle
 	
 	public int getTextColor()
 	{
-		return this.color;
+		return this.textColor;
+	}
+	
+	public Margins getMargins()
+	{
+		return this.margins;
 	}
 }

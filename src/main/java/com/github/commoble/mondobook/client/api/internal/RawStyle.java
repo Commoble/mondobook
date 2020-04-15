@@ -39,6 +39,11 @@ public class RawStyle
 	private Boolean underlined;
 	private Boolean strikethrough;
 	private Boolean obfuscated;
+	private Integer margin; // margin around all four edges of the element, superceded by specific margins
+	private Integer bottom_margin;
+	private Integer top_margin;
+	private Integer left_margin;
+	private Integer right_margin;
 	
 	public Selector getSelector()
 	{
@@ -81,8 +86,9 @@ public class RawStyle
 		 * ("alt" is the Standard Galactic Alphabet font used for enchanting table runes)
 		 */
 		private @Nullable ResourceLocation font;
-		private @Nullable String color; // see TextFormatting for color strings (use lowercase, e.g. "red")
+		private @Nullable String textColor; // see TextFormatting for color strings (use lowercase, e.g. "red")
 		private Map<StyleSetter, Boolean> styleFlags = new EnumMap<>(StyleSetter.class);
+		private Map<RawMarginSide, Integer> margins = new EnumMap<>(RawMarginSide.class);
 		
 		public StyleBuilder() {}
 		
@@ -97,8 +103,14 @@ public class RawStyle
 			}
 			if (style.text_color != null)
 			{
-				this.color = style.text_color;
+				this.textColor = style.text_color;
 			}
+			RawMarginSide.mergeAll(this.margins,
+				style.margin,
+				style.bottom_margin,
+				style.top_margin,
+				style.left_margin,
+				style.right_margin);
 			
 			// all of the nonnull flags in the incoming style override existing flags
 			style.getStyleFlags().forEach(this::mergeStyleFlag);
@@ -116,42 +128,71 @@ public class RawStyle
 		
 		public BookStyle build()
 		{
+			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins());
+		}
+		
+		private Style buildTextStyle()
+		{
 			Style textStyle = new Style();
 			StyleSetter.applyStyleFlags(this.styleFlags, textStyle);
-//			textStyle.setColor(TextFormatting.getValueByName(this.color));	// nulls are okay here
+			return textStyle;
+		}
+		
+		private ResourceLocation buildFont()
+		{
 			if (this.font == null)
 			{
-				this.font = new ResourceLocation("minecraft:default");
+				return new ResourceLocation("minecraft:default");
 			}
+			else
+			{
+				return this.font;
+			}
+		}
+		
+		private int buildTextColor()
+		{
 			
 			// the color logic is as follows:
 			// if color string matches one of the vanilla TextFormatting color names, use that value
 			// otherwise, if color is 
-			int finalColor = 0x0; // black
-			if (this.color != null)
+			int finalTextColor = 0x0; // black
+			if (this.textColor != null)
 			{
-				TextFormatting textFormat = TextFormatting.getValueByName(this.color);
+				TextFormatting textFormat = TextFormatting.getValueByName(this.textColor);
 				if (textFormat != null)
 				{
-					finalColor = textFormat.getColor();
+					finalTextColor = textFormat.getColor();
 				}
 				else
 				{
 					try
 					{
-						int parseAttempt = Integer.parseInt(this.color, 16);
+						int parseAttempt = Integer.parseInt(this.textColor, 16);
 						if (parseAttempt > 0 && parseAttempt <= 0xFFFFFF)
 						{
-							finalColor = parseAttempt & 0xFFFFFF;	// avoid negative numbers or values greater than RGB White
+							finalTextColor = parseAttempt & 0xFFFFFF;	// avoid negative numbers or values greater than RGB White
 						}
 					}
 					catch(NumberFormatException e)
 					{	// if the string isn't a valid int, just leave it 0
-						finalColor = 0;
+						finalTextColor = 0;
 					}
 				}
 			}
-			return new BookStyle(this.font, textStyle, finalColor);
+			
+			return finalTextColor;
+		}
+		
+		private Margins buildMargins()
+		{
+			return new Margins(
+				this.margins.get(RawMarginSide.ALL),
+				this.margins.get(RawMarginSide.BOTTOM),
+				this.margins.get(RawMarginSide.TOP),
+				this.margins.get(RawMarginSide.LEFT),
+				this.margins.get(RawMarginSide.RIGHT)
+			);
 		}
 	}
 

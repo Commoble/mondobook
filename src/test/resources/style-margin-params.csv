@@ -1,0 +1,4 @@
+allIn,bottomIn,topIn,leftIn,rightIn,bottomOut,topOut,leftOut,rightOut
+null,1,2,3,4,1,2,3,4
+5,0,null,0,0,0,5,0,0
+0,2,3,null,0,2,3,0,0

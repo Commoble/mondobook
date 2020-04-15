@@ -1,14 +1,20 @@
 package com.github.commoble.mondobook.client.book;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.github.commoble.mondobook.SimpleJsonDataManager;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.MarginSide;
+import com.github.commoble.mondobook.client.api.internal.Margins;
 import com.github.commoble.mondobook.client.api.internal.RawStyle;
 import com.github.commoble.mondobook.client.api.internal.RawStyle.StyleBuilder;
 
@@ -16,7 +22,7 @@ import net.minecraft.util.text.TextFormatting;
 
 class StyleTests
 {
-	public static int BLACK = 0;
+	private static final int BLACK = 0;
 	
 	public static BookStyle buildStyleFromJsonStrings(String... strings)
 	{
@@ -117,6 +123,105 @@ class StyleTests
 
 			// then
 			Assertions.assertEquals(0x12345, styleColor);
+		}
+	}
+	
+	@Nested
+	class MarginTests
+	{
+		@Test
+		void should_HaveZeroMarginOnAllSides_When_NoMarginsSpecified()
+		{
+			// given an empty style json
+			BookStyle style = buildStyleFromJsonStrings("{}");
+
+			// when we check all four margin sides
+			Stream<Executable> cases = Arrays.stream(MarginSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getMarginOnSide(side)));
+
+			// then they should all have values of zero
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(strings = {"null", "-1", "-4000000"})
+		void should_HaveZeroMarginOnAllSides_When_OnlyInvalidGeneralMarginSpecified(String marginString)
+		{
+			// given a style json with a margin that ought to be interpreted as 0
+			BookStyle style = buildStyleFromJsonStrings(String.format("{\"margin\": %s}", marginString));
+			
+			// when we check all four margin sides
+			Stream<Executable> cases = Arrays.stream(MarginSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getMarginOnSide(side)));
+
+			// then they should all have values of zero
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(ints = {0, 1, 2, 3, Integer.MAX_VALUE})
+		void should_HaveSpecifiedMarginOnAllSides_When_OnlyValidGeneralMarginSpecified(int margin)
+		{
+			// given a style json with a general margin
+			BookStyle style = buildStyleFromJsonStrings(String.format("{\"margin\": %s}", margin));
+			
+			// when we check all four margin sides
+			Stream<Executable> cases = Arrays.stream(MarginSide.values())
+				.map(side -> () -> Assertions.assertEquals(margin, style.getMargins().getMarginOnSide(side)));
+
+			// then the sides should all match the input margin value
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@CsvFileSource(resources = "/style-margin-params.csv", numLinesToSkip = 1)
+		void should_HaveCorrectMargins_When_SeparateSidesAreSpecified(
+			String allIn, String bottomIn, String topIn, String leftIn, String rightIn,
+			int bottomOut, int topOut, int leftOut, int rightOut)
+		{
+			// given a json with margins based on the given inputs
+			BookStyle style = buildStyleFromJsonStrings(String.format(
+				"{\"margin\": %s, \"bottom_margin\": %s, \"top_margin\": %s, \"left_margin\": %s, \"right_margin\": %s}",
+				allIn, bottomIn, topIn, leftIn, rightIn));
+			
+			// when we check the margins of the resulting style object
+			
+			// then they should match the expected outputs
+			Assertions.assertAll(
+				() -> Assertions.assertEquals(bottomOut, style.getMargins().bottom),
+				() -> Assertions.assertEquals(topOut, style.getMargins().top),
+				() -> Assertions.assertEquals(leftOut, style.getMargins().left),
+				() -> Assertions.assertEquals(rightOut, style.getMargins().right)
+				);
+		}
+		
+		@Test
+		void should_MergeMarginsCorrectly_When_MultipleStylesUsed()
+		{
+
+			// given a bunch of styles
+			String[] jsonStrings = {
+				"{}",
+				"{\"margin\": null}",
+				"{\"margin\": 5}",
+				"{\"right_margin\": 4}",
+				"{\"right_margin\": null}",
+				"{}",
+				"{\"margin\": 6}",
+				"{\"left_margin\": 1}",
+			};
+
+			// when we merge them together
+			Margins margins = buildStyleFromJsonStrings(jsonStrings).getMargins();
+
+			// then nulls should never override anything, the last style to specify a side margin takes precedence on that side,
+			// and the last style to specify a general margin should take precedence where no side has been specified
+			Assertions.assertAll(
+				() -> Assertions.assertEquals(6, margins.bottom),
+				() -> Assertions.assertEquals(6, margins.top),
+				() -> Assertions.assertEquals(1, margins.left),
+				() -> Assertions.assertEquals(4, margins.right)
+				);
 		}
 	}
 }
