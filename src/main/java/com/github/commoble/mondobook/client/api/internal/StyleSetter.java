@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.util;
+package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.EnumMap;
 import java.util.Map;

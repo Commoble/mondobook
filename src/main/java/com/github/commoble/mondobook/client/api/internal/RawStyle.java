@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.book;
+package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.util.StyleSetter;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;

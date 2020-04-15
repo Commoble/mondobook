@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.content;
+package com.github.commoble.mondobook.client.api.internal;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;

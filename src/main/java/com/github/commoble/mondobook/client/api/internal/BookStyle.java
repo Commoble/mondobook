@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.book;
+package com.github.commoble.mondobook.client.api.internal;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
