@@ -109,7 +109,7 @@ public class AssetManagers
  **/
 public class SimpleJsonDataManager<T> extends JsonReloadListener
 {
-	private static final Gson GSON = new GsonBuilder().create();
+	public static final Gson GSON = new GsonBuilder().create();
 
 	
 	/** The raw data that we parsed from json last time resources were reloaded **/

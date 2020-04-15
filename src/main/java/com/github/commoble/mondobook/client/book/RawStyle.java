@@ -25,7 +25,14 @@ public class RawStyle
 	 */
 	private String font;
 	
-	private String textColor;	// see TextFormatting for color strings (use lowercase, e.g. "red")
+	/**
+	 * This can be one of two possible string formats:
+	 * A) one of minecraft's sixteen builtin TextFormatting color names, e.g. "red"
+	 * B) a six-digit hexidecimal number in the format "######" (where # is some hex digit in the range 0-F)
+	 * 
+	 * Invalid strings (such as an unused color name, or improperly formatted hexcode) will fallback to black. 
+	 */
+	private String text_color;
 	
 	// the rest of these default to NULL, so that "false" can override "not present"
 	private Boolean bold;
@@ -63,12 +70,6 @@ public class RawStyle
 		}
 	}
 	
-	@Nullable
-	public String getTextColor()
-	{
-		return this.textColor;
-	}
-	
 	public Map<StyleSetter, Boolean> getStyleFlags()
 	{
 		return StyleSetter.buildMap(this.bold, this.italic, this.underlined, this.strikethrough, this.obfuscated);
@@ -95,9 +96,9 @@ public class RawStyle
 			{
 				this.font = new ResourceLocation(style.font);
 			}
-			if (style.textColor != null)
+			if (style.text_color != null)
 			{
-				this.color = style.textColor;
+				this.color = style.text_color;
 			}
 			
 			// all of the nonnull flags in the incoming style override existing flags
@@ -118,12 +119,40 @@ public class RawStyle
 		{
 			Style textStyle = new Style();
 			StyleSetter.applyStyleFlags(this.styleFlags, textStyle);
-			textStyle.setColor(TextFormatting.getValueByName(this.color));	// nulls are okay here
+//			textStyle.setColor(TextFormatting.getValueByName(this.color));	// nulls are okay here
 			if (this.font == null)
 			{
 				this.font = new ResourceLocation("minecraft:default");
 			}
-			return new BookStyle(this.font, textStyle);
+			
+			// the color logic is as follows:
+			// if color string matches one of the vanilla TextFormatting color names, use that value
+			// otherwise, if color is 
+			int finalColor = 0x0; // black
+			if (this.color != null)
+			{
+				TextFormatting textFormat = TextFormatting.getValueByName(this.color);
+				if (textFormat != null)
+				{
+					finalColor = textFormat.getColor();
+				}
+				else
+				{
+					try
+					{
+						int parseAttempt = Integer.parseInt(this.color, 16);
+						if (parseAttempt > 0 && parseAttempt <= 0xFFFFFF)
+						{
+							finalColor = parseAttempt & 0xFFFFFF;	// avoid negative numbers or values greater than RGB White
+						}
+					}
+					catch(NumberFormatException e)
+					{	// if the string isn't a valid int, just leave it 0
+						finalColor = 0;
+					}
+				}
+			}
+			return new BookStyle(this.font, textStyle, finalColor);
 		}
 	}
 

@@ -5,8 +5,9 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.book.BookStyle;
 import com.github.commoble.mondobook.client.util.RenderUtil;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 
 public class TextLineDrawable implements Drawable
 {
@@ -24,16 +25,18 @@ public class TextLineDrawable implements Drawable
 	@Override
 	public void render(DrawableRenderer renderer, int startX, int startY)
 	{
-		TextFormatting colorFormat = this.style.getTextStyle().getColor();
-		int color = colorFormat != null ? colorFormat.getColor() : BLACK;
 		RenderUtil.getFontRenderer(this.style.getFont())
-			.drawString(this.text.getFormattedText(), startX, startY, color);
+			.drawString(this.text.getFormattedText(), startX, startY, this.style.getTextColor());
 	}
 
 	@Override
 	public int getHeight()
 	{
-		return RenderUtil.getFontRenderer(this.style.getFont()).FONT_HEIGHT;
+		// this could be just one line but
+		// eclipse complains about resource leak / closeable not being closed unless we split this up into local vars
+		ResourceLocation fontID = this.style.getFont();
+		FontRenderer renderer = RenderUtil.getFontRenderer(fontID);
+		return renderer.FONT_HEIGHT;
 	}
 
 }

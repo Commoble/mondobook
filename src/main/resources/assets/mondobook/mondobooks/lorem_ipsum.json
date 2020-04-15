@@ -14,10 +14,19 @@
 		},
 		{
 			"strikethrough": true,
+			"text_color": "004466",
 			"selector":
 			{
 				"type": "mondobook:class",
 				"match": "wow"
+			}
+		},
+		{
+			"font": "minecraft:alt",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "sga"
 			}
 		}
 	],
@@ -45,7 +54,8 @@
 		},
 		{
 			"type": "mondobook:text",
-			"data": "dabdfa lkfewtoiu more come back but he was ne iapano to be or to be not but however we hear no more kings without this cloak of yesterday but come no back again today we're lost and gone without his crown no smiles rest upon this clown for all that we have gone without my heart gives way to seeds of doubt but shine a light upon the wall and all we see within is what remains to fall"
+			"data": "dabdfa lkfewtoiu more come back but he was ne iapano to be or to be not but however we hear no more kings without this cloak of yesterday but come no back again today we're lost and gone without his crown no smiles rest upon this clown for all that we have gone without my heart gives way to seeds of doubt but shine a light upon the wall and all we see within is what remains to fall",
+			"classes": ["sga"]
 		}
 	]
 }
