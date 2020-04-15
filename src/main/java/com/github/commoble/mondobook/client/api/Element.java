@@ -3,9 +3,9 @@ package com.github.commoble.mondobook.client.api;
 import java.util.Comparator;
 import java.util.List;
 
-import com.github.commoble.mondobook.client.book.BookStyle;
-import com.github.commoble.mondobook.client.book.RawElement;
-import com.github.commoble.mondobook.client.book.RawStyle;
+import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.RawElement;
+import com.github.commoble.mondobook.client.api.internal.RawStyle;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;

@@ -8,7 +8,9 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.github.commoble.mondobook.SimpleJsonDataManager;
-import com.github.commoble.mondobook.client.book.RawStyle.StyleBuilder;
+import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.RawStyle;
+import com.github.commoble.mondobook.client.api.internal.RawStyle.StyleBuilder;
 
 import net.minecraft.util.text.TextFormatting;
 

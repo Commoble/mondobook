@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.book;
+package com.github.commoble.mondobook.client;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.client.api.internal.RawBook;
+import com.github.commoble.mondobook.client.api.internal.StyledElement;
 
 public class BakedBook
 {

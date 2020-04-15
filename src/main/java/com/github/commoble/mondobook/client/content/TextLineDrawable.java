@@ -2,7 +2,7 @@ package com.github.commoble.mondobook.client.content;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.client.book.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.util.RenderUtil;
 
 import net.minecraft.client.gui.FontRenderer;

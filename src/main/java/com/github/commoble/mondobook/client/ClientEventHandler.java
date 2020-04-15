@@ -9,10 +9,10 @@ import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
 import com.github.commoble.mondobook.client.api.Specificity;
+import com.github.commoble.mondobook.client.api.internal.SimpleSelector;
 import com.github.commoble.mondobook.client.content.ImageElement;
 import com.github.commoble.mondobook.client.content.NewPageElement;
 import com.github.commoble.mondobook.client.content.Selectors;
-import com.github.commoble.mondobook.client.content.SimpleSelector;
 import com.github.commoble.mondobook.client.content.TextElement;
 
 import net.minecraft.client.Minecraft;

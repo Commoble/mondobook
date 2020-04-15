@@ -1,9 +1,9 @@
 package com.github.commoble.mondobook.client.api;
 
-import com.github.commoble.mondobook.client.book.RawElement;
-import com.github.commoble.mondobook.client.book.RawSelector;
+import com.github.commoble.mondobook.client.api.internal.RawElement;
+import com.github.commoble.mondobook.client.api.internal.RawSelector;
+import com.github.commoble.mondobook.client.api.internal.SimpleSelector;
 import com.github.commoble.mondobook.client.content.Selectors;
-import com.github.commoble.mondobook.client.content.SimpleSelector;
 
 public class AssetFactories
 {

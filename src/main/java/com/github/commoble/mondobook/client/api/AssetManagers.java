@@ -1,9 +1,9 @@
 package com.github.commoble.mondobook.client.api;
 
 import com.github.commoble.mondobook.SimpleJsonDataManager;
-import com.github.commoble.mondobook.client.book.RawBook;
-import com.github.commoble.mondobook.client.book.RawStyle;
-import com.github.commoble.mondobook.client.content.ImageData;
+import com.github.commoble.mondobook.client.api.internal.ImageData;
+import com.github.commoble.mondobook.client.api.internal.RawBook;
+import com.github.commoble.mondobook.client.api.internal.RawStyle;
 
 public class AssetManagers
 {

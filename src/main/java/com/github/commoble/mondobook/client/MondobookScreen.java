@@ -6,8 +6,6 @@ import java.util.List;
 import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.client.book.BakedBook;
-import com.github.commoble.mondobook.client.book.BakedPage;
 import com.github.commoble.mondobook.client.util.KeyUtil;
 import com.github.commoble.mondobook.util.MatchedPair;
 import com.google.common.collect.Lists;

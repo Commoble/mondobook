@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.book;
+package com.github.commoble.mondobook.client;
 
 import java.util.ArrayList;
 import java.util.List;

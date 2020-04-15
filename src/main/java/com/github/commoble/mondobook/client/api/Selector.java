@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.github.commoble.mondobook.client.book.RawSelector;
+import com.github.commoble.mondobook.client.api.internal.RawSelector;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 
