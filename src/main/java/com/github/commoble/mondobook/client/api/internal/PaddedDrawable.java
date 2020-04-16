@@ -16,6 +16,11 @@ public class PaddedDrawable implements Drawable
 		return new PaddedDrawable(bottomPadding, topPadding, leftPadding, rightPadding, drawable);
 	}
 	
+	public static PaddedDrawable of(Margins margins, Drawable drawable)
+	{
+		return new PaddedDrawable(margins.bottom, margins.top, margins.left, margins.right, drawable);
+	}
+	
 	private PaddedDrawable(int bottomPadding, int topPadding, int leftPadding, int rightPadding,  Drawable drawable)
 	{
 		this.bottomPadding = bottomPadding;
