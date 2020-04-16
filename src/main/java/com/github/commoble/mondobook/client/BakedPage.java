@@ -3,24 +3,35 @@ package com.github.commoble.mondobook.client;
 import java.util.List;
 
 import com.github.commoble.mondobook.client.api.Drawable;
+import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
-public class BakedPage
+public class BakedPage implements Drawable
 {
-	private final List<Drawable> drawables;
+	private final int width;
+	private final int height;
+	private final List<Drawable> children;
 	
-	public BakedPage(List<Drawable> drawables)
+	public BakedPage(int width, int height, List<Drawable> children)
 	{
-		this.drawables = drawables;
+		this.width = width;
+		this.height = height;
+		this.children = children;
 	}
 	
-	public List<Drawable> getDrawables()
+	@Override
+	public void render(DrawableRenderer renderer, int startX, int startY)
 	{
-		return this.drawables;
+		this.children.forEach(child -> this.renderChild(child, renderer, startX, startY));
 	}
 	
-//	public static List<Drawable> getDrawables(RawElement raw, DrawableRenderer renderer, int textWidth)
-//	{
-//		return AssetFactories.ELEMENTS.apply(raw).getAsDrawables(renderer, textWidth);
-//	}
-
+	private void renderChild(Drawable child, DrawableRenderer renderer, int thisX, int thisY)
+	{
+		child.render(renderer, thisX, thisY);
+	}
+	
+	@Override
+	public int getHeight()
+	{
+		return this.height;
+	}
 }

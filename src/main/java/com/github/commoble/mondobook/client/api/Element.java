@@ -21,7 +21,7 @@ public abstract class Element
 		this.raw = raw;
 	}
 	
-	public abstract List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth);
+	public abstract List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth);
 	
 	public ResourceLocation getTypeID()
 	{
@@ -48,7 +48,7 @@ public abstract class Element
 	public static final Element NONE = new Element(new RawElement())
 	{
 		@Override
-		public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth)
+		public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 		{
 			return ImmutableList.of();
 		}

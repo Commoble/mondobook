@@ -1,5 +1,6 @@
 package com.github.commoble.mondobook.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -20,5 +21,33 @@ public class ListUtil
 	public static <In, Out> List<Out> map(List<In> list, Function<In, Out> mapper)
 	{
 		return list.stream().map(mapper).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Applies one function to the first item in a list,
+	 * another function to the rest of the list except for the last item,
+	 * and a third function to the last item,
+	 * 
+	 * and returns a list of the mapped items
+	 */
+	public static <In, Out> List<Out> mapFirstMiddleLast(List<In> inputs, Function<In, Out> firstFunction, Function<In, Out> middleFunction, Function<In, Out> lastFunction)
+	{
+		List<Out> outputs = new ArrayList<>();
+		int last = inputs.size()-1;
+		ListUtil.forEachIndex(inputs, (input, i) ->{
+			if (i == 0)
+			{
+				outputs.add(firstFunction.apply(input));
+			}
+			else if (i < last)
+			{
+				outputs.add(middleFunction.apply(input));
+			}
+			else
+			{
+				outputs.add(lastFunction.apply(input));
+			}
+		});
+		return outputs;
 	}
 }

@@ -2,15 +2,12 @@
 	"styles":
 	[
 		{
-			"bold": false,
+			"bold": true,
 			"selector":
 			{
 				"type": "mondobook:id",
 				"match": "first"
 			}
-		},
-		{
-			"bold": true
 		},
 		{
 			"strikethrough": true,
@@ -28,12 +25,36 @@
 				"type": "mondobook:class",
 				"match": "sga"
 			}
+		},
+		{
+			"left_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "left_margin_15"
+			}
+		},
+		{
+			"right_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "right_margin_15"
+			}
+		},
+		{
+			"margin": 10,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "all_margin_10"
+			}
 		}
 	],
 	"body":
 	[
 		{
-			"data": "This is a block of text. We've made everything except this one bold.",
+			"data": "This is a block of text. We've made this one bold.",
 			"id": "first"
 		},
 		{
@@ -56,6 +77,21 @@
 			"type": "mondobook:text",
 			"data": "dabdfa lkfewtoiu more come back but he was ne iapano to be or to be not but however we hear no more kings without this cloak of yesterday but come no back again today we're lost and gone without his crown no smiles rest upon this clown for all that we have gone without my heart gives way to seeds of doubt but shine a light upon the wall and all we see within is what remains to fall",
 			"classes": ["sga"]
+		},
+		{
+			"type": "mondobook:text",
+			"data": "This paragraph has a left margin of fifteen pixels. That's as many as five threes.",
+			"classes": ["left_margin_15"]
+		},
+		{
+			"type": "mondobook:text",
+			"data": "This paragraph has a right margin of fifteen pixels. That's as many as three fives.",
+			"classes": ["right_margin_15"]
+		},
+		{
+			"type": "mondobook:text",
+			"data": "This paragraph has a margin of ten pixels on all four sides, and that's just terrible.",
+			"classes": ["all_margin_10"]
 		}
 	]
 }

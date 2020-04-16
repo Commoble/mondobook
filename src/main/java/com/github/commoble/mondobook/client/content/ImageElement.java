@@ -24,7 +24,7 @@ public class ImageElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int textWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
 		return ImmutableList.of(this.image);
 	}

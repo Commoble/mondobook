@@ -27,7 +27,7 @@ public class BakedBook
 		List<StyledElement> styledElements = rawBook.getStyledElements();
 		styledElements.forEach(styledElement -> drawables.addAll(styledElement.getAsDrawables(renderer, maxLineWidth)));
 
-		PageBuilder builder = new PageBuilder(pageHeightInPixels);
+		PageBuilder builder = new PageBuilder(pageHeightInPixels, maxLineWidth);
 		while (!drawables.isEmpty())
 		{
 			Drawable drawable = drawables.pollFirst();
@@ -38,12 +38,12 @@ public class BakedBook
 			else
 			{
 				pages.add(builder.build());
-				builder = new PageBuilder(pageHeightInPixels);
+				builder = new PageBuilder(pageHeightInPixels, maxLineWidth);
 				builder.addDrawable(drawable);
 			}
 		}
 		// make sure we add the last page
-		if (!builder.getDrawables().isEmpty())
+		if (builder.getDrawableCount() > 0)
 		{
 			pages.add(builder.build());
 		}

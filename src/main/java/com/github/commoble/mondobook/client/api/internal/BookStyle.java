@@ -3,6 +3,8 @@ package com.github.commoble.mondobook.client.api.internal;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 
@@ -24,6 +26,11 @@ public class BookStyle
 	public ResourceLocation getFont()
 	{
 		return this.fontID;
+	}
+	
+	public FontRenderer getFontRenderer()
+	{
+		return Minecraft.getInstance().getFontResourceManager().getFontRenderer(this.fontID);
 	}
 	
 	public Style getTextStyle()

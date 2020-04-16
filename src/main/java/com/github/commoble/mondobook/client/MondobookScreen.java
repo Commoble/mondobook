@@ -1,6 +1,5 @@
 package com.github.commoble.mondobook.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.github.commoble.mondobook.client.api.AssetManagers;
@@ -8,7 +7,6 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.util.KeyUtil;
 import com.github.commoble.mondobook.util.MatchedPair;
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.AbstractGui;
@@ -50,7 +48,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	private int cachedPage = -1; // the left page!
 	private int currentPage = 0; // also the left page
 
-	private MatchedPair<List<Drawable>> cachedPageDrawables = MatchedPair.of(ArrayList::new);
+	private MatchedPair<Drawable> cachedPageDrawables = MatchedPair.of(Drawable.NONE);
 
 	private final ResourceLocation bookID;
 	private BakedBook book;
@@ -233,14 +231,15 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		super.render(mouseX, mouseY, partialTicks);
 	}
 
-	protected void drawPageDrawables(List<Drawable> drawables, int xOffset)
+	protected void drawPageDrawables(Drawable drawables, int xOffset)
 	{
-		int yStart = PAGE_TEXT_START;
-		for (Drawable drawable : drawables)
-		{
-			drawable.render(this, xOffset, yStart);
-			yStart += drawable.getHeight();
-		}
+//		int yStart = PAGE_TEXT_START;
+		drawables.render(this, xOffset, PAGE_TEXT_START);
+//		for (Drawable drawable : drawables)
+//		{
+//			drawable.render(this, xOffset, yStart);
+//			yStart += drawable.getHeight();
+//		}
 		//ListUtil.forEachIndex(lines, (line, i) -> this.font.drawString(line.getFormattedText(), xOffset, PAGE_TEXT_START + LINE_HEIGHT * i, 0));
 	}
 
@@ -258,10 +257,10 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	// ᚨᛚᛁᛝᚢᛁᛈ ᛖᚦ ᛖᚨ ᚲᛟᛗᛗᛟᛞᛟ ᚲᛟᚾᛋᛖᛝᚢᚨᛏ ᛞᚢᛁᛋ ᚨᚢᛏᛖ ᛁᚱᚢᚱᛖ ᛞᛟᛚᛟᚱ ᛁᚾ ᚱᛖᛈᚱᛖᚻᛖᚾᛞᛖᚱᛁᛏ ᛁᚾ");
 	// }
 
-	public List<Drawable> getPageDrawables(int page)
+	public Drawable getPageDrawables(int page)
 	{
 		List<BakedPage> pages = this.book.getPages();
-		return page < pages.size() ? this.book.getPages().get(page).getDrawables() : Lists.newArrayList();
+		return page < pages.size() ? this.book.getPages().get(page) : Drawable.NONE;
 		// return RenderComponentsUtil.splitText(this.getPageText(page), TEXT_WIDTH,
 		// this.font, true, true);
 	}

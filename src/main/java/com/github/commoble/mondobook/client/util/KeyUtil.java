@@ -26,8 +26,9 @@ public class KeyUtil
 	// TODO make more configurable
 	public static boolean isLeft(int key)
 	{
+		Minecraft mc = Minecraft.getInstance();
 		// currently returns true if the the key is page up, left arrow, or the player's keybind for left
-		return key == Minecraft.getInstance().gameSettings.keyBindLeft.getKey().getKeyCode()
+		return key == mc.gameSettings.keyBindLeft.getKey().getKeyCode()
 			|| key == GLFW.GLFW_KEY_PAGE_UP
 			|| key == GLFW.GLFW_KEY_LEFT;
 	}
@@ -35,8 +36,9 @@ public class KeyUtil
 	// TODO make more configurable
 	public static boolean isRight(int key)
 	{
+		Minecraft mc = Minecraft.getInstance();
 		// currently returns true if the the key is page up, left arrow, or the player's keybind for right
-		return key == Minecraft.getInstance().gameSettings.keyBindRight.getKey().getKeyCode()
+		return key == mc.gameSettings.keyBindRight.getKey().getKeyCode()
 			|| key == GLFW.GLFW_KEY_PAGE_DOWN
 			|| key == GLFW.GLFW_KEY_RIGHT;
 	}
