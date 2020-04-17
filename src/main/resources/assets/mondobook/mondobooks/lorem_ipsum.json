@@ -43,11 +43,43 @@
 			}
 		},
 		{
+			"top_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "top_margin_15"
+			}
+		},
+		{
 			"margin": 10,
 			"selector":
 			{
 				"type": "mondobook:class",
 				"match": "all_margin_10"
+			}
+		},
+		{
+			"alignment": "left",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "left"
+			}
+		},
+		{
+			"alignment": "right",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "right"
+			}
+		},
+		{
+			"alignment": "center",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "center"
 			}
 		}
 	],
@@ -92,6 +124,32 @@
 			"type": "mondobook:text",
 			"data": "This paragraph has a margin of ten pixels on all four sides, and that's just terrible.",
 			"classes": ["all_margin_10"]
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "Left-aligned text blob. Just like all the other ones. Nothing special here.",
+			"classes": ["left"]		
+		},
+		{
+			"type": "mondobook:text",
+			"data": "Text aligned on right. Not like all the other ones! Right right right right right.",
+			"classes": ["right", "top_margin_15"]		
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "Centered paragraph. Epstein didn't kill himself. Nothing rhymes with orange.",
+			"classes": ["center"]		
+		},
+		{
+			"type": "mondobook:text",
+			"data": "Lots of styles here. Margins work with centered text! Glad it didn't break.",
+			"classes": ["center", "all_margin_10", "wow"]		
 		}
 	]
 }

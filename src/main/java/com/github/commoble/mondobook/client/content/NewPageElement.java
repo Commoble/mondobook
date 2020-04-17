@@ -25,7 +25,7 @@ public class NewPageElement extends Element
 	public static final List<Drawable> NEW_PAGE_DRAWABLE = ImmutableList.of(new Drawable()
 	{
 		@Override
-		public void render(DrawableRenderer renderer, int startX, int startY)
+		public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 		{
 		}
 

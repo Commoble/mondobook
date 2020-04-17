@@ -8,6 +8,7 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.ImageData;
+import com.github.commoble.mondobook.client.api.internal.ImageData.StyledImage;
 import com.github.commoble.mondobook.client.api.internal.PaddedDrawable;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.google.common.collect.ImmutableList;
@@ -27,7 +28,7 @@ public class ImageElement extends Element
 	@Override
 	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
-		return ImmutableList.of(PaddedDrawable.of(style.getMargins(), this.image));
+		return ImmutableList.of(PaddedDrawable.of(style.getMargins(), new StyledImage(this.image, style)));
 	}
 
 }

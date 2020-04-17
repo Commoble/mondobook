@@ -19,14 +19,14 @@ public class BakedPage implements Drawable
 	}
 	
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY)
+	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 	{
-		this.children.forEach(child -> this.renderChild(child, renderer, startX, startY));
+		this.children.forEach(child -> this.renderChild(child, renderer, startX, startY, maxWidth));
 	}
 	
-	private void renderChild(Drawable child, DrawableRenderer renderer, int thisX, int thisY)
+	private void renderChild(Drawable child, DrawableRenderer renderer, int thisX, int thisY, int maxWidth)
 	{
-		child.render(renderer, thisX, thisY);
+		child.render(renderer, thisX, thisY, maxWidth);
 	}
 	
 	@Override

@@ -234,7 +234,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	protected void drawPageDrawables(Drawable drawables, int xOffset)
 	{
 //		int yStart = PAGE_TEXT_START;
-		drawables.render(this, xOffset, PAGE_TEXT_START);
+		drawables.render(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH);
 //		for (Drawable drawable : drawables)
 //		{
 //			drawable.render(this, xOffset, yStart);

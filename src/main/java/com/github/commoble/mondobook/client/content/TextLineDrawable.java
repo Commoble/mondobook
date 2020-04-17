@@ -21,9 +21,14 @@ public class TextLineDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY)
+	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 	{
-		this.style.getFontRenderer().drawString(this.text.getFormattedText(), startX, startY, this.style.getTextColor());
+		String formattedString = this.text.getFormattedText();
+		String unformattedString = this.text.getString();
+		FontRenderer fontRenderer = this.style.getFontRenderer();
+		int textWidth = fontRenderer.getStringWidth(unformattedString);
+		int actualStartX = this.style.getAlignment().getLeft(startX, startX + maxWidth, textWidth);
+		fontRenderer.drawString(formattedString, actualStartX, startY, this.style.getTextColor());
 	}
 
 	@Override

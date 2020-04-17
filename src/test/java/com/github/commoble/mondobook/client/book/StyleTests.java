@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.github.commoble.mondobook.SimpleJsonDataManager;
+import com.github.commoble.mondobook.client.api.internal.Alignment;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.MarginSide;
 import com.github.commoble.mondobook.client.api.internal.Margins;
@@ -222,6 +223,59 @@ class StyleTests
 				() -> Assertions.assertEquals(1, margins.left),
 				() -> Assertions.assertEquals(4, margins.right)
 				);
+		}
+	}
+	
+	@Nested
+	class AlignmentTests
+	{
+		@Test
+		void should_AlignLeft_When_AligntmentNotSpecified()
+		{
+			// given an empty json
+			BookStyle style = buildStyleFromJsonStrings("{}");
+				
+			// when we get the alignment from it
+			Alignment actualAlignment = style.getAlignment();
+
+			// then it should be LEFT
+			Assertions.assertEquals(Alignment.LEFT, actualAlignment);;
+		}
+		
+		@Test
+		void should_HaveCorrectAlignment_When_AlignmentSpecified()
+		{
+			// given these inputs
+			String[] inputs = {"null", "left", "center", "right"};
+			Alignment[] expectedOutputs = {Alignment.LEFT, Alignment.LEFT, Alignment.CENTER, Alignment.RIGHT};
+				
+			// when we get the alignment from it
+			Alignment[] actualOutputs = Arrays.stream(inputs)
+				.map(input -> buildStyleFromJsonStrings(String.format("{\"alignment\": %s}", input)).getAlignment())
+				.toArray(Alignment[]::new);
+
+			// then
+			Assertions.assertArrayEquals(expectedOutputs, actualOutputs);
+		}
+		
+		@Test
+		void should_MergeAlignmentsCorrectly_When_MultipleAlignmentsUsed()
+		{
+
+			// given a bunch of styles
+			String[] jsonStrings = {
+				"{}",
+				"{\"alignment\": null}",
+				"{\"alignment\": right}",
+				"{\"alignment\": center}",
+				"{\"alignment\": null}",
+			};
+
+			// when we merge them together
+			Alignment actualAlignment = buildStyleFromJsonStrings(jsonStrings).getAlignment();
+			
+			// then nulls should never override anything, and the last style to specify a nonnull alignment should take precedence
+			Assertions.assertEquals(Alignment.CENTER, actualAlignment);
 		}
 	}
 }

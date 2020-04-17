@@ -33,6 +33,14 @@ public class RawStyle
 	 */
 	private String text_color;
 	
+	/**
+	 * Can be "null", "left", "right", or "center".
+	 * Will be "null" if not specified in json.
+	 * When merging multiple styles, nulls will not override values in lower-precedence styles.
+	 * If no style declares a nonnull value, "left" will be used.
+	 */
+	private Alignment alignment;
+	
 	// the rest of these default to NULL, so that "false" can override "not present"
 	private Boolean bold;
 	private Boolean italic;
@@ -89,6 +97,7 @@ public class RawStyle
 		private @Nullable String textColor; // see TextFormatting for color strings (use lowercase, e.g. "red")
 		private Map<StyleSetter, Boolean> styleFlags = new EnumMap<>(StyleSetter.class);
 		private Map<RawMarginSide, Integer> margins = new EnumMap<>(RawMarginSide.class);
+		private @Nullable Alignment alignment;
 		
 		public StyleBuilder() {}
 		
@@ -104,6 +113,10 @@ public class RawStyle
 			if (style.text_color != null)
 			{
 				this.textColor = style.text_color;
+			}
+			if (style.alignment != null)
+			{
+				this.alignment = style.alignment;
 			}
 			RawMarginSide.mergeAll(this.margins,
 				style.margin,
@@ -128,7 +141,12 @@ public class RawStyle
 		
 		public BookStyle build()
 		{
-			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins());
+			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins(), this.buildAlignment());
+		}
+		
+		private Alignment buildAlignment()
+		{
+			return this.alignment != null ? this.alignment : Alignment.LEFT;
 		}
 		
 		private Style buildTextStyle()

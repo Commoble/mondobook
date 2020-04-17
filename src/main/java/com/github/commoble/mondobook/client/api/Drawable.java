@@ -6,7 +6,7 @@ import java.util.List;
 public interface Drawable
 {
 	/** Render this starting from the given top-left coordinates **/
-	public void render(DrawableRenderer renderer, int startX, int startY);
+	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth);
 	
 	/** The height in pixels that this thing takes up when rendered **/
 	public int getHeight();
@@ -25,7 +25,7 @@ public interface Drawable
 	public static final Drawable NONE = new Drawable()
 	{
 		@Override
-		public void render(DrawableRenderer renderer, int startX, int startY)
+		public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 		{
 		}
 

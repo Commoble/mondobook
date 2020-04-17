@@ -31,9 +31,9 @@ public class PaddedDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY)
+	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 	{
-		this.drawable.render(renderer, startX + this.leftPadding, startY + this.topPadding);
+		this.drawable.render(renderer, startX + this.leftPadding, startY + this.topPadding, maxWidth - this.leftPadding - this.rightPadding);
 	}
 
 	@Override
