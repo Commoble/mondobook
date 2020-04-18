@@ -8,30 +8,30 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.github.commoble.mondobook.client.api.internal.Margins;
+import com.github.commoble.mondobook.client.api.internal.SideSizes;
 
-public class MarginsTests
+public class SideSizesTests
 {
 	/** The "expected" function is of the format (side, all) -> return expected value **/
-	public static List<Pair<Integer, Margins>> setupMarginCases(Integer[] sides, Integer[] alls, BiFunction<Integer, Integer, Integer> expected)
+	public static List<Pair<Integer, SideSizes>> setupMarginCases(Integer[] sides, Integer[] alls, BiFunction<Integer, Integer, Integer> expected)
 	{
-		List<Pair<Integer, Margins>> cases = new ArrayList<>();
+		List<Pair<Integer, SideSizes>> cases = new ArrayList<>();
 		for (Integer side : sides)
 		{
 			for (Integer all : alls)
 			{
-				cases.add(Pair.of(expected.apply(side,all), new Margins(all, side, side, side, side)));
+				cases.add(Pair.of(expected.apply(side,all), new SideSizes(all, side, side, side, side)));
 			}
 		}
 		return cases;
 	}
 	
-	public static void testCases(List<Pair<Integer, Margins>> cases)
+	public static void testCases(List<Pair<Integer, SideSizes>> cases)
 	{
 		cases.stream()
 		.forEach(pair -> {
 			Integer expected = pair.getLeft();
-			Margins margins = pair.getRight();
+			SideSizes margins = pair.getRight();
 			Assertions.assertEquals(expected, margins.top);
 			Assertions.assertEquals(expected, margins.bottom);
 			Assertions.assertEquals(expected, margins.left);
@@ -47,7 +47,7 @@ public class MarginsTests
 		Integer[] alls = {null, 0, 1, -1, Integer.MAX_VALUE, Integer.MIN_VALUE};
 		
 		// when
-		List<Pair<Integer, Margins>> cases = setupMarginCases(sides, alls, (side,all) -> side);
+		List<Pair<Integer, SideSizes>> cases = setupMarginCases(sides, alls, (side,all) -> side);
 			
 		// then
 		testCases(cases);
@@ -61,7 +61,7 @@ public class MarginsTests
 		Integer[] alls = {null, 0, 1, -1, Integer.MAX_VALUE, Integer.MIN_VALUE};
 
 		// when
-		List<Pair<Integer, Margins>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
+		List<Pair<Integer, SideSizes>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
 
 		// then
 		testCases(cases);
@@ -75,7 +75,7 @@ public class MarginsTests
 		Integer[] alls = {0, 1, Integer.MAX_VALUE};
 
 		// when
-		List<Pair<Integer, Margins>> cases = setupMarginCases(sides, alls, (side,all) -> all);
+		List<Pair<Integer, SideSizes>> cases = setupMarginCases(sides, alls, (side,all) -> all);
 
 		// then
 		testCases(cases);
@@ -90,7 +90,7 @@ public class MarginsTests
 		Integer[] alls = {-1, Integer.MIN_VALUE};
 
 		// when
-		List<Pair<Integer, Margins>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
+		List<Pair<Integer, SideSizes>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
 
 		// then
 		testCases(cases);
@@ -105,7 +105,7 @@ public class MarginsTests
 		Integer[] alls = {null};
 
 		// when
-		List<Pair<Integer, Margins>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
+		List<Pair<Integer, SideSizes>> cases = setupMarginCases(sides, alls, (side,all) -> 0);
 
 		// then
 		testCases(cases);

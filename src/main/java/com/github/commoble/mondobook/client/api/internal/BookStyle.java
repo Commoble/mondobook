@@ -13,16 +13,18 @@ public class BookStyle
 	private final @Nonnull ResourceLocation fontID;
 	private final @Nullable Style textStyle;
 	private final int textColor;
-	private final Margins margins;
+	private final SideSizes margins;
 	private final Alignment alignment;
+	private final Borders borders;
 	
-	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor, Margins margins, Alignment alignment)
+	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor, SideSizes margins, Alignment alignment, Borders borders)
 	{
 		this.fontID = fontID;
 		this.textStyle = textStyle;
 		this.textColor = textColor;
 		this.margins = margins;
 		this.alignment = alignment;
+		this.borders = borders;
 	}
 	
 	public ResourceLocation getFont()
@@ -45,7 +47,7 @@ public class BookStyle
 		return this.textColor;
 	}
 	
-	public Margins getMargins()
+	public SideSizes getMargins()
 	{
 		return this.margins;
 	}
@@ -53,5 +55,10 @@ public class BookStyle
 	public Alignment getAlignment()
 	{
 		return this.alignment;
+	}
+	
+	public Borders getBorders()
+	{
+		return this.borders;
 	}
 }

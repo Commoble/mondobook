@@ -6,7 +6,7 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
-import com.github.commoble.mondobook.client.api.internal.Margins;
+import com.github.commoble.mondobook.client.api.internal.SideSizes;
 import com.github.commoble.mondobook.client.api.internal.PaddedDrawable;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.util.ListUtil;
@@ -30,7 +30,7 @@ public class TextElement extends Element
 	@Override
 	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
-		Margins margins = style.getMargins();
+		SideSizes margins = style.getMargins();
 		int textWidth = containerWidth - margins.left - margins.right;
 		Style textStyle = style.getTextStyle();
 		FontRenderer fontRenderer = style.getFontRenderer();

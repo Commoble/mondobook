@@ -1,6 +1,6 @@
 package com.github.commoble.mondobook.client.api.internal;
 
-public enum MarginSide
+public enum BoxSide
 {
 	BOTTOM,
 	TOP,

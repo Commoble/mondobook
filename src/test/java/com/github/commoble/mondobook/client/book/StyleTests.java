@@ -14,10 +14,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.github.commoble.mondobook.SimpleJsonDataManager;
 import com.github.commoble.mondobook.client.api.internal.Alignment;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
-import com.github.commoble.mondobook.client.api.internal.MarginSide;
-import com.github.commoble.mondobook.client.api.internal.Margins;
+import com.github.commoble.mondobook.client.api.internal.BoxSide;
 import com.github.commoble.mondobook.client.api.internal.RawStyle;
 import com.github.commoble.mondobook.client.api.internal.RawStyle.StyleBuilder;
+import com.github.commoble.mondobook.client.api.internal.SideSizes;
 
 import net.minecraft.util.text.TextFormatting;
 
@@ -137,8 +137,8 @@ class StyleTests
 			BookStyle style = buildStyleFromJsonStrings("{}");
 
 			// when we check all four margin sides
-			Stream<Executable> cases = Arrays.stream(MarginSide.values())
-				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getMarginOnSide(side)));
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getWidthOnSide(side)));
 
 			// then they should all have values of zero
 			Assertions.assertAll(cases);
@@ -152,8 +152,8 @@ class StyleTests
 			BookStyle style = buildStyleFromJsonStrings(String.format("{\"margin\": %s}", marginString));
 			
 			// when we check all four margin sides
-			Stream<Executable> cases = Arrays.stream(MarginSide.values())
-				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getMarginOnSide(side)));
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getMargins().getWidthOnSide(side)));
 
 			// then they should all have values of zero
 			Assertions.assertAll(cases);
@@ -167,8 +167,8 @@ class StyleTests
 			BookStyle style = buildStyleFromJsonStrings(String.format("{\"margin\": %s}", margin));
 			
 			// when we check all four margin sides
-			Stream<Executable> cases = Arrays.stream(MarginSide.values())
-				.map(side -> () -> Assertions.assertEquals(margin, style.getMargins().getMarginOnSide(side)));
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(margin, style.getMargins().getWidthOnSide(side)));
 
 			// then the sides should all match the input margin value
 			Assertions.assertAll(cases);
@@ -213,7 +213,7 @@ class StyleTests
 			};
 
 			// when we merge them together
-			Margins margins = buildStyleFromJsonStrings(jsonStrings).getMargins();
+			SideSizes margins = buildStyleFromJsonStrings(jsonStrings).getMargins();
 
 			// then nulls should never override anything, the last style to specify a side margin takes precedence on that side,
 			// and the last style to specify a general margin should take precedence where no side has been specified
@@ -224,6 +224,170 @@ class StyleTests
 				() -> Assertions.assertEquals(4, margins.right)
 				);
 		}
+	}	
+	
+	@Nested
+	class BorderTests
+	{
+		@Test
+		void should_HaveZeroBorderOnAllSides_When_NoBordersSpecified()
+		{
+			// given an empty style json
+			BookStyle style = buildStyleFromJsonStrings("{}");
+
+			// when we check all four border sides
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getBorders().getSizes().getWidthOnSide(side)));
+
+			// then they should all have values of zero
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(strings = {"null", "-1", "-4000000"})
+		void should_HaveZeroBordernOnAllSides_When_OnlyInvalidGeneralBorderSpecified(String marginString)
+		{
+			// given a style json with a margin that ought to be interpreted as 0
+			BookStyle style = buildStyleFromJsonStrings(String.format("{\"border\": %s}", marginString));
+			
+			// when we check all four margin sides
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(0, style.getBorders().getSizes().getWidthOnSide(side)));
+
+			// then they should all have values of zero
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(ints = {0, 1, 2, 3, Integer.MAX_VALUE})
+		void should_HaveSpecifiedBorderOnAllSides_When_OnlyValidGeneralBorderSpecified(int margin)
+		{
+			// given a style json with a general margin
+			BookStyle style = buildStyleFromJsonStrings(String.format("{\"border\": %s}", margin));
+			
+			// when we check all four margin sides
+			Stream<Executable> cases = Arrays.stream(BoxSide.values())
+				.map(side -> () -> Assertions.assertEquals(margin, style.getBorders().getSizes().getWidthOnSide(side)));
+
+			// then the sides should all match the input margin value
+			Assertions.assertAll(cases);
+		}
+		
+		@ParameterizedTest
+		@CsvFileSource(resources = "/style-margin-params.csv", numLinesToSkip = 1)
+		void should_HaveCorrectBorders_When_SeparateSidesAreSpecified(
+			String allIn, String bottomIn, String topIn, String leftIn, String rightIn,
+			int bottomOut, int topOut, int leftOut, int rightOut)
+		{
+			// given a json with margins based on the given inputs
+			BookStyle style = buildStyleFromJsonStrings(String.format(
+				"{\"border\": %s, \"bottom_border\": %s, \"top_border\": %s, \"left_border\": %s, \"right_border\": %s}",
+				allIn, bottomIn, topIn, leftIn, rightIn));
+			
+			// when we check the margins of the resulting style object
+			
+			// then they should match the expected outputs
+			Assertions.assertAll(
+				() -> Assertions.assertEquals(bottomOut, style.getBorders().getSizes().bottom),
+				() -> Assertions.assertEquals(topOut, style.getBorders().getSizes().top),
+				() -> Assertions.assertEquals(leftOut, style.getBorders().getSizes().left),
+				() -> Assertions.assertEquals(rightOut, style.getBorders().getSizes().right)
+				);
+		}
+		
+		@Test
+		void should_MergeBordersCorrectly_When_MultipleStylesUsed()
+		{
+
+			// given a bunch of styles
+			String[] jsonStrings = {
+				"{}",
+				"{\"border\": null}",
+				"{\"border\": 5}",
+				"{\"right_border\": 4}",
+				"{\"right_border\": null}",
+				"{}",
+				"{\"border\": 6}",
+				"{\"left_border\": 1}",
+			};
+
+			// when we merge them together
+			SideSizes borders = buildStyleFromJsonStrings(jsonStrings).getBorders().getSizes();
+
+			// then nulls should never override anything, the last style to specify a side margin takes precedence on that side,
+			// and the last style to specify a general margin should take precedence where no side has been specified
+			Assertions.assertAll(
+				() -> Assertions.assertEquals(6, borders.bottom),
+				() -> Assertions.assertEquals(6, borders.top),
+				() -> Assertions.assertEquals(1, borders.left),
+				() -> Assertions.assertEquals(4, borders.right)
+				);
+		}
+		
+		@Test
+		void should_HaveBlackBorder_When_NoBorderColorSpecified()
+		{
+			// given an empty style json
+			BookStyle style = buildStyleFromJsonStrings("{}");
+
+			// when we check the border color
+			int actualColor = style.getBorders().getColor();
+
+			// then it should be zero (black)
+			Assertions.assertEquals(BLACK, actualColor);
+		}
+		
+		@Test
+		void should_ReturnBlack_When_BorderColorNull()
+		{
+			// given
+			BookStyle style = buildStyleFromJsonStrings("{\"border_color\": null}");
+				
+			// when
+			int actualColor = style.getBorders().getColor();
+
+			// then
+			Assertions.assertEquals(BLACK, actualColor);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(strings = {"black", "dark_blue", "dark_green", "dark_aqua", "dark_red", "dark_purple", "gold", "gray",
+			"dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow", "white"})
+		void should_ReturnCorrectBorderColor_When_TextFormattingNameIsUsed(String colorName)
+		{
+			// given colorName
+
+			// when
+			BookStyle style = buildStyleFromJsonStrings(String.format("{\"border_color\": \"%s\"}", colorName));
+			int expectedColor = TextFormatting.getValueByName(colorName).getColor();
+			int actualColor = style.getBorders().getColor();
+
+			// then
+			Assertions.assertEquals(expectedColor, actualColor);
+		}
+		
+		@Test
+		void should_ReturnFinalBorderColor_When_MultipleStylesUsed()
+		{
+			// given
+			String[] jsonStrings = {
+				"{}",
+				"{\"border_color\": null}",
+				"{\"border_color\": \"red\"}",
+				"{\"border_color\": \"40\"}",
+				"{\"border_color\": null}",
+				"{}",
+				"{\"border_color\": \"12345\"}",
+			};
+
+			// when
+			int styleColor = buildStyleFromJsonStrings(jsonStrings).getBorders().getColor();
+
+			// then
+			Assertions.assertEquals(0x12345, styleColor);
+		}
+		
+		
 	}
 	
 	@Nested

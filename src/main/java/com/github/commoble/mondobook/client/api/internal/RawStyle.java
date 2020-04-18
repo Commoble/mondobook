@@ -52,6 +52,12 @@ public class RawStyle
 	private Integer top_margin;
 	private Integer left_margin;
 	private Integer right_margin;
+	private Integer border;	// colored border around all four edges of the element, outside the margin
+	private Integer bottom_border;	// border is superceded by specific sides
+	private Integer top_border;
+	private Integer left_border;
+	private Integer right_border;
+	private String border_color;
 	
 	public Selector getSelector()
 	{
@@ -96,8 +102,10 @@ public class RawStyle
 		private @Nullable ResourceLocation font;
 		private @Nullable String textColor; // see TextFormatting for color strings (use lowercase, e.g. "red")
 		private Map<StyleSetter, Boolean> styleFlags = new EnumMap<>(StyleSetter.class);
-		private Map<RawMarginSide, Integer> margins = new EnumMap<>(RawMarginSide.class);
+		private Map<RawSideSizes, Integer> margins = new EnumMap<>(RawSideSizes.class);
 		private @Nullable Alignment alignment;
+		private @Nullable String borderColor;
+		private Map<RawSideSizes, Integer> borderSizes = new EnumMap<>(RawSideSizes.class);
 		
 		public StyleBuilder() {}
 		
@@ -118,12 +126,22 @@ public class RawStyle
 			{
 				this.alignment = style.alignment;
 			}
-			RawMarginSide.mergeAll(this.margins,
+			RawSideSizes.mergeAll(this.margins,
 				style.margin,
 				style.bottom_margin,
 				style.top_margin,
 				style.left_margin,
 				style.right_margin);
+			if (style.border_color != null)
+			{
+				this.borderColor = style.border_color;
+			}
+			RawSideSizes.mergeAll(this.borderSizes,
+				style.border,
+				style.bottom_border,
+				style.top_border,
+				style.left_border,
+				style.right_border);
 			
 			// all of the nonnull flags in the incoming style override existing flags
 			style.getStyleFlags().forEach(this::mergeStyleFlag);
@@ -141,7 +159,7 @@ public class RawStyle
 		
 		public BookStyle build()
 		{
-			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins(), this.buildAlignment());
+			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins(), this.buildAlignment(), this.buildBorders());
 		}
 		
 		private Alignment buildAlignment()
@@ -168,16 +186,16 @@ public class RawStyle
 			}
 		}
 		
-		private int buildTextColor()
+		private int parseColorString(String colorString)
 		{
 			
 			// the color logic is as follows:
 			// if color string matches one of the vanilla TextFormatting color names, use that value
 			// otherwise, if color is 
 			int finalTextColor = 0x0; // black
-			if (this.textColor != null)
+			if (colorString != null)
 			{
-				TextFormatting textFormat = TextFormatting.getValueByName(this.textColor);
+				TextFormatting textFormat = TextFormatting.getValueByName(colorString);
 				if (textFormat != null)
 				{
 					finalTextColor = textFormat.getColor();
@@ -186,7 +204,7 @@ public class RawStyle
 				{
 					try
 					{
-						int parseAttempt = Integer.parseInt(this.textColor, 16);
+						int parseAttempt = Integer.parseInt(colorString, 16);
 						if (parseAttempt > 0 && parseAttempt <= 0xFFFFFF)
 						{
 							finalTextColor = parseAttempt & 0xFFFFFF;	// avoid negative numbers or values greater than RGB White
@@ -202,15 +220,19 @@ public class RawStyle
 			return finalTextColor;
 		}
 		
-		private Margins buildMargins()
+		private int buildTextColor()
 		{
-			return new Margins(
-				this.margins.get(RawMarginSide.ALL),
-				this.margins.get(RawMarginSide.BOTTOM),
-				this.margins.get(RawMarginSide.TOP),
-				this.margins.get(RawMarginSide.LEFT),
-				this.margins.get(RawMarginSide.RIGHT)
-			);
+			return this.parseColorString(this.textColor);
+		}
+		
+		private SideSizes buildMargins()
+		{
+			return new SideSizes(this.margins);
+		}
+		
+		private Borders buildBorders()
+		{
+			return new Borders(new SideSizes(this.borderSizes), this.parseColorString(this.borderColor));
 		}
 	}
 

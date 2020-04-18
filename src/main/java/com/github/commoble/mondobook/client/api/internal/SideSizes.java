@@ -1,5 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.Map;
+
 /**
  * Data class containing the margins in pixels around an Element's content.
  * Elements may optionally specify a margin per side, or for all sides.
@@ -7,22 +9,33 @@ package com.github.commoble.mondobook.client.api.internal;
  * If neither are specified, the margin will be 0 pixels.
  * Negative margins will be converted to 0 pixels.
  */
-public class Margins
+public class SideSizes
 {
 	public final int bottom;
 	public final int top;
 	public final int left;
 	public final int right;
-	
-	public Margins(Integer all, Integer bottom, Integer top, Integer left, Integer right)
+
+	public SideSizes(Map<RawSideSizes, Integer> sizeMap)
 	{
-		this.bottom = calculateMargin(all, bottom);
-		this.top = calculateMargin(all, top);
-		this.left = calculateMargin(all, left);
-		this.right = calculateMargin(all, right);
+		this(
+			sizeMap.get(RawSideSizes.ALL),
+			sizeMap.get(RawSideSizes.BOTTOM),
+			sizeMap.get(RawSideSizes.TOP),
+			sizeMap.get(RawSideSizes.LEFT),
+			sizeMap.get(RawSideSizes.RIGHT)
+		);
 	}
 	
-	public int getMarginOnSide(MarginSide side)
+	public SideSizes(Integer all, Integer bottom, Integer top, Integer left, Integer right)
+	{
+		this.bottom = calculateSize(all, bottom);
+		this.top = calculateSize(all, top);
+		this.left = calculateSize(all, left);
+		this.right = calculateSize(all, right);
+	}
+	
+	public int getWidthOnSide(BoxSide side)
 	{
 		switch(side)
 		{
@@ -40,7 +53,7 @@ public class Margins
 	}
 	
 	/** side has higher priority than all; if both are null, let margin = 0 **/
-	private static int calculateMargin(Integer all, Integer side)
+	private static int calculateSize(Integer all, Integer side)
 	{
 		if (side != null)
 		{
