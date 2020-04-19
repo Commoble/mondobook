@@ -212,11 +212,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 			screenX + RIGHTWARD_SHIFT / 2 - pageNumberWidths.getRight() + PAGE_NUMBER_END);
 		pageNumberStrings.consumeWith(pageNumberOffsets, (string, offset) -> this.font.drawString(string, offset, PAGE_NUMBER_Y_START, BLACK));
 
-		MatchedPair<Integer> pageTextOffsets = MatchedPair.of(bookCenter - TEXT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER, bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER);// +
-																																									// RIGHTWARD_SHIFT/2
-																																									// +
-																																									// PAGE_TEXT_START_X
-																																									// + 10);
+		MatchedPair<Integer> pageTextOffsets = MatchedPair.of(bookCenter - TEXT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER, bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER);
+
 
 		this.cachedPageDrawables.consumeWith(pageTextOffsets, this::drawPageDrawables);
 

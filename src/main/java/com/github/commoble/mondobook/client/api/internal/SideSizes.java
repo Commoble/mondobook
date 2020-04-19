@@ -29,10 +29,30 @@ public class SideSizes
 	
 	public SideSizes(Integer all, Integer bottom, Integer top, Integer left, Integer right)
 	{
-		this.bottom = calculateSize(all, bottom);
-		this.top = calculateSize(all, top);
-		this.left = calculateSize(all, left);
-		this.right = calculateSize(all, right);
+		this(
+			calculateSize(all, bottom),
+			calculateSize(all, top),
+			calculateSize(all, left),
+			calculateSize(all, right)
+		);
+	}
+	
+	public SideSizes(int bottom, int top, int left, int right)
+	{
+		this.bottom = bottom;
+		this.top = top;
+		this.left = left;
+		this.right = right;
+	}
+	
+	public SideSizes add(SideSizes other)
+	{
+		return new SideSizes(
+			this.bottom + other.bottom,
+			this.top + other.top,
+			this.left + other.left,
+			this.right + other.right
+		);
 	}
 	
 	public int getWidthOnSide(BoxSide side)

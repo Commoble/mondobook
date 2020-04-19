@@ -81,6 +81,27 @@
 				"type": "mondobook:class",
 				"match": "center"
 			}
+		},
+		{
+			"border": 4,
+			"right_border": 1,
+			"border_color": "ff5999",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "big_pink_border"
+			}		
+		},
+		{
+			"border": 1,
+			"margin": 1,
+			"border_color": "ff0000",
+			"alignment": "center",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "margined_border"
+			}		
 		}
 	],
 	"body":
@@ -91,7 +112,8 @@
 		},
 		{
 			"data": "This is also a block of text. Lorkem ipsum balor freemasons tomatoes and radio wire-- oh no a page break is coming up!",		
-			"type": "mondobook:text"
+			"type": "mondobook:text",
+			"classes": ["big_pink_border"]
 		},
 		{
 			"type": "mondobook:new_page"
@@ -103,7 +125,8 @@
 		},
 		{
 			"type": "mondobook:image",
-			"data": "mondobook:fancy_banner"
+			"data": "mondobook:fancy_banner",
+			"classes": ["margined_border"]
 		},
 		{
 			"type": "mondobook:text",

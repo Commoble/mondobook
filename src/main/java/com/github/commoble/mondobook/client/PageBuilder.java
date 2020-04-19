@@ -33,7 +33,7 @@ public class PageBuilder
 		
 		public void addDrawable(Drawable drawable)
 		{
-			this.children.add(PaddedDrawable.of(0, this.currentHeight, 0, 0, drawable));
+			this.children.add(PaddedDrawable.of(0, this.currentHeight, 0, 0, 0, 0, 0, 0, 0, drawable));
 			this.currentHeight += drawable.getHeight();
 		}
 		

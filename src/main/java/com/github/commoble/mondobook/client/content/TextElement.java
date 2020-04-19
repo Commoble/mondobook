@@ -6,9 +6,10 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
-import com.github.commoble.mondobook.client.api.internal.SideSizes;
+import com.github.commoble.mondobook.client.api.internal.Borders;
 import com.github.commoble.mondobook.client.api.internal.PaddedDrawable;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
+import com.github.commoble.mondobook.client.api.internal.SideSizes;
 import com.github.commoble.mondobook.util.ListUtil;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -31,13 +32,20 @@ public class TextElement extends Element
 	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
 		SideSizes margins = style.getMargins();
-		int textWidth = containerWidth - margins.left - margins.right;
+		Borders borders = style.getBorders();
+		SideSizes borderSizes = borders.getSizes();
+		int borderColor = borders.getColor();
+		SideSizes totalPadding = margins.add(borderSizes);
+		int textWidth = containerWidth - totalPadding.left - totalPadding.right;
 		Style textStyle = style.getTextStyle();
 		FontRenderer fontRenderer = style.getFontRenderer();
 		List<ITextComponent> lines = RenderComponentsUtil.splitText(new StringTextComponent(this.text).setStyle(textStyle), textWidth, fontRenderer, true, true);
 		return ListUtil.mapFirstMiddleLast(lines,
-			text -> PaddedDrawable.of(0, margins.top, margins.left, margins.right, new TextLineDrawable(text, style)),
-			text -> PaddedDrawable.of(0, 0, margins.left, margins.right, new TextLineDrawable(text, style)),
-			text -> PaddedDrawable.of(margins.bottom, 0, margins.left, margins.right, new TextLineDrawable(text, style)));
+			text -> PaddedDrawable.of(0, margins.top, margins.left, margins.right,
+				0, borderSizes.top, borderSizes.left, borderSizes.right, borderColor, new TextLineDrawable(text, style)),
+			text -> PaddedDrawable.of(0, 0, margins.left, margins.right,
+				0, 0, borderSizes.left, borderSizes.right, borderColor, new TextLineDrawable(text, style)),
+			text -> PaddedDrawable.of(margins.bottom, 0, margins.left, margins.right,
+				borderSizes.bottom, 0, borderSizes.left, borderSizes.right, borderColor, new TextLineDrawable(text, style)));
 	}
 }

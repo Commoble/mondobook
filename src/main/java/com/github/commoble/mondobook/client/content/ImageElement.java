@@ -28,7 +28,7 @@ public class ImageElement extends Element
 	@Override
 	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
-		return ImmutableList.of(PaddedDrawable.of(style.getMargins(), new StyledImage(this.image, style)));
+		return ImmutableList.of(PaddedDrawable.of(style.getMargins(), style.getBorders(), new StyledImage(this.image, style)));
 	}
 
 }
