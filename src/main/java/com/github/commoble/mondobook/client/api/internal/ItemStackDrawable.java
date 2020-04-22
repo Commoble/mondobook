@@ -23,7 +23,8 @@ public class ItemStackDrawable implements Drawable
 	{
 		ItemRenderer itemRenderer = renderer.getItemRenderer();
 		Minecraft minecraft = Minecraft.getInstance();
-        itemRenderer.renderItemAndEffectIntoGUI(minecraft.player, this.stack, startX, startY);
+		itemRenderer.renderItemIntoGUI(this.stack, startX, startY);
+//        itemRenderer.renderItemAndEffectIntoGUI(minecraft.player, this.stack, startX, startY);
         itemRenderer.renderItemOverlayIntoGUI(this.style.getFontRenderer(), this.stack, startX, startY, null);
 	}
 

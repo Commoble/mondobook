@@ -184,6 +184,21 @@
 		{
 			"type": "mondobook:item",
 			"data": "minecraft:cod"
+		},
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:brick",
+			"attributes": {"size": "47"}
+		},
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:potion",
+			"attributes": {"tag": "{Potion:\"minecraft:night_vision\"}"}
+		},
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:potion",
+			"attributes": {"tag": "{Potion:\"minecraft:fire_resistance\"}"}
 		}
 	]
 }
