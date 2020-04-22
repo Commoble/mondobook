@@ -1,23 +1,24 @@
 package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.util.ResourceLocation;
 
 // to be serialized via GSON
 public class RawElement
 {
-	private RawElement[] children;
+	private List<RawElement> children;
 	private String data;
 	private String type;
 	private String id;	// CSS-like optional identifier string for use with style selectors
-	private String[] classes;	// CSS-like style classes
+	private List<String> classes;	// CSS-like style classes
+	private Map<String, String> attributes;
 	
 	private transient ResourceLocation typeID;
-	private transient List<RawElement> childList;
-	private transient List<String> classList;
 	
 	public String getData()
 	{
@@ -40,11 +41,11 @@ public class RawElement
 	
 	public List<RawElement> getChildren()
 	{
-		if (this.childList == null)
+		if (this.children == null)
 		{
-			this.childList = ImmutableList.copyOf(this.getChildrenArray());
+			this.children = ImmutableList.of();
 		}
-		return this.childList;
+		return this.children;
 	}
 	
 	public String getID()
@@ -58,11 +59,20 @@ public class RawElement
 	
 	public List<String> getStyleClasses()
 	{
-		if (this.classList == null)
+		if (this.classes == null)
 		{
-			this.classList = ImmutableList.copyOf(this.getStyleClassArray());
+			this.classes = ImmutableList.of();
 		}
-		return this.classList;
+		return this.classes;
+	}
+	
+	public Map<String, String> getAttributes()
+	{
+		if (this.attributes == null)
+		{
+			this.attributes = ImmutableMap.of();
+		}
+		return this.attributes;
 	}
 	
 	private String getTypeString()
@@ -72,23 +82,5 @@ public class RawElement
 			this.type = "mondobook:text";
 		}
 		return this.type;
-	}
-	
-	private RawElement[] getChildrenArray()
-	{
-		if (this.children == null)
-		{
-			this.children = new RawElement[0];
-		}
-		return this.children;
-	}
-	
-	private String[] getStyleClassArray()
-	{
-		if (this.classes == null)
-		{
-			this.classes = new String[0];
-		}
-		return this.classes;
 	}
 }

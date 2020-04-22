@@ -2,10 +2,12 @@ package com.github.commoble.mondobook.client.api;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.client.api.internal.RawStyle;
+import com.github.commoble.mondobook.util.ListUtil;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;
@@ -36,6 +38,16 @@ public abstract class Element
 	public List<String> getStyleClasses()
 	{
 		return this.raw.getStyleClasses();
+	}
+	
+	public List<Element> getChildren()
+	{
+		return ListUtil.map(this.raw.getChildren(), AssetFactories.ELEMENTS);
+	}
+	
+	public Map<String, String> Attributes()
+	{
+		return this.raw.getAttributes();
 	}
 	
 	public Comparator<RawStyle> getStyleComparator()

@@ -34,6 +34,12 @@ public class NewPageElement extends Element
 		{
 			return 0;
 		}
+
+		@Override
+		public int getWidth()
+		{
+			return 0;
+		}
 		
 		@Override
 		public boolean canAddToList(List<Drawable> drawables)

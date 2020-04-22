@@ -1,7 +1,12 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.github.commoble.mondobook.client.api.Drawable;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -60,5 +65,12 @@ public class BookStyle
 	public Borders getBorders()
 	{
 		return this.borders;
+	}
+	
+	public List<Drawable> getSingleStyledDrawable(Drawable drawable)
+	{
+		return ImmutableList.of(
+			PaddedDrawable.of(
+				this.getMargins(), this.getBorders(), AlignedDrawable.of(this.getAlignment(), drawable)));
 	}
 }

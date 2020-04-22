@@ -158,7 +158,7 @@
 		},
 		{
 			"type": "mondobook:text",
-			"data": "Text aligned on right. Not like all the other ones! Right right right right right.",
+			"data": "Text aligned on right. Not like other paragraphs. Right right right right right.",
 			"classes": ["right", "top_margin_15"]		
 		},
 		{
@@ -173,6 +173,17 @@
 			"type": "mondobook:text",
 			"data": "Lots of styles here. Margins work with centered text! Glad it didn't break.",
 			"classes": ["center", "all_margin_10", "wow"]		
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:bricks"
+		},
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:cod"
 		}
 	]
 }

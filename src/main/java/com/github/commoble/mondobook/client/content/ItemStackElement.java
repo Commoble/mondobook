@@ -2,30 +2,33 @@ package com.github.commoble.mondobook.client.content;
 
 import java.util.List;
 
-import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
-import com.github.commoble.mondobook.client.api.internal.ImageData;
+import com.github.commoble.mondobook.client.api.internal.ItemStackDrawable;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class ImageElement extends Element
+public class ItemStackElement extends Element
 {
-	private final ImageData image;
+	public ItemStack stack;
 	
-	public ImageElement(RawElement raw)
+	public ItemStackElement(RawElement raw)
 	{
 		super(raw);
-		this.image = AssetManagers.IMAGE_DATA.getData(new ResourceLocation(raw.getData()));
+		this.stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(raw.getData())));
+		
+		// TODO allow stack sizes, maybe NBT?
 	}
 
 	@Override
 	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
 	{
-		return style.getSingleStyledDrawable(this.image);
+		return style.getSingleStyledDrawable(new ItemStackDrawable(this.stack, style));
 	}
 
 }

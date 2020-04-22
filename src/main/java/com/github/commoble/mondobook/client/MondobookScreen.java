@@ -9,10 +9,10 @@ import com.github.commoble.mondobook.client.util.KeyUtil;
 import com.github.commoble.mondobook.util.MatchedPair;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -294,8 +294,14 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	}
 
 	@Override
-	public AbstractGui getGUI()
+	public Screen getScreen()
 	{
 		return this;
+	}
+
+	@Override
+	public ItemRenderer getItemRenderer()
+	{
+		return this.itemRenderer;
 	}
 }

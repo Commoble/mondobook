@@ -1,8 +1,10 @@
 package com.github.commoble.mondobook.client.api;
 
-import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.renderer.ItemRenderer;
 
 public interface DrawableRenderer
 {
-	public AbstractGui getGUI();
+	public Screen getScreen();
+	public ItemRenderer getItemRenderer();
 }

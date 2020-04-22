@@ -14,7 +14,12 @@ public class TextLineDrawable implements Drawable
 	
 	public static final int BLACK = 0x0;
 	
-	public TextLineDrawable(ITextComponent text, BookStyle style)
+	public static TextLineDrawable of(ITextComponent text, BookStyle style)
+	{
+		return new TextLineDrawable(text, style);
+	}
+	
+	private TextLineDrawable(ITextComponent text, BookStyle style)
 	{
 		this.text = text;
 		this.style = style;
@@ -24,11 +29,8 @@ public class TextLineDrawable implements Drawable
 	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
 	{
 		String formattedString = this.text.getFormattedText();
-		String unformattedString = this.text.getString();
 		FontRenderer fontRenderer = this.style.getFontRenderer();
-		int textWidth = fontRenderer.getStringWidth(unformattedString);
-		int actualStartX = this.style.getAlignment().getLeft(startX, startX + maxWidth, textWidth);
-		fontRenderer.drawString(formattedString, actualStartX, startY, this.style.getTextColor());
+		fontRenderer.drawString(formattedString, startX, startY, this.style.getTextColor());
 	}
 
 	@Override
@@ -38,6 +40,12 @@ public class TextLineDrawable implements Drawable
 		// eclipse complains about resource leak / closeable not being closed unless we split this up into local vars
 		FontRenderer renderer = this.style.getFontRenderer();
 		return renderer.FONT_HEIGHT;
+	}
+
+	@Override
+	public int getWidth()
+	{
+		return this.style.getFontRenderer().getStringWidth(this.text.getString());
 	}
 
 }

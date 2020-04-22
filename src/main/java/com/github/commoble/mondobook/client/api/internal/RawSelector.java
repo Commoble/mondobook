@@ -11,10 +11,9 @@ public class RawSelector
 {
 	private String type;	// the registered selector ResourceLocation
 	private String match;	// the string that the type will use to match against a given element
-	private RawSelector[] children;	// OPTIONAL list of child selectors that the selector type may use
+	private List<RawSelector> children;	// OPTIONAL list of child selectors that the selector type may use
 	
 	private transient ResourceLocation typeID;
-	private transient List<RawSelector> childList;
 	
 	public String getMatchString()
 	{
@@ -37,11 +36,11 @@ public class RawSelector
 	
 	public List<RawSelector> getChildList()
 	{
-		if (this.childList == null)
+		if (this.children == null)
 		{
-			this.childList = ImmutableList.copyOf(this.getChildrenArray());
+			this.children = ImmutableList.of();
 		}
-		return this.childList;
+		return this.children;
 	}
 	
 	private String getTypeString()
@@ -51,14 +50,5 @@ public class RawSelector
 			this.type = "mondobook:none";
 		}
 		return this.type;
-	}
-	
-	private RawSelector[] getChildrenArray()
-	{
-		if (this.children == null)
-		{
-			this.children = new RawSelector[0];
-		}
-		return this.children;
 	}
 }

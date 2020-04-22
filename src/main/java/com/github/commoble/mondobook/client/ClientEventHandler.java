@@ -11,6 +11,7 @@ import com.github.commoble.mondobook.client.api.Selector;
 import com.github.commoble.mondobook.client.api.Specificity;
 import com.github.commoble.mondobook.client.api.internal.SimpleSelector;
 import com.github.commoble.mondobook.client.content.ImageElement;
+import com.github.commoble.mondobook.client.content.ItemStackElement;
 import com.github.commoble.mondobook.client.content.NewPageElement;
 import com.github.commoble.mondobook.client.content.Selectors;
 import com.github.commoble.mondobook.client.content.TextElement;
@@ -42,6 +43,7 @@ public class ClientEventHandler
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "new_page", NewPageElement::new);
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "text", TextElement::new);
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "image", ImageElement::new);
+		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "item", ItemStackElement::new);
 		
 		registerSimpleSelector("all", Selectors::alwaysMatch, (element, selector) -> Specificity.NONE);
 		registerSimpleSelector("element", Selectors::matchElement, (element, selector) -> Specificity.ONE_ELEMENT);

@@ -2,7 +2,7 @@ package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.Map;
 
-public enum RawSideSizes
+public enum RawBoxSide
 {
 	ALL,
 	BOTTOM,
@@ -10,7 +10,7 @@ public enum RawSideSizes
 	LEFT,
 	RIGHT;
 	
-	public void merge(Map<RawSideSizes, Integer> map, Integer value)
+	public void merge(Map<RawBoxSide, Integer> map, Integer value)
 	{
 		if (value != null)
 		{
@@ -18,7 +18,7 @@ public enum RawSideSizes
 		}
 	}
 	
-	public static void mergeAll(Map<RawSideSizes, Integer> map, Integer all, Integer bottom, Integer top, Integer left, Integer right)
+	public static void mergeAll(Map<RawBoxSide, Integer> map, Integer all, Integer bottom, Integer top, Integer left, Integer right)
 	{
 		ALL.merge(map, all);
 		BOTTOM.merge(map, bottom);

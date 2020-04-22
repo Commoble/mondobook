@@ -34,4 +34,10 @@ public class BakedPage implements Drawable
 	{
 		return this.height;
 	}
+
+	@Override
+	public int getWidth()
+	{
+		return this.height;
+	}
 }

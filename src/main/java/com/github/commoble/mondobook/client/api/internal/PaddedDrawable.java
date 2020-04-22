@@ -18,11 +18,9 @@ public class PaddedDrawable implements Drawable
 	private int borderColor;
 	private final Drawable drawable;
 	
-	public static PaddedDrawable of(int bottomPadding, int topPadding, int leftPadding, int rightPadding,
-		int bottomBorder, int topBorder, int leftBorder, int rightBorder, int borderColor, Drawable drawable)
+	public static PaddedDrawable withoutPadding(Drawable drawable)
 	{
-		return new PaddedDrawable(bottomPadding, topPadding, leftPadding, rightPadding,
-			bottomBorder, topBorder, leftBorder, rightBorder, borderColor, drawable);
+		return PaddedDrawable.of(SideSizes.NONE, Borders.NONE, drawable);
 	}
 	
 	public static PaddedDrawable of(SideSizes margins, Borders borders, Drawable drawable)
@@ -82,6 +80,12 @@ public class PaddedDrawable implements Drawable
 	public int getHeight()
 	{
 		return this.drawable.getHeight() + this.topPadding + this.topBorder + this.bottomPadding + this.bottomBorder;
+	}
+
+	@Override
+	public int getWidth()
+	{
+		return this.drawable.getWidth() + this.leftPadding + this.leftBorder + this.rightPadding + this.rightBorder;
 	}
 
 }

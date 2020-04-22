@@ -102,10 +102,10 @@ public class RawStyle
 		private @Nullable ResourceLocation font;
 		private @Nullable String textColor; // see TextFormatting for color strings (use lowercase, e.g. "red")
 		private Map<StyleSetter, Boolean> styleFlags = new EnumMap<>(StyleSetter.class);
-		private Map<RawSideSizes, Integer> margins = new EnumMap<>(RawSideSizes.class);
+		private Map<RawBoxSide, Integer> margins = new EnumMap<>(RawBoxSide.class);
 		private @Nullable Alignment alignment;
 		private @Nullable String borderColor;
-		private Map<RawSideSizes, Integer> borderSizes = new EnumMap<>(RawSideSizes.class);
+		private Map<RawBoxSide, Integer> borderSizes = new EnumMap<>(RawBoxSide.class);
 		
 		public StyleBuilder() {}
 		
@@ -126,7 +126,7 @@ public class RawStyle
 			{
 				this.alignment = style.alignment;
 			}
-			RawSideSizes.mergeAll(this.margins,
+			RawBoxSide.mergeAll(this.margins,
 				style.margin,
 				style.bottom_margin,
 				style.top_margin,
@@ -136,7 +136,7 @@ public class RawStyle
 			{
 				this.borderColor = style.border_color;
 			}
-			RawSideSizes.mergeAll(this.borderSizes,
+			RawBoxSide.mergeAll(this.borderSizes,
 				style.border,
 				style.bottom_border,
 				style.top_border,

@@ -11,6 +11,9 @@ public interface Drawable
 	/** The height in pixels that this thing takes up when rendered **/
 	public int getHeight();
 	
+	/** The width in pixels that this thing takes up when rendered **/
+	public int getWidth();
+	
 	/**
 	 * If this returns false, the drawable cannot be added to the given list.
 	 * The page builder checks this first before comparing the height of this drawable to the height of the list.
@@ -31,6 +34,12 @@ public interface Drawable
 
 		@Override
 		public int getHeight()
+		{
+			return 0;
+		}
+
+		@Override
+		public int getWidth()
 		{
 			return 0;
 		}

@@ -11,19 +11,21 @@ import java.util.Map;
  */
 public class SideSizes
 {
+	public static final SideSizes NONE = new SideSizes(0,0,0,0);
+
 	public final int bottom;
 	public final int top;
 	public final int left;
 	public final int right;
-
-	public SideSizes(Map<RawSideSizes, Integer> sizeMap)
+	
+	public SideSizes(Map<RawBoxSide, Integer> sizeMap)
 	{
 		this(
-			sizeMap.get(RawSideSizes.ALL),
-			sizeMap.get(RawSideSizes.BOTTOM),
-			sizeMap.get(RawSideSizes.TOP),
-			sizeMap.get(RawSideSizes.LEFT),
-			sizeMap.get(RawSideSizes.RIGHT)
+			sizeMap.get(RawBoxSide.ALL),
+			sizeMap.get(RawBoxSide.BOTTOM),
+			sizeMap.get(RawBoxSide.TOP),
+			sizeMap.get(RawBoxSide.LEFT),
+			sizeMap.get(RawBoxSide.RIGHT)
 		);
 	}
 	
@@ -53,6 +55,28 @@ public class SideSizes
 			this.left + other.left,
 			this.right + other.right
 		);
+	}
+	
+	public SideSizes with(BoxSide side, int size)
+	{
+		switch(side)
+		{
+			case BOTTOM:
+				return new SideSizes(size, this.top, this.left, this.right);
+			case TOP:
+				return new SideSizes(this.bottom, size, this.left, this.right);
+			case LEFT:
+				return new SideSizes(this.bottom, this.top, size, this.right);
+			case RIGHT:
+				return new SideSizes(this.bottom, this.top, this.left, size);
+			default:
+				return this;
+		}
+	}
+	
+	public SideSizes without(BoxSide side)
+	{
+		return this.with(side, 0);
 	}
 	
 	public int getWidthOnSide(BoxSide side)
