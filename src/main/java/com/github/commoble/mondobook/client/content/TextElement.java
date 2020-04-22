@@ -5,15 +5,10 @@ import java.util.List;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.client.api.internal.AlignedDrawable;
-import com.github.commoble.mondobook.client.api.internal.Alignment;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.Borders;
-import com.github.commoble.mondobook.client.api.internal.BoxSide;
-import com.github.commoble.mondobook.client.api.internal.PaddedDrawable;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.client.api.internal.SideSizes;
-import com.github.commoble.mondobook.util.ListUtil;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.RenderComponentsUtil;
@@ -47,17 +42,19 @@ public class TextElement extends Element
 		// the middle lines have neither the top or bottom border/padding
 		// the last line of text does not have the top padding, but has the bottom
 		// all lines have the side padding
-		SideSizes firstPadding = padding.without(BoxSide.BOTTOM);
-		Borders firstBorders = borders.without(BoxSide.BOTTOM);
-		SideSizes middlePadding = firstPadding.without(BoxSide.TOP);
-		Borders middleBorders = firstBorders.without(BoxSide.TOP);
-		SideSizes lastPadding = padding.without(BoxSide.TOP);
-		Borders lastBorders = borders.without(BoxSide.TOP);
-		Alignment alignment = style.getAlignment();
+//		SideSizes firstPadding = padding.without(BoxSide.BOTTOM);
+//		Borders firstBorders = borders.without(BoxSide.BOTTOM);
+//		SideSizes middlePadding = firstPadding.without(BoxSide.TOP);
+//		Borders middleBorders = firstBorders.without(BoxSide.TOP);
+//		SideSizes lastPadding = padding.without(BoxSide.TOP);
+//		Borders lastBorders = borders.without(BoxSide.TOP);
+//		Alignment alignment = style.getAlignment();
+//		
+//		return ListUtil.mapFirstMiddleLast(lines,
+//			text -> PaddedDrawable.of(firstPadding, firstBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
+//			text -> PaddedDrawable.of(middlePadding, middleBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
+//			text -> PaddedDrawable.of(lastPadding, lastBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))));
 		
-		return ListUtil.mapFirstMiddleLast(lines,
-			text -> PaddedDrawable.of(firstPadding, firstBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
-			text -> PaddedDrawable.of(middlePadding, middleBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
-			text -> PaddedDrawable.of(lastPadding, lastBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))));
+		return style.styleMultipleDrawables(lines, TextLineDrawable::of);
 	}
 }

@@ -193,12 +193,12 @@
 		{
 			"type": "mondobook:item",
 			"data": "minecraft:potion",
-			"attributes": {"tag": "{Potion:\"minecraft:night_vision\"}"}
+			"attributes": {"tag": "{Potion:\"minecraft:fire_resistance\"}"}
 		},
 		{
-			"type": "mondobook:item",
-			"data": "minecraft:potion",
-			"attributes": {"tag": "{Potion:\"minecraft:fire_resistance\"}"}
+			"type": "mondobook:item_tag",
+			"data": "forge:glass",
+			"classes": ["margined_border"]
 		}
 	]
 }
