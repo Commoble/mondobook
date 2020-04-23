@@ -3,11 +3,13 @@ package com.github.commoble.mondobook.client.api;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
+import com.github.commoble.mondobook.client.api.internal.RawBook;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.client.api.internal.RawStyle;
-import com.github.commoble.mondobook.util.ListUtil;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;
@@ -17,13 +19,21 @@ public abstract class Element
 	public static final ResourceLocation NONE_LOCATION = new ResourceLocation("mondobook:none");
 	
 	private final RawElement raw;
+	private final List<RawStyle> styleList;	// the master style list, used for styling sub-elements
+	private final BookStyle style;
+	private final List<Element> children;
 	
-	public Element(RawElement raw)
+	public Element(ElementPrimer primer)
 	{
-		this.raw = raw;
+		this.raw = primer.getRawElement();
+		this.styleList = primer.getRawStyles();
+		this.style = RawBook.styleElement(this.styleList, this);
+		this.children = this.raw.getChildren().stream()
+			.map(rawChild -> AssetFactories.ELEMENTS.apply(new ElementPrimer(rawChild, this.styleList)))
+			.collect(Collectors.toList());
 	}
 	
-	public abstract List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth);
+	public abstract List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth);
 	
 	public ResourceLocation getTypeID()
 	{
@@ -35,6 +45,11 @@ public abstract class Element
 		return this.raw.getID();
 	}
 	
+	public BookStyle getStyle()
+	{
+		return this.style;
+	}
+	
 	public List<String> getStyleClasses()
 	{
 		return this.raw.getStyleClasses();
@@ -42,7 +57,7 @@ public abstract class Element
 	
 	public List<Element> getChildren()
 	{
-		return ListUtil.map(this.raw.getChildren(), AssetFactories.ELEMENTS);
+		return this.children;
 	}
 	
 	public Map<String, String> Attributes()
@@ -57,10 +72,10 @@ public abstract class Element
 			.compareTo(styleB.getSelector().getSpecificity(this));
 	}
 	
-	public static final Element NONE = new Element(new RawElement())
+	public static final Element NONE = new Element(ElementPrimer.NONE)
 	{
 		@Override
-		public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
+		public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
 		{
 			return ImmutableList.of();
 		}

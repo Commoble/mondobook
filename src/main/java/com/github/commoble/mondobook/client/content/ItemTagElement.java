@@ -8,8 +8,8 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.Borders;
+import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.ItemStackDrawable;
-import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.client.api.internal.RowDrawable;
 import com.github.commoble.mondobook.client.api.internal.SideSizes;
 import com.google.common.collect.Lists;
@@ -23,15 +23,16 @@ public class ItemTagElement extends Element
 {
 	private final ItemTags.Wrapper tag;
 
-	public ItemTagElement(RawElement raw)
+	public ItemTagElement(ElementPrimer primer)
 	{
-		super(raw);
-		this.tag = new ItemTags.Wrapper(new ResourceLocation(raw.getData()));
+		super(primer);
+		this.tag = new ItemTags.Wrapper(new ResourceLocation(primer.getData()));
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
 	{
+		BookStyle style = this.getStyle();
 		List<Drawable> itemDrawables = this.tag.getAllElements().stream()
 			.map(item -> new ItemStackDrawable(new ItemStack(item), style))
 			.collect(Collectors.toList());

@@ -6,9 +6,8 @@ import java.util.Map;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.ItemStackDrawable;
-import com.github.commoble.mondobook.client.api.internal.RawElement;
 import com.github.commoble.mondobook.util.ExceptionUtil;
 
 import net.minecraft.item.ItemStack;
@@ -21,22 +20,22 @@ public class ItemStackElement extends Element
 {
 	public ItemStack stack;
 	
-	public ItemStackElement(RawElement raw)
+	public ItemStackElement(ElementPrimer primer)
 	{
-		super(raw);
-		Map<String, String> attributes = raw.getAttributes();
+		super(primer);
+		Map<String, String> attributes = primer.getAttributes();
 		int stackSize = Integer.parseInt(attributes.getOrDefault("size", "1"));
 		CompoundNBT tag = ExceptionUtil.getUnlessThrow(() -> JsonToNBT.getTagFromJson(attributes.getOrDefault("tag", "{}")))
 			.orElse(new CompoundNBT());
-		this.stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(raw.getData())), stackSize);
+		this.stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(primer.getData())), stackSize);
 		this.stack.setTag(tag);
 		
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
 	{
-		return style.getSingleStyledDrawable(new ItemStackDrawable(this.stack, style));
+		return this.getStyle().getSingleStyledDrawable(new ItemStackDrawable(this.stack, this.getStyle()));
 	}
 
 }

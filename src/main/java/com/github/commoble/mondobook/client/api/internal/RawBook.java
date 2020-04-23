@@ -28,7 +28,7 @@ public class RawBook
 	}
 
 	/** Take the elements in a book and the styles in a book and return a list of elements with the appropriate styles applied to each **/
-	public List<StyledElement> getStyledElements()
+	public List<Element> getBakedElements()
 	{
 		List<RawStyle> styles = this.getStyles();
 		return this.getElements().stream()
@@ -36,13 +36,13 @@ public class RawBook
 			.collect(Collectors.toList());
 	}
 	
-	public static Function<RawElement, StyledElement> getStyler(List<RawStyle> styles)
+	public static Function<RawElement, Element> getStyler(List<RawStyle> styles)
 	{
-		return AssetFactories.ELEMENTS.andThen(element -> styleElement(styles, element));
+		return raw -> AssetFactories.ELEMENTS.apply(new ElementPrimer(raw, styles));
 	}
 	
 	/** Given all the styles in the book, filter them to this element, sort and merge, and wrap them up with the element **/
-	public static StyledElement styleElement(List<RawStyle> styles, Element element)
+	public static BookStyle styleElement(List<RawStyle> styles, Element element)
 	{
 		RawStyle.StyleBuilder styleBuilder = new RawStyle.StyleBuilder();
 		
@@ -51,6 +51,6 @@ public class RawBook
 			.sorted(element.getStyleComparator())
 			.forEachOrdered(styleBuilder::add);
 		
-		return new StyledElement(styleBuilder.build(), element);
+		return styleBuilder.build();
 	}
 }

@@ -6,9 +6,8 @@ import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.ImageData;
-import com.github.commoble.mondobook.client.api.internal.RawElement;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -16,16 +15,16 @@ public class ImageElement extends Element
 {
 	private final ImageData image;
 	
-	public ImageElement(RawElement raw)
+	public ImageElement(ElementPrimer primer)
 	{
-		super(raw);
-		this.image = AssetManagers.IMAGE_DATA.getData(new ResourceLocation(raw.getData()));
+		super(primer);
+		this.image = AssetManagers.IMAGE_DATA.getData(new ResourceLocation(primer.getData()));
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
 	{
-		return style.getSingleStyledDrawable(this.image);
+		return this.getStyle().getSingleStyledDrawable(this.image);
 	}
 
 }

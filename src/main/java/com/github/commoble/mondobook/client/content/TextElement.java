@@ -7,7 +7,7 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.Borders;
-import com.github.commoble.mondobook.client.api.internal.RawElement;
+import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.SideSizes;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -20,15 +20,16 @@ public class TextElement extends Element
 {
 	private final String text;
 	
-	public TextElement(RawElement raw)
+	public TextElement(ElementPrimer primer)
 	{
-		super(raw);
-		this.text = raw.getData();
+		super(primer);
+		this.text = primer.getData();
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, BookStyle style, int containerWidth)
+	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
 	{
+		BookStyle style = this.getStyle();
 		SideSizes padding = style.getMargins();
 		Borders borders = style.getBorders();
 		SideSizes borderSizes = borders.getSizes();
