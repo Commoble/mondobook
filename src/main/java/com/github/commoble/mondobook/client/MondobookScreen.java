@@ -14,6 +14,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -215,7 +216,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		MatchedPair<Integer> pageTextOffsets = MatchedPair.of(bookCenter - TEXT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER, bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER);
 
 
-		this.cachedPageDrawables.consumeWith(pageTextOffsets, this::drawPageDrawables);
+		this.cachedPageDrawables.consumeWith(pageTextOffsets,
+			(page, xOffset) -> this.drawPageDrawables(page, xOffset, mouseX, mouseY));
 
 		// this next part seems to be for rendering tooltips but it doesn't seem to work
 		// ITextComponent itextcomponent2 = this.func_214154_c((double) p_render_1_,
@@ -228,31 +230,11 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		super.render(mouseX, mouseY, partialTicks);
 	}
 
-	protected void drawPageDrawables(Drawable drawables, int xOffset)
+	protected void drawPageDrawables(Drawable drawables, int xOffset, int mouseX, int mouseY)
 	{
-//		int yStart = PAGE_TEXT_START;
 		drawables.render(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH);
-//		for (Drawable drawable : drawables)
-//		{
-//			drawable.render(this, xOffset, yStart);
-//			yStart += drawable.getHeight();
-//		}
-		//ListUtil.forEachIndex(lines, (line, i) -> this.font.drawString(line.getFormattedText(), xOffset, PAGE_TEXT_START + LINE_HEIGHT * i, 0));
+		drawables.renderTooltip(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH, mouseX, mouseY);
 	}
-
-	// public ITextComponent getPageText(int page)
-	// {
-	// return page == 0
-	// ? new StringTextComponent("§lLorem ipsum §ldolor sit amet, conse§rctetur
-	// adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-	// aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-	// nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-	// reprehenderit in")
-	// : new StringTextComponent("ᛚᛟᚱᛖᛗ ᛁᛈᛋᚢᛗ ᛞᛟᛚᛟᚱ ᛋᛁᛏ ᚨᛗᛖᛏ ᚲᛟᚾᛋᛖᚲᛏᛖᛏᚢᚱ ᚨᛞᛁᛈᛁᛋᚲᛁᚾᚷ
-	// ᛖᛚᛁᛏ ᛋᛖᛞ ᛞᛟ ᛖᛁᚢᛋᛗᛟᛞ ᛏᛖᛗᛈᛟᚱ ᛁᚾᚲᛁᛞᛁᛞᚢᚾᛏ ᚢᛏ ᛚᚨᛒᛟᚱᛖ ᛖᛏ ᛞᛟᛚᛟᚱᛖ ᛗᚨᚷᚾᚨ ᚨᛚᛁᛝᚢᚨ ᚢᛏ
-	// ᛖᚾᛁᛗ ᚨᛞ ᛗᛁᚾᛁᛗ ᛒᛖᚾᛁᚨᛗ ᛝᚢᛁᛋ ᚾᛟᛋᛏᚱᚢᛞ ᛖᚦᛖᚱᚲᛁᛏᚨᛏᛁᛟᚾ ᚢᛚᛚᚨᛗᚲᛟ ᛚᚨᛒᛟᚱᛁᛋ ᚾᛁᛋᛁ ᚢᛏ
-	// ᚨᛚᛁᛝᚢᛁᛈ ᛖᚦ ᛖᚨ ᚲᛟᛗᛗᛟᛞᛟ ᚲᛟᚾᛋᛖᛝᚢᚨᛏ ᛞᚢᛁᛋ ᚨᚢᛏᛖ ᛁᚱᚢᚱᛖ ᛞᛟᛚᛟᚱ ᛁᚾ ᚱᛖᛈᚱᛖᚻᛖᚾᛞᛖᚱᛁᛏ ᛁᚾ");
-	// }
 
 	public Drawable getPageDrawables(int page)
 	{
@@ -303,5 +285,11 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	public ItemRenderer getItemRenderer()
 	{
 		return this.itemRenderer;
+	}
+
+	@Override
+	public void renderItemTooltip(ItemStack stack, int mouseX, int mouseY)
+	{
+		this.renderTooltip(stack, mouseX, mouseY);
 	}
 }

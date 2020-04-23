@@ -48,4 +48,9 @@ public class TextLineDrawable implements Drawable
 		return this.style.getFontRenderer().getStringWidth(this.text.getString());
 	}
 
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+	}
+
 }

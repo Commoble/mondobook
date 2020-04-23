@@ -39,6 +39,12 @@ public class OffsetDrawable implements Drawable
 	{
 		return this.drawable.getWidth() + this.x;
 	}
+
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		this.drawable.renderTooltip(renderer, startX+this.x, startY+this.y, maxWidth, mouseX, mouseY);
+	}
 	
 	
 }

@@ -40,4 +40,10 @@ public class BakedPage implements Drawable
 	{
 		return this.height;
 	}
+
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		this.children.forEach(child -> child.renderTooltip(renderer, startX, startY, maxWidth, mouseX, mouseY));
+	}
 }

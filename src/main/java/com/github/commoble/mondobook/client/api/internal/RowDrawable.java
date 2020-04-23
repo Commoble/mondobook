@@ -46,4 +46,15 @@ public class RowDrawable implements Drawable
 		return this.width;
 	}
 
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		int nextX = startX;
+		for (Drawable drawable : this.drawables)
+		{
+			drawable.renderTooltip(renderer, nextX, startY, maxWidth, mouseX, mouseY);
+			nextX += drawable.getWidth();
+		}
+	}
+
 }

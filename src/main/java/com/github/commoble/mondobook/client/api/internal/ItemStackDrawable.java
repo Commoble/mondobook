@@ -2,6 +2,7 @@ package com.github.commoble.mondobook.client.api.internal;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.util.MathUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -40,4 +41,12 @@ public class ItemStackDrawable implements Drawable
 		return 16;
 	}
 
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		if (MathUtil.isWithin(mouseX, mouseY, startX, startY, this.getWidth(), this.getHeight()))
+		{
+			renderer.renderItemTooltip(this.stack, mouseX, mouseY);
+		}
+	}
 }

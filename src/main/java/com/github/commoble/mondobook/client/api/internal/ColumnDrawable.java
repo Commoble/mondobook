@@ -45,4 +45,15 @@ public class ColumnDrawable implements Drawable
 		return this.width;
 	}
 
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		int nextY = startY;
+		for (Drawable drawable : this.drawables)
+		{
+			drawable.renderTooltip(renderer, startX, nextY, maxWidth, mouseX, mouseY);
+			nextY += drawable.getHeight();
+		}
+	}
+
 }

@@ -46,5 +46,10 @@ public class NewPageElement extends Element
 		{
 			return drawables.size() == 0;
 		}
+
+		@Override
+		public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+		{
+		}
 	});
 }

@@ -39,4 +39,11 @@ public class AlignedDrawable implements Drawable
 		return this.drawable.getWidth();
 	}
 
+	@Override
+	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	{
+		int alignedStartX = this.alignment.getLeft(startX, startX + maxWidth, this.drawable.getWidth());
+		this.drawable.renderTooltip(renderer, alignedStartX, startY, maxWidth, mouseX, mouseY);
+	}
+
 }
