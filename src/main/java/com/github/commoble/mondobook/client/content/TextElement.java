@@ -27,7 +27,7 @@ public class TextElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
 	{
 		BookStyle style = this.getStyle();
 		SideSizes padding = style.getMargins();

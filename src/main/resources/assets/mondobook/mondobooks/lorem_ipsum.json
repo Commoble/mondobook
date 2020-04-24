@@ -102,6 +102,16 @@
 				"type": "mondobook:class",
 				"match": "margined_border"
 			}		
+		},
+		{
+			"border": 1,
+			"margin": 1,
+			"border_color": "e6e1d6",
+			"selector":
+			{
+				"type": "mondobook:element",
+				"match": "mondobook:item"
+			}
 		}
 	],
 	"body":

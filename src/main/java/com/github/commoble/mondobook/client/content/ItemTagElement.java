@@ -6,58 +6,55 @@ import java.util.stream.Collectors;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
-import com.github.commoble.mondobook.client.api.internal.BookStyle;
-import com.github.commoble.mondobook.client.api.internal.Borders;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
-import com.github.commoble.mondobook.client.api.internal.ItemStackDrawable;
-import com.github.commoble.mondobook.client.api.internal.RowDrawable;
-import com.github.commoble.mondobook.client.api.internal.SideSizes;
-import com.google.common.collect.Lists;
+import com.github.commoble.mondobook.client.api.internal.RawElement;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 
 /** Element that consists of a gridded list of all items in the tag **/
 public class ItemTagElement extends Element
 {
-	private final ItemTags.Wrapper tag;
+	private final CollectionElement itemCollection;
 
 	public ItemTagElement(ElementPrimer primer)
 	{
 		super(primer);
-		this.tag = new ItemTags.Wrapper(new ResourceLocation(primer.getData()));
+		ItemTags.Wrapper tag = new ItemTags.Wrapper(new ResourceLocation(primer.getData()));
+		List<RawElement> itemElements = tag.getAllElements().stream()
+			.map(item -> new RawElement().setType(new ResourceLocation("mondobook:item")).setData(item.getRegistryName().toString()))
+			.collect(Collectors.toList());
+		RawElement rawCollection = primer.getRawElement().copy()
+			.setChildren(itemElements);
+		
+		// TODO can use attributes to add id/styles to individual item elements
+		this.itemCollection = new CollectionElement(new ElementPrimer(rawCollection, primer.getRawStyles()));
+		
 	}
 
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
 	{
-		BookStyle style = this.getStyle();
-		List<Drawable> itemDrawables = this.tag.getAllElements().stream()
-			.map(item -> new ItemStackDrawable(new ItemStack(item), style))
-			.collect(Collectors.toList());
-		
-		// if we don't have any items to draw, just return an empty list
-		if (itemDrawables.isEmpty())
-		{
-			return itemDrawables;
-		}
-		
-		SideSizes margins = style.getMargins();
-		Borders borders = style.getBorders();
-		SideSizes borderWidths = borders.getSizes();
-		int widthForItems = containerWidth - margins.left - margins.right - borderWidths.left - borderWidths.right;
-		int itemsPerRow = widthForItems / 16;
-		if (itemsPerRow < 1)
-		{
-			itemsPerRow = 1;
-		}
-		
-		int items = itemDrawables.size();
-		
-		int rows = (int) Math.ceil((double)items / (double)itemsPerRow);
-
-		return style.styleMultipleDrawables(Lists.partition(itemDrawables, itemsPerRow), (list, someStyle) -> new RowDrawable(list));
+		return this.itemCollection.getColumnOfDrawables(renderer, containerWidth);
+//		BookStyle style = this.getStyle();
+//		List<Drawable> itemDrawables = this.tag.getAllElements().stream()
+//			.map(item -> new ItemStackDrawable(new ItemStack(item), style))
+//			.collect(Collectors.toList());
+//		
+//		// if we don't have any items to draw, just return an empty list
+//		if (itemDrawables.isEmpty())
+//		{
+//			return itemDrawables;
+//		}
+//		
+//		int widthForItems = style.getInteriorWidth(containerWidth);
+//		int itemsPerRow = widthForItems / 16;
+//		if (itemsPerRow < 1)
+//		{
+//			itemsPerRow = 1;
+//		}
+//
+//		return style.styleMultipleDrawables(Lists.partition(itemDrawables, itemsPerRow), (list, someStyle) -> new RowDrawable(list));
 		
 	}
 

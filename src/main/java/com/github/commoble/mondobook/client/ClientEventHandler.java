@@ -10,10 +10,13 @@ import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
 import com.github.commoble.mondobook.client.api.Specificity;
 import com.github.commoble.mondobook.client.api.internal.SimpleSelector;
+import com.github.commoble.mondobook.client.content.CollectionElement;
+import com.github.commoble.mondobook.client.content.ColumnElement;
 import com.github.commoble.mondobook.client.content.ImageElement;
 import com.github.commoble.mondobook.client.content.ItemStackElement;
 import com.github.commoble.mondobook.client.content.ItemTagElement;
 import com.github.commoble.mondobook.client.content.NewPageElement;
+import com.github.commoble.mondobook.client.content.RowElement;
 import com.github.commoble.mondobook.client.content.Selectors;
 import com.github.commoble.mondobook.client.content.TextElement;
 
@@ -42,6 +45,9 @@ public class ClientEventHandler
 	private static void onClientSetup(FMLClientSetupEvent event)
 	{
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "new_page", NewPageElement::new);
+		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "row", RowElement::new);
+		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "column", ColumnElement::new);
+		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "collection", CollectionElement::new);
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "text", TextElement::new);
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "image", ImageElement::new);
 		AssetFactories.ELEMENTS.register(MondobookMod.MODID, "item", ItemStackElement::new);

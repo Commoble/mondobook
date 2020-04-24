@@ -69,6 +69,11 @@ public class BookStyle
 		return this.borders;
 	}
 	
+	public int getInteriorWidth(int totalWidth)
+	{
+		return totalWidth - this.margins.left - this.margins.right - this.borders.getSizes().left - this.borders.getSizes().right;
+	}
+	
 	public List<Drawable> getSingleStyledDrawable(Drawable drawable)
 	{
 		return ImmutableList.of(
@@ -85,7 +90,20 @@ public class BookStyle
 	 */
 	public <T> List<Drawable> styleMultipleDrawables(List<T> sources, BiFunction<T, BookStyle, Drawable> factory)
 	{
+		int sourceSize = sources.size();
+		if (sourceSize < 1)
+		{
+			return ImmutableList.of();
+		}
+		
 		SideSizes padding = this.getMargins();
+		Alignment alignment = this.getAlignment();
+		
+		if (sourceSize == 1)
+		{
+			return ImmutableList.of(PaddedDrawable.of(padding, this.borders, AlignedDrawable.of(alignment, factory.apply(sources.get(0), this))));
+		}
+		
 		// the first line has the top border and padding, but not the bottom
 		// the middle lines have neither the top or bottom border/padding
 		// the last line of text does not have the top padding, but has the bottom
@@ -96,7 +114,6 @@ public class BookStyle
 		Borders middleBorders = firstBorders.without(BoxSide.TOP);
 		SideSizes lastPadding = padding.without(BoxSide.TOP);
 		Borders lastBorders = this.borders.without(BoxSide.TOP);
-		Alignment alignment = this.getAlignment();
 		
 		return ListUtil.mapFirstMiddleLast(sources,
 			x -> PaddedDrawable.of(firstPadding, firstBorders, AlignedDrawable.of(alignment, factory.apply(x, this))),

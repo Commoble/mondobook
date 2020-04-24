@@ -16,7 +16,7 @@ public class NewPageElement extends Element
 	}
 	
 	@Override
-	public List<Drawable> getAsDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
 	{
 		return NEW_PAGE_DRAWABLE;
 	}

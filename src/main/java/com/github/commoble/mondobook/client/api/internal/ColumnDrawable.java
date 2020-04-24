@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
-public abstract class ColumnDrawable implements Drawable
+public class ColumnDrawable implements Drawable
 {
 	private final List<Drawable> drawables;
 	private final int height;	// height is the sum of the heights of its child drawables

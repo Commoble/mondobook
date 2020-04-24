@@ -24,7 +24,7 @@ public class AlignedDrawable implements Drawable
 	{
 		int alignedStartX = this.alignment.getLeft(startX, startX + maxWidth, this.drawable.getWidth());
 		int offsetX = alignedStartX - startX;
-		this.drawable.render(renderer, alignedStartX, startY, maxWidth - offsetX);
+		this.drawable.render(renderer, alignedStartX, startY, this.drawable.getWidth());
 	}
 
 	@Override
