@@ -23,7 +23,10 @@ import net.minecraft.util.text.TextFormatting;
 
 class StyleTests
 {
-	private static final int BLACK = 0;
+	private static final int RGB_BLACK = 0;
+	private static final int ARGB_BLACK = 0xFF000000;
+	private static final int RGB_MASK = 0xFFFFFF;
+	private static final int ARGB_MASK = 0xFFFFFFFF;
 	
 	public static BookStyle buildStyleFromJsonStrings(String... strings)
 	{
@@ -48,7 +51,7 @@ class StyleTests
 			int color = style.getTextColor();
 
 			// then
-			Assertions.assertTrue(color == 0x0);
+			Assertions.assertEquals(RGB_BLACK, color & RGB_MASK);;
 		}
 		
 		@Test
@@ -61,7 +64,7 @@ class StyleTests
 			int color = style.getTextColor();
 
 			// then
-			Assertions.assertTrue(color == BLACK);
+			Assertions.assertEquals(RGB_BLACK, color & RGB_MASK);
 		}
 		
 		@ParameterizedTest
@@ -76,12 +79,12 @@ class StyleTests
 			int mcColor = TextFormatting.getValueByName(colorName).getColor();
 
 			// then
-			Assertions.assertTrue(style.getTextColor() == mcColor);
+			Assertions.assertEquals(mcColor, style.getTextColor() & RGB_MASK);
 		}
 		
 		@ParameterizedTest
 		@CsvFileSource(resources = "/hex-color-params.csv", numLinesToSkip = 1)
-		void should_ReturnCorrectColor_When_ValidHexStringIsUsed(String hexString, int colorValue)
+		void should_ReturnCorrectTextColor_When_ValidHexStringIsUsed(String hexString, int colorValue)
 		{
 			// given hexString, value
 
@@ -89,11 +92,11 @@ class StyleTests
 			int styleColor = buildStyleFromJsonStrings(String.format("{\"text_color\": \"%s\"}", hexString)).getTextColor();
 
 			// then
-			Assertions.assertEquals(colorValue, styleColor);
+			Assertions.assertEquals(colorValue, styleColor & RGB_MASK);
 		}
 		
 		@ParameterizedTest
-		@ValueSource(strings = {"glob", "EFG", "-40", "FFFFFFF", "0x01", "0x-30", "0xred", "0xFF"})
+		@ValueSource(strings = {"glob", "EFG", "-40", "FFFFFFFFFFFF", "0x01", "0x-30", "0xred", "0xFF"})
 		void should_ReturnBlack_When_InvalidStringIsUsed(String colorString)
 		{
 			// given colorString
@@ -102,7 +105,17 @@ class StyleTests
 			int styleColor = buildStyleFromJsonStrings(String.format("{\"text_color\": \"%s\"}", colorString)).getTextColor();
 
 			// then
-			Assertions.assertEquals(BLACK, styleColor);
+			Assertions.assertEquals(RGB_BLACK, styleColor & RGB_MASK);
+		}
+		
+		@Test
+		void should_ReturnColorWithAlpha_When_StringUsedForAlphaAllowedColor()
+		{
+			String colorString = "80ffffff";
+			
+			int styleColor = buildStyleFromJsonStrings(String.format("{\"border_color\": \"%s\"}", colorString)).getBorders().getColor();
+
+			Assertions.assertEquals(0x80ffffff, styleColor & ARGB_MASK);
 		}
 		
 		@Test
@@ -123,7 +136,7 @@ class StyleTests
 			int styleColor = buildStyleFromJsonStrings(jsonStrings).getTextColor();
 
 			// then
-			Assertions.assertEquals(0x12345, styleColor);
+			Assertions.assertEquals(0x12345, styleColor & RGB_MASK);
 		}
 	}
 	
@@ -334,7 +347,7 @@ class StyleTests
 			int actualColor = style.getBorders().getColor();
 
 			// then it should be zero (black)
-			Assertions.assertEquals(BLACK, actualColor);
+			Assertions.assertEquals(ARGB_BLACK, actualColor & ARGB_MASK);
 		}
 		
 		@Test
@@ -347,7 +360,7 @@ class StyleTests
 			int actualColor = style.getBorders().getColor();
 
 			// then
-			Assertions.assertEquals(BLACK, actualColor);
+			Assertions.assertEquals(ARGB_BLACK, actualColor & ARGB_MASK);
 		}
 		
 		@ParameterizedTest
@@ -384,7 +397,7 @@ class StyleTests
 			int styleColor = buildStyleFromJsonStrings(jsonStrings).getBorders().getColor();
 
 			// then
-			Assertions.assertEquals(0x12345, styleColor);
+			Assertions.assertEquals(0x12345 | ARGB_BLACK, styleColor & ARGB_MASK);
 		}
 		
 		

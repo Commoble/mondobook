@@ -53,7 +53,7 @@ public class PaddedDrawable implements Drawable
 		int totalTopPadding = this.topPadding + this.topBorder;
 		int totalWidthPadding = totalLeftPadding + totalRightPadding;
 		int height = this.getHeight();
-		int color = this.borderColor | 0xFF000000; // TODO add transparency support
+		int color = this.borderColor;
 		// render borders
 		if (this.topBorder > 0)
 		{
@@ -61,11 +61,11 @@ public class PaddedDrawable implements Drawable
 		}
 		if (this.leftBorder > 0)
 		{
-			AbstractGui.fill(startX, startY, startX + this.leftBorder, startY + height, color);
+			AbstractGui.fill(startX, startY + this.topBorder, startX + this.leftBorder, startY + height - this.bottomBorder, color);
 		}
 		if (this.rightBorder > 0)
 		{
-			AbstractGui.fill(startX + maxWidth - this.rightBorder, startY, startX + maxWidth, startY + height, color);
+			AbstractGui.fill(startX + maxWidth - this.rightBorder, startY + this.topBorder, startX + maxWidth, startY + height - this.bottomBorder, color);
 		}
 		if (this.bottomBorder > 0)
 		{

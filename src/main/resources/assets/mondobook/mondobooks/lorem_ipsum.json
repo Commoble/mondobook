@@ -85,7 +85,7 @@
 		{
 			"border": 4,
 			"right_border": 1,
-			"border_color": "ff5999",
+			"border_color": "80ff5999",
 			"selector":
 			{
 				"type": "mondobook:class",

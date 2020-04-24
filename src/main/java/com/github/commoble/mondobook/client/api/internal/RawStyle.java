@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.Selector;
 
@@ -28,7 +30,7 @@ public class RawStyle
 	 * This can be one of two possible string formats:
 	 * A) one of minecraft's sixteen builtin TextFormatting color names, e.g. "red"
 	 * B) a six-digit hexidecimal number in the format "######" (where # is some hex digit in the range 0-F)
-	 * 
+	 * 	(can use more than 6 digits but alpha will be ignored)
 	 * Invalid strings (such as an unused color name, or improperly formatted hexcode) will fallback to black. 
 	 */
 	private String text_color;
@@ -57,7 +59,9 @@ public class RawStyle
 	private Integer top_border;
 	private Integer left_border;
 	private Integer right_border;
-	private String border_color;
+	private String border_color; // 6- or 8-digit ARGB hexcode, alpha will be FF (opaque) if omitted
+	private String foreground_hover_color;
+	private String background_hover_color;
 	
 	public Selector getSelector()
 	{
@@ -106,6 +110,8 @@ public class RawStyle
 		private @Nullable Alignment alignment;
 		private @Nullable String borderColor;
 		private Map<RawBoxSide, Integer> borderSizes = new EnumMap<>(RawBoxSide.class);
+		private @Nullable String foregroundHoverColor;
+		private @Nullable String backgroundHoverColor;
 		
 		public StyleBuilder() {}
 		
@@ -146,6 +152,15 @@ public class RawStyle
 			// all of the nonnull flags in the incoming style override existing flags
 			style.getStyleFlags().forEach(this::mergeStyleFlag);
 			
+			if (style.foreground_hover_color != null)
+			{
+				this.foregroundHoverColor = style.foreground_hover_color;
+			}
+			if (style.background_hover_color != null)
+			{
+				this.backgroundHoverColor = style.background_hover_color;
+			}
+			
 			return this;
 		}
 		
@@ -159,7 +174,9 @@ public class RawStyle
 		
 		public BookStyle build()
 		{
-			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(), this.buildMargins(), this.buildAlignment(), this.buildBorders());
+			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(),
+				this.buildMargins(), this.buildAlignment(), this.buildBorders(),
+				this.buildForegroundHoverColor(), this.buildBackgroundHoverColor());
 		}
 		
 		private Alignment buildAlignment()
@@ -192,7 +209,8 @@ public class RawStyle
 			// the color logic is as follows:
 			// if color string matches one of the vanilla TextFormatting color names, use that value
 			// otherwise, if color is 
-			int finalTextColor = 0x0; // black
+			int opaqueBlack = 0xFF000000;
+			int finalTextColor = opaqueBlack;
 			if (colorString != null)
 			{
 				TextFormatting textFormat = TextFormatting.getValueByName(colorString);
@@ -204,25 +222,31 @@ public class RawStyle
 				{
 					try
 					{
-						int parseAttempt = Integer.parseInt(colorString, 16);
-						if (parseAttempt > 0 && parseAttempt <= 0xFFFFFF)
+						// we're parsing as a long because parsing 0x7FFF FFFF or larger throws NFE
+						finalTextColor = (int)(Long.parseLong(colorString, 16) & 0xFFFFFFFF);
+						if (colorString.length() > 8 || !StringUtils.isAlphanumeric(colorString))
 						{
-							finalTextColor = parseAttempt & 0xFFFFFF;	// avoid negative numbers or values greater than RGB White
+							finalTextColor = opaqueBlack;
+						}
+						else if (colorString.length() <= 6)
+						{	// if alpha is not specified, use 100% opacity
+							// if someone needs 0 alpha for some reason, they can use "00rrggbb"
+							finalTextColor = finalTextColor | opaqueBlack;
 						}
 					}
 					catch(NumberFormatException e)
-					{	// if the string isn't a valid int, just leave it 0
-						finalTextColor = 0;
+					{	// if the string isn't a valid int, just leave it black
+						finalTextColor = opaqueBlack;
 					}
 				}
 			}
 			
-			return finalTextColor;
+			return finalTextColor & 0xFFFFFFFF;
 		}
 		
 		private int buildTextColor()
 		{
-			return this.parseColorString(this.textColor);
+			return this.parseColorString(this.textColor) | 0xFF000000;
 		}
 		
 		private SideSizes buildMargins()
@@ -233,6 +257,16 @@ public class RawStyle
 		private Borders buildBorders()
 		{
 			return new Borders(new SideSizes(this.borderSizes), this.parseColorString(this.borderColor));
+		}
+		
+		private int buildForegroundHoverColor()
+		{
+			return this.parseColorString(this.foregroundHoverColor);
+		}
+		
+		private int buildBackgroundHoverColor()
+		{
+			return this.parseColorString(this.backgroundHoverColor);
 		}
 	}
 
