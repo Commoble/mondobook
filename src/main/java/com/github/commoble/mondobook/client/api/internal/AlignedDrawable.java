@@ -1,5 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.Optional;
+
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
@@ -20,11 +22,10 @@ public class AlignedDrawable implements Drawable
 	}
 	
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		int alignedStartX = this.alignment.getLeft(startX, startX + maxWidth, this.drawable.getWidth());
-		int offsetX = alignedStartX - startX;
-		this.drawable.render(renderer, alignedStartX, startY, this.drawable.getWidth());
+		this.drawable.render(renderer, alignedStartX, startY, this.drawable.getWidth(), mouseX, mouseY);
 	}
 
 	@Override
@@ -44,6 +45,12 @@ public class AlignedDrawable implements Drawable
 	{
 		int alignedStartX = this.alignment.getLeft(startX, startX + maxWidth, this.drawable.getWidth());
 		this.drawable.renderTooltip(renderer, alignedStartX, startY, maxWidth, mouseX, mouseY);
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.empty();
 	}
 
 }

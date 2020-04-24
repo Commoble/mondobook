@@ -1,5 +1,7 @@
 package com.github.commoble.mondobook.client.content;
 
+import java.util.Optional;
+
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
@@ -26,7 +28,7 @@ public class TextLineDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		String formattedString = this.text.getFormattedText();
 		FontRenderer fontRenderer = this.style.getFontRenderer();
@@ -51,6 +53,12 @@ public class TextLineDrawable implements Drawable
 	@Override
 	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.of(this.style);
 	}
 
 }

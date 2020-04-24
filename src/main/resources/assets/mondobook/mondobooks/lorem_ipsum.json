@@ -105,8 +105,10 @@
 		},
 		{
 			"border": 1,
-			"margin": 1,
-			"border_color": "e6e1d6",
+			"margin": 0,
+			"border_color": "373737",
+			"background_color": "8b8b8b",
+			"foreground_hover_color": "80FFFFFF",
 			"selector":
 			{
 				"type": "mondobook:element",

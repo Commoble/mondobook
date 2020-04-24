@@ -23,12 +23,13 @@ public class BookStyle
 	private final SideSizes margins;
 	private final Alignment alignment;
 	private final Borders borders;
+	private final int backgroundColor;
 	private final int foregroundHoverColor;
 	private final int backgroundHoverColor;
 	
 	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor,
 		SideSizes margins, Alignment alignment, Borders borders,
-		int foregroundHoverColor, int backgroundHoverColor)
+		int backgroundColor, int foregroundHoverColor, int backgroundHoverColor)
 	{
 		this.fontID = fontID;
 		this.textStyle = textStyle;
@@ -36,6 +37,7 @@ public class BookStyle
 		this.margins = margins;
 		this.alignment = alignment;
 		this.borders = borders;
+		this.backgroundColor = backgroundColor;
 		this.foregroundHoverColor = foregroundHoverColor;
 		this.backgroundHoverColor = backgroundHoverColor;
 	}
@@ -73,6 +75,11 @@ public class BookStyle
 	public Borders getBorders()
 	{
 		return this.borders;
+	}
+	
+	public int getBackgroundColor()
+	{
+		return this.backgroundColor;
 	}
 	
 	public int getForegroundHoverColor()

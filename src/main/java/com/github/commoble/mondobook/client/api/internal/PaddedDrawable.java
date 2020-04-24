@@ -1,5 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.Optional;
+
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
@@ -46,7 +48,7 @@ public class PaddedDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		int totalLeftPadding = this.leftPadding + this.leftBorder;
 		int totalRightPadding = this.rightPadding + this.rightBorder;
@@ -73,7 +75,7 @@ public class PaddedDrawable implements Drawable
 		}
 		
 		// render child drawable
-		this.drawable.render(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding);
+		this.drawable.render(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding, mouseX, mouseY);
 	}
 
 	@Override
@@ -94,6 +96,12 @@ public class PaddedDrawable implements Drawable
 		int totalLeftPadding = this.leftPadding + this.leftBorder;
 		int totalTopPadding = this.topPadding + this.topBorder;
 		this.drawable.renderTooltip(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth, mouseX, mouseY);
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.empty();
 	}
 
 }

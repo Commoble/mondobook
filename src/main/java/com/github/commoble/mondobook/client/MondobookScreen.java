@@ -232,7 +232,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 	protected void drawPageDrawables(Drawable drawables, int xOffset, int mouseX, int mouseY)
 	{
-		drawables.render(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH);
+		drawables.render(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH, mouseX, mouseY);
 		drawables.renderTooltip(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH, mouseX, mouseY);
 	}
 

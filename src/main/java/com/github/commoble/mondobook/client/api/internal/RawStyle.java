@@ -60,6 +60,7 @@ public class RawStyle
 	private Integer left_border;
 	private Integer right_border;
 	private String border_color; // 6- or 8-digit ARGB hexcode, alpha will be FF (opaque) if omitted
+	private String background_color;
 	private String foreground_hover_color;
 	private String background_hover_color;
 	
@@ -99,6 +100,7 @@ public class RawStyle
 	
 	public static class StyleBuilder
 	{
+		public static final int INVISIBLE_COLOR = 0x00000000;
 		/**
 		 * The Fonts included with vanilla minecraft are "minecraft:default" and "minecraft:alt"
 		 * ("alt" is the Standard Galactic Alphabet font used for enchanting table runes)
@@ -110,6 +112,7 @@ public class RawStyle
 		private @Nullable Alignment alignment;
 		private @Nullable String borderColor;
 		private Map<RawBoxSide, Integer> borderSizes = new EnumMap<>(RawBoxSide.class);
+		private @Nullable String backgroundColor;
 		private @Nullable String foregroundHoverColor;
 		private @Nullable String backgroundHoverColor;
 		
@@ -151,7 +154,10 @@ public class RawStyle
 			
 			// all of the nonnull flags in the incoming style override existing flags
 			style.getStyleFlags().forEach(this::mergeStyleFlag);
-			
+			if (style.background_color != null)
+			{
+				this.backgroundColor = style.background_color;
+			}
 			if (style.foreground_hover_color != null)
 			{
 				this.foregroundHoverColor = style.foreground_hover_color;
@@ -176,7 +182,7 @@ public class RawStyle
 		{
 			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(),
 				this.buildMargins(), this.buildAlignment(), this.buildBorders(),
-				this.buildForegroundHoverColor(), this.buildBackgroundHoverColor());
+				this.buildBackgroundColor(), this.buildForegroundHoverColor(), this.buildBackgroundHoverColor());
 		}
 		
 		private Alignment buildAlignment()
@@ -259,14 +265,32 @@ public class RawStyle
 			return new Borders(new SideSizes(this.borderSizes), this.parseColorString(this.borderColor));
 		}
 		
+		private int buildBackgroundColor()
+		{
+			return this.getColorOrInvisibleIfNull(this.backgroundColor);
+		}
+		
 		private int buildForegroundHoverColor()
 		{
-			return this.parseColorString(this.foregroundHoverColor);
+			return this.getColorOrInvisibleIfNull(this.foregroundHoverColor);
 		}
 		
 		private int buildBackgroundHoverColor()
 		{
-			return this.parseColorString(this.backgroundHoverColor);
+			return this.getColorOrInvisibleIfNull(this.backgroundHoverColor);
+		}
+		
+		/** if colorString is null, returns a 0-alpha color **/
+		private int getColorOrInvisibleIfNull(String colorString)
+		{
+			if (colorString == null)
+			{
+				return INVISIBLE_COLOR;
+			}
+			else
+			{
+				return this.parseColorString(colorString);
+			}
 		}
 	}
 

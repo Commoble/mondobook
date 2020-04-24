@@ -1,8 +1,11 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.Optional;
+
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.util.MathUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -20,7 +23,7 @@ public class ItemStackDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		ItemRenderer itemRenderer = renderer.getItemRenderer();
 		Minecraft minecraft = Minecraft.getInstance();
@@ -45,7 +48,16 @@ public class ItemStackDrawable implements Drawable
 	{
 		if (MathUtil.isWithin(mouseX, mouseY, startX, startY, this.getWidth(), this.getHeight()))
 		{
+			RenderSystem.pushMatrix();
+			RenderSystem.translated(0D, 0D, 600D);
 			renderer.renderItemTooltip(this.stack, mouseX, mouseY);
+			RenderSystem.popMatrix();
 		}
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.of(this.style);
 	}
 }

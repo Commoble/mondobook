@@ -1,9 +1,11 @@
 package com.github.commoble.mondobook.client;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.github.commoble.mondobook.client.api.internal.BookStyle;
 
 public class BakedPage implements Drawable
 {
@@ -19,14 +21,9 @@ public class BakedPage implements Drawable
 	}
 	
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		this.children.forEach(child -> this.renderChild(child, renderer, startX, startY, maxWidth));
-	}
-	
-	private void renderChild(Drawable child, DrawableRenderer renderer, int thisX, int thisY, int maxWidth)
-	{
-		child.render(renderer, thisX, thisY, maxWidth);
+		this.children.forEach(child -> child.render(renderer, startX, startY, maxWidth, mouseX, mouseY));
 	}
 	
 	@Override
@@ -45,5 +42,11 @@ public class BakedPage implements Drawable
 	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		this.children.forEach(child -> child.renderTooltip(renderer, startX, startY, maxWidth, mouseX, mouseY));
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.empty();
 	}
 }

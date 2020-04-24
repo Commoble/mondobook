@@ -1,5 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.Optional;
+
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 
@@ -23,9 +25,9 @@ public class OffsetDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		this.drawable.render(renderer, startX + this.x, startY + this.y, maxWidth - this.x);
+		this.drawable.render(renderer, startX + this.x, startY + this.y, maxWidth - this.x, mouseX, mouseY);
 	}
 
 	@Override
@@ -44,6 +46,12 @@ public class OffsetDrawable implements Drawable
 	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		this.drawable.renderTooltip(renderer, startX+this.x, startY+this.y, maxWidth, mouseX, mouseY);
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.empty();
 	}
 	
 	

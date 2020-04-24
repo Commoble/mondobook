@@ -1,6 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
@@ -23,12 +24,12 @@ public class ColumnDrawable implements Drawable
 	}
 
 	@Override
-	public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		int nextY = startY;
 		for (Drawable drawable : this.drawables)
 		{
-			drawable.render(renderer, startX, nextY, maxWidth);
+			drawable.render(renderer, startX, nextY, maxWidth, mouseX, mouseY);
 			nextY += drawable.getHeight();
 		}
 	}
@@ -54,6 +55,12 @@ public class ColumnDrawable implements Drawable
 			drawable.renderTooltip(renderer, startX, nextY, maxWidth, mouseX, mouseY);
 			nextY += drawable.getHeight();
 		}
+	}
+
+	@Override
+	public Optional<BookStyle> getStyle()
+	{
+		return Optional.empty();
 	}
 
 }

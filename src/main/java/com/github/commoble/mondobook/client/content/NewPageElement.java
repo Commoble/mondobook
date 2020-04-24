@@ -1,10 +1,12 @@
 package com.github.commoble.mondobook.client.content;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
+import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.google.common.collect.ImmutableList;
 
@@ -24,7 +26,7 @@ public class NewPageElement extends Element
 	public static final List<Drawable> NEW_PAGE_DRAWABLE = ImmutableList.of(new Drawable()
 	{
 		@Override
-		public void render(DrawableRenderer renderer, int startX, int startY, int maxWidth)
+		public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 		{
 		}
 
@@ -49,6 +51,12 @@ public class NewPageElement extends Element
 		@Override
 		public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 		{
+		}
+
+		@Override
+		public Optional<BookStyle> getStyle()
+		{
+			return Optional.empty();
 		}
 	});
 }
