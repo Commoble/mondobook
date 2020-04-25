@@ -2,12 +2,14 @@ package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.github.commoble.mondobook.client.api.AssetFactories;
+import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Selector;
 
 import net.minecraft.util.ResourceLocation;
@@ -60,6 +62,7 @@ public class RawStyle
 	private Integer left_border;
 	private Integer right_border;
 	private String border_color; // 6- or 8-digit ARGB hexcode, alpha will be FF (opaque) if omitted
+	private String background_image; // a namespaced ID for a mondobookimages resource
 	private String background_color;
 	private String foreground_hover_color;
 	private String background_hover_color;
@@ -112,6 +115,7 @@ public class RawStyle
 		private @Nullable Alignment alignment;
 		private @Nullable String borderColor;
 		private Map<RawBoxSide, Integer> borderSizes = new EnumMap<>(RawBoxSide.class);
+		private @Nullable String backgroundImage;
 		private @Nullable String backgroundColor;
 		private @Nullable String foregroundHoverColor;
 		private @Nullable String backgroundHoverColor;
@@ -154,6 +158,11 @@ public class RawStyle
 			
 			// all of the nonnull flags in the incoming style override existing flags
 			style.getStyleFlags().forEach(this::mergeStyleFlag);
+			
+			if (style.background_image != null)
+			{
+				this.backgroundImage = style.background_image;
+			}
 			if (style.background_color != null)
 			{
 				this.backgroundColor = style.background_color;
@@ -181,7 +190,7 @@ public class RawStyle
 		public BookStyle build()
 		{
 			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(),
-				this.buildMargins(), this.buildAlignment(), this.buildBorders(),
+				this.buildMargins(), this.buildAlignment(), this.buildBorders(), this.buildBackgroundImage(),
 				this.buildBackgroundColor(), this.buildForegroundHoverColor(), this.buildBackgroundHoverColor());
 		}
 		
@@ -263,6 +272,12 @@ public class RawStyle
 		private Borders buildBorders()
 		{
 			return new Borders(new SideSizes(this.borderSizes), this.parseColorString(this.borderColor));
+		}
+		
+		private Optional<ImageData> buildBackgroundImage()
+		{
+			return Optional.ofNullable(this.backgroundImage)
+				.map(id -> AssetManagers.IMAGE_DATA.getData(new ResourceLocation(id)));
 		}
 		
 		private int buildBackgroundColor()

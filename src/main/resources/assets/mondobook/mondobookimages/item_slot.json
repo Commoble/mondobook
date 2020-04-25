@@ -1,0 +1,7 @@
+{
+	"texture": "minecraft:textures/gui/container/crafting_table.png",
+	"width": 18,
+	"height":18,
+	"u": 7,
+	"v": 83
+}

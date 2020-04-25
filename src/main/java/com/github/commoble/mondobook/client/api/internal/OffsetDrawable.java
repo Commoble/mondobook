@@ -45,7 +45,7 @@ public class OffsetDrawable implements Drawable
 	@Override
 	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		this.drawable.renderTooltip(renderer, startX+this.x, startY+this.y, maxWidth, mouseX, mouseY);
+		this.drawable.renderTooltip(renderer, startX+this.x, startY+this.y, maxWidth - this.x, mouseX, mouseY);
 	}
 
 	@Override

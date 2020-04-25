@@ -94,8 +94,10 @@ public class PaddedDrawable implements Drawable
 	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
 		int totalLeftPadding = this.leftPadding + this.leftBorder;
+		int totalRightPadding = this.rightPadding + this.rightBorder;
+		int totalWidthPadding = totalLeftPadding + totalRightPadding;
 		int totalTopPadding = this.topPadding + this.topBorder;
-		this.drawable.renderTooltip(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth, mouseX, mouseY);
+		this.drawable.renderTooltip(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding, mouseX, mouseY);
 	}
 
 	@Override

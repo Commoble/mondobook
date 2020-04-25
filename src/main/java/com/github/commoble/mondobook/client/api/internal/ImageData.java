@@ -7,6 +7,7 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 
 // to be serialized via a standard GSON parser
@@ -39,6 +40,22 @@ public class ImageData
 		return this.texture;
 	}
 	
+	public static void blitImage(ImageData image, Screen screen, int startX, int startY)
+	{
+		Minecraft.getInstance().getTextureManager().bindTexture(image.getTextureID());
+		RenderSystem.pushMatrix();
+		if (image.translucent)
+		{
+			RenderSystem.enableBlend();
+		}
+		screen.blit(startX, startY, image.u, image.v, image.width, image.height);
+		if (image.translucent)
+		{
+			RenderSystem.disableBlend();
+		}
+		RenderSystem.popMatrix();
+	}
+	
 	public static class ImageDrawable implements Drawable
 	{
 		private final ImageData image;
@@ -54,18 +71,7 @@ public class ImageData
 		@Override
 		public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 		{
-			Minecraft.getInstance().getTextureManager().bindTexture(this.image.getTextureID());
-			RenderSystem.pushMatrix();
-			if (this.image.translucent)
-			{
-				RenderSystem.enableBlend();
-			}
-			renderer.getScreen().blit(startX, startY, this.image.u, this.image.v, this.image.width, this.image.height);
-			if (this.image.translucent)
-			{
-				RenderSystem.disableBlend();
-			}
-			RenderSystem.popMatrix();
+			ImageData.blitImage(this.image, renderer.getScreen(), startX, startY);
 		}
 
 		@Override

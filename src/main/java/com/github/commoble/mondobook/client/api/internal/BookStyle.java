@@ -1,6 +1,7 @@
 package com.github.commoble.mondobook.client.api.internal;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.annotation.Nonnull;
@@ -23,12 +24,13 @@ public class BookStyle
 	private final SideSizes margins;
 	private final Alignment alignment;
 	private final Borders borders;
+	private final Optional<ImageData> backgroundImage;
 	private final int backgroundColor;
 	private final int foregroundHoverColor;
 	private final int backgroundHoverColor;
 	
 	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor,
-		SideSizes margins, Alignment alignment, Borders borders,
+		SideSizes margins, Alignment alignment, Borders borders, Optional<ImageData> backgroundImage,
 		int backgroundColor, int foregroundHoverColor, int backgroundHoverColor)
 	{
 		this.fontID = fontID;
@@ -37,6 +39,7 @@ public class BookStyle
 		this.margins = margins;
 		this.alignment = alignment;
 		this.borders = borders;
+		this.backgroundImage = backgroundImage;
 		this.backgroundColor = backgroundColor;
 		this.foregroundHoverColor = foregroundHoverColor;
 		this.backgroundHoverColor = backgroundHoverColor;
@@ -75,6 +78,11 @@ public class BookStyle
 	public Borders getBorders()
 	{
 		return this.borders;
+	}
+	
+	public Optional<ImageData> getBackgroundImage()
+	{
+		return this.backgroundImage;
 	}
 	
 	public int getBackgroundColor()

@@ -36,26 +36,6 @@ public class ItemTagElement extends Element
 	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
 	{
 		return this.itemCollection.getColumnOfDrawables(renderer, containerWidth);
-//		BookStyle style = this.getStyle();
-//		List<Drawable> itemDrawables = this.tag.getAllElements().stream()
-//			.map(item -> new ItemStackDrawable(new ItemStack(item), style))
-//			.collect(Collectors.toList());
-//		
-//		// if we don't have any items to draw, just return an empty list
-//		if (itemDrawables.isEmpty())
-//		{
-//			return itemDrawables;
-//		}
-//		
-//		int widthForItems = style.getInteriorWidth(containerWidth);
-//		int itemsPerRow = widthForItems / 16;
-//		if (itemsPerRow < 1)
-//		{
-//			itemsPerRow = 1;
-//		}
-//
-//		return style.styleMultipleDrawables(Lists.partition(itemDrawables, itemsPerRow), (list, someStyle) -> new RowDrawable(list));
-		
 	}
 
 }

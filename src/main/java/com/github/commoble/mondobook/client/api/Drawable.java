@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.ImageData;
 import com.github.commoble.mondobook.util.MathUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -34,7 +35,10 @@ public interface Drawable
 	
 	default void renderBackground(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		this.getStyle().ifPresent(style -> this.fill(startX, startY, style.getBackgroundColor()));
+		this.getStyle().ifPresent(style -> {
+			this.fill(startX, startY, style.getBackgroundColor());
+			style.getBackgroundImage().ifPresent(image -> ImageData.blitImage(image, renderer.getScreen(), startX, startY));
+		});
 	}
 	default void renderHoverBackground(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
