@@ -40,7 +40,7 @@ public class ImageData
 		return this.texture;
 	}
 	
-	public static void blitImage(ImageData image, Screen screen, int startX, int startY)
+	public static void blitImage(ImageData image, Screen screen, int startX, int startY, int maxWidth, int maxHeight)
 	{
 		Minecraft.getInstance().getTextureManager().bindTexture(image.getTextureID());
 		RenderSystem.pushMatrix();
@@ -48,7 +48,9 @@ public class ImageData
 		{
 			RenderSystem.enableBlend();
 		}
-		screen.blit(startX, startY, image.u, image.v, image.width, image.height);
+		int width = Math.min(image.width, maxWidth);
+		int height = Math.min(image.height, maxHeight);
+		screen.blit(startX, startY, image.u, image.v, width, height);
 		if (image.translucent)
 		{
 			RenderSystem.disableBlend();
@@ -71,7 +73,7 @@ public class ImageData
 		@Override
 		public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 		{
-			ImageData.blitImage(this.image, renderer.getScreen(), startX, startY);
+			ImageData.blitImage(this.image, renderer.getScreen(), startX, startY, this.getWidth(), this.getHeight());
 		}
 
 		@Override

@@ -37,7 +37,7 @@ public interface Drawable
 	{
 		this.getStyle().ifPresent(style -> {
 			this.fill(startX, startY, style.getBackgroundColor());
-			style.getBackgroundImage().ifPresent(image -> ImageData.blitImage(image, renderer.getScreen(), startX, startY));
+			style.getBackgroundImage().ifPresent(image -> ImageData.blitImage(image, renderer.getScreen(), startX, startY, this.getWidth(), this.getHeight()));
 		});
 	}
 	default void renderHoverBackground(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)

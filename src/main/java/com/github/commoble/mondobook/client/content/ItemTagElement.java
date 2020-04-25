@@ -1,6 +1,8 @@
 package com.github.commoble.mondobook.client.content;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.github.commoble.mondobook.client.api.Drawable;
@@ -8,6 +10,7 @@ import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.RawElement;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
@@ -21,8 +24,14 @@ public class ItemTagElement extends Element
 	{
 		super(primer);
 		ItemTags.Wrapper tag = new ItemTags.Wrapper(new ResourceLocation(primer.getData()));
+		List<String> itemClasses = Optional.ofNullable(primer.getAttributes().get("item_classes"))
+			.map(classes -> Arrays.asList(classes.split(",")))
+			.orElse(ImmutableList.of());
 		List<RawElement> itemElements = tag.getAllElements().stream()
-			.map(item -> new RawElement().setType(new ResourceLocation("mondobook:item")).setData(item.getRegistryName().toString()))
+			.map(item -> new RawElement()
+				.setType(new ResourceLocation("mondobook:item"))
+				.setData(item.getRegistryName().toString())
+				.setClasses(itemClasses))
 			.collect(Collectors.toList());
 		RawElement rawCollection = primer.getRawElement().copy()
 			.setChildren(itemElements);
