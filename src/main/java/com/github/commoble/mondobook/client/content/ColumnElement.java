@@ -21,7 +21,7 @@ public class ColumnElement extends Element
 	{
 		int interiorSpace = this.getStyle().getInteriorWidth(containerWidth);
 		return this.getStyle().styleMultipleDrawables(this.getChildren(),
-			(childElement, parentStyle) -> new ColumnDrawable(childElement.getColumnOfDrawables(renderer, interiorSpace)));
+			(childElement, parentStyle) -> new ColumnDrawable(childElement.getColumnOfDrawables(renderer, interiorSpace)), containerWidth);
 	}
 
 

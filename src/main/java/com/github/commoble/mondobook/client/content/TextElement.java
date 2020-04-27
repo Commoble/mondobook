@@ -56,6 +56,6 @@ public class TextElement extends Element
 //			text -> PaddedDrawable.of(middlePadding, middleBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
 //			text -> PaddedDrawable.of(lastPadding, lastBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))));
 		
-		return style.styleMultipleDrawables(lines, TextLineDrawable::of);
+		return style.styleMultipleDrawables(lines, TextLineDrawable::of, containerWidth);
 	}
 }

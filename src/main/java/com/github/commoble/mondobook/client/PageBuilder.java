@@ -33,7 +33,7 @@ public class PageBuilder
 
 	public void addDrawable(Drawable drawable)
 	{
-		this.children.add(new OffsetDrawable(0, this.currentHeight, drawable));
+		this.children.add(new OffsetDrawable(0, this.currentHeight, this.maxPixelWidth, drawable));
 		this.currentHeight += drawable.getHeight();
 	}
 

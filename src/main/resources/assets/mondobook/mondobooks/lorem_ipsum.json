@@ -119,6 +119,14 @@
 				"type": "mondobook:element",
 				"match": "mondobook:item"
 			}
+		},
+		{
+			"border": 2,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "bordered"
+			}
 		}
 	],
 	"body":
@@ -189,7 +197,7 @@
 		{
 			"type": "mondobook:text",
 			"data": "Lots of styles here. Margins work with centered text! Glad it didn't break.",
-			"classes": ["center", "all_margin_10", "wow"]		
+			"classes": ["right", "all_margin_10", "wow", "bordered"]		
 		},
 		{
 			"type": "mondobook:new_page"

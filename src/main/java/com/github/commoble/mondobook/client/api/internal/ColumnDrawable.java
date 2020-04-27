@@ -1,5 +1,6 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ public class ColumnDrawable implements Drawable
 	private final List<Drawable> drawables;
 	private final int height;	// height is the sum of the heights of its child drawables
 	private final int width;	// width is the widest width among its child drawables
+	private final List<DrawableWithOffset> children;
 	
 	public ColumnDrawable(List<Drawable> drawables)
 	{
@@ -21,6 +23,15 @@ public class ColumnDrawable implements Drawable
 		this.width = this.drawables.stream()
 			.map(Drawable::getWidth)
 			.reduce(0, Math::max);
+
+		this.children = new ArrayList<>();
+		int nextY = 0;
+		for (Drawable drawable : drawables)
+		{
+			int childHeight = drawable.getHeight();
+			this.children.add(new DrawableWithOffset(0, nextY, this.width, drawable));
+			nextY += childHeight;
+		}
 	}
 
 	@Override
@@ -47,20 +58,15 @@ public class ColumnDrawable implements Drawable
 	}
 
 	@Override
-	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-	{
-		int nextY = startY;
-		for (Drawable drawable : this.drawables)
-		{
-			drawable.renderTooltip(renderer, startX, nextY, maxWidth, mouseX, mouseY);
-			nextY += drawable.getHeight();
-		}
-	}
-
-	@Override
 	public Optional<BookStyle> getStyle()
 	{
 		return Optional.empty();
+	}
+
+	@Override
+	public List<DrawableWithOffset> getChildren()
+	{
+		return this.children;
 	}
 
 }

@@ -1,10 +1,13 @@
 package com.github.commoble.mondobook.client.content;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.DrawableWithOffset;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.ITextComponent;
@@ -51,14 +54,15 @@ public class TextLineDrawable implements Drawable
 	}
 
 	@Override
-	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-	{
-	}
-
-	@Override
 	public Optional<BookStyle> getStyle()
 	{
 		return Optional.of(this.style);
+	}
+
+	@Override
+	public List<DrawableWithOffset> getChildren()
+	{
+		return ImmutableList.of();
 	}
 
 }

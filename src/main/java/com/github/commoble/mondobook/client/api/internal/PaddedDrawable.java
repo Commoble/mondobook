@@ -1,9 +1,11 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.gui.AbstractGui;
 
@@ -19,21 +21,23 @@ public class PaddedDrawable implements Drawable
 	private int rightBorder;
 	private int borderColor;
 	private final Drawable drawable;
+	private final List<DrawableWithOffset> children;
 	
-	public static PaddedDrawable withoutPadding(Drawable drawable)
+	public static PaddedDrawable withoutPadding(Drawable drawable, int containerWidth)
 	{
-		return PaddedDrawable.of(SideSizes.NONE, Borders.NONE, drawable);
+		return PaddedDrawable.of(SideSizes.NONE, Borders.NONE, containerWidth, drawable);
 	}
 	
-	public static PaddedDrawable of(SideSizes margins, Borders borders, Drawable drawable)
+	public static PaddedDrawable of(SideSizes margins, Borders borders, int containerWidth, Drawable drawable)
 	{
 		SideSizes borderSizes = borders.getSizes();
 		return new PaddedDrawable(margins.bottom, margins.top, margins.left, margins.right, 
-			borderSizes.bottom, borderSizes.top, borderSizes.left, borderSizes.right, borders.getColor(), drawable);
+			borderSizes.bottom, borderSizes.top, borderSizes.left, borderSizes.right, borders.getColor(),
+			drawable, containerWidth);
 	}
 	
 	private PaddedDrawable(int bottomPadding, int topPadding, int leftPadding, int rightPadding,
-		int bottomBorder, int topBorder, int leftBorder, int rightBorder, int borderColor, Drawable drawable)
+		int bottomBorder, int topBorder, int leftBorder, int rightBorder, int borderColor, Drawable drawable, int containerWidth)
 	{
 		this.bottomPadding = bottomPadding;
 		this.topPadding = topPadding;
@@ -45,15 +49,22 @@ public class PaddedDrawable implements Drawable
 		this.rightBorder = rightBorder;
 		this.borderColor = borderColor;
 		this.drawable = drawable;
+		
+		int totalLeftPadding = this.leftPadding + this.leftBorder;
+		int totalRightPadding = this.rightPadding + this.rightBorder;
+		int totalTopPadding = this.topPadding + this.topBorder;
+		int totalWidthPadding = totalLeftPadding + totalRightPadding;
+		
+		this.children = ImmutableList.of(new DrawableWithOffset(totalLeftPadding, totalTopPadding, containerWidth - totalWidthPadding, drawable));
 	}
 
 	@Override
 	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		int totalLeftPadding = this.leftPadding + this.leftBorder;
-		int totalRightPadding = this.rightPadding + this.rightBorder;
-		int totalTopPadding = this.topPadding + this.topBorder;
-		int totalWidthPadding = totalLeftPadding + totalRightPadding;
+//		int totalLeftPadding = this.leftPadding + this.leftBorder;
+//		int totalRightPadding = this.rightPadding + this.rightBorder;
+//		int totalTopPadding = this.topPadding + this.topBorder;
+//		int totalWidthPadding = totalLeftPadding + totalRightPadding;
 		int height = this.getHeight();
 		int color = this.borderColor;
 		// render borders
@@ -75,7 +86,7 @@ public class PaddedDrawable implements Drawable
 		}
 		
 		// render child drawable
-		this.drawable.render(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding, mouseX, mouseY);
+//		this.drawable.render(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding, mouseX, mouseY);
 	}
 
 	@Override
@@ -91,19 +102,15 @@ public class PaddedDrawable implements Drawable
 	}
 
 	@Override
-	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-	{
-		int totalLeftPadding = this.leftPadding + this.leftBorder;
-		int totalRightPadding = this.rightPadding + this.rightBorder;
-		int totalWidthPadding = totalLeftPadding + totalRightPadding;
-		int totalTopPadding = this.topPadding + this.topBorder;
-		this.drawable.renderTooltip(renderer, startX + totalLeftPadding, startY + totalTopPadding, maxWidth - totalWidthPadding, mouseX, mouseY);
-	}
-
-	@Override
 	public Optional<BookStyle> getStyle()
 	{
 		return Optional.empty();
+	}
+
+	@Override
+	public List<DrawableWithOffset> getChildren()
+	{
+		return this.children;
 	}
 
 }

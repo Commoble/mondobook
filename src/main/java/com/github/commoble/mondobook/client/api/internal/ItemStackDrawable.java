@@ -1,10 +1,11 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
-import com.github.commoble.mondobook.util.MathUtil;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.renderer.ItemRenderer;
@@ -42,20 +43,24 @@ public class ItemStackDrawable implements Drawable
 	}
 
 	@Override
-	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
+	public boolean renderOwnTooltip(DrawableRenderer renderer, int mouseX, int mouseY)
 	{
-		if (MathUtil.isWithin(mouseX, mouseY, startX, startY, this.getWidth(), this.getHeight()))
-		{
-			RenderSystem.pushMatrix();
-			RenderSystem.translated(0D, 0D, 600D);
-			renderer.renderItemTooltip(this.stack, mouseX, mouseY);
-			RenderSystem.popMatrix();
-		}
+		RenderSystem.pushMatrix();
+		RenderSystem.translated(0D, 0D, 600D);
+		renderer.renderItemTooltip(this.stack, mouseX, mouseY);
+		RenderSystem.popMatrix();
+		return true;
 	}
 
 	@Override
 	public Optional<BookStyle> getStyle()
 	{
 		return Optional.of(this.style);
+	}
+
+	@Override
+	public List<DrawableWithOffset> getChildren()
+	{
+		return ImmutableList.of();
 	}
 }

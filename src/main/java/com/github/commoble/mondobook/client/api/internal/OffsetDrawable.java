@@ -1,9 +1,11 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Drawable that renders a sub-drawable with a given x- and y- offset.
@@ -16,18 +18,21 @@ public class OffsetDrawable implements Drawable
 	private int x;
 	private int y;
 	private Drawable drawable;
+	private List<DrawableWithOffset> children;
 	
-	public OffsetDrawable(int x, int y, Drawable drawable)
+	public OffsetDrawable(int x, int y, int containerWidth, Drawable drawable)
 	{
 		this.x = x;
 		this.y = y;
 		this.drawable = drawable;
+		this.children = ImmutableList.of(new DrawableWithOffset(x, y, containerWidth, drawable));
+		
 	}
 
 	@Override
 	public void renderSelf(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
 	{
-		this.drawable.render(renderer, startX + this.x, startY + this.y, maxWidth - this.x, mouseX, mouseY);
+//		this.drawable.render(renderer, startX + this.x, startY + this.y, maxWidth - this.x, mouseX, mouseY);
 	}
 
 	@Override
@@ -43,15 +48,15 @@ public class OffsetDrawable implements Drawable
 	}
 
 	@Override
-	public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-	{
-		this.drawable.renderTooltip(renderer, startX+this.x, startY+this.y, maxWidth - this.x, mouseX, mouseY);
-	}
-
-	@Override
 	public Optional<BookStyle> getStyle()
 	{
 		return Optional.empty();
+	}
+
+	@Override
+	public List<DrawableWithOffset> getChildren()
+	{
+		return this.children;
 	}
 	
 	

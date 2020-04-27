@@ -16,6 +16,6 @@ public class ItemRegistrar
 	{
 		ITEMS.register(modBus);
 	}
-	public static final RegistryObject<LoreBookItem> LORE_BOOK = ITEMS.register(ObjectNames.MONDO_BOOK, () ->
-		new LoreBookItem(new Item.Properties().group(ItemGroup.MISC)));
+	public static final RegistryObject<MondobookItem> LORE_BOOK = ITEMS.register(ObjectNames.MONDO_BOOK, () ->
+		new MondobookItem(new Item.Properties().group(ItemGroup.MISC)));
 }

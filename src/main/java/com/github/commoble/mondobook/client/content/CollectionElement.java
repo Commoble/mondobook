@@ -47,7 +47,7 @@ public class CollectionElement extends Element
 			cellsPerRow = 1;
 		}
 		
-		return style.styleMultipleDrawables(Lists.partition(cells, cellsPerRow), (list, parentStyle) -> new RowDrawable(list));
+		return style.styleMultipleDrawables(Lists.partition(cells, cellsPerRow), (list, parentStyle) -> new RowDrawable(list), containerWidth);
 	}
 
 }

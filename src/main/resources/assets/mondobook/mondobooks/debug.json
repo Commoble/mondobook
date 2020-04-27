@@ -1,0 +1,154 @@
+{
+	"styles":
+	[
+		{
+			"bold": true,
+			"selector":
+			{
+				"type": "mondobook:id",
+				"match": "first"
+			}
+		},
+		{
+			"strikethrough": true,
+			"text_color": "004466",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "wow"
+			}
+		},
+		{
+			"font": "minecraft:alt",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "sga"
+			}
+		},
+		{
+			"left_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "left_margin_15"
+			}
+		},
+		{
+			"right_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "right_margin_15"
+			}
+		},
+		{
+			"top_margin": 15,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "top_margin_15"
+			}
+		},
+		{
+			"margin": 10,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "all_margin_10"
+			}
+		},
+		{
+			"alignment": "left",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "left"
+			}
+		},
+		{
+			"alignment": "right",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "right"
+			}
+		},
+		{
+			"alignment": "center",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "center"
+			}
+		},
+		{
+			"border": 4,
+			"right_border": 1,
+			"border_color": "80ff5999",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "big_pink_border"
+			}		
+		},
+		{
+			"border": 1,
+			"margin": 1,
+			"border_color": "ff0000",
+			"alignment": "center",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "margined_border"
+			}		
+		},
+		{
+			"background_image": "mondobook:fancy_banner",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "bannered_background"
+			}
+		},
+		{
+			"background_image": "mondobook:item_slot",
+			"foreground_hover_color": "80FFFFFF",
+			"selector":
+			{
+				"type": "mondobook:element",
+				"match": "mondobook:item"
+			}
+		},
+		{
+			"border": 2,
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "bordered"
+			}
+		}
+	],
+	"body":
+	[
+		{
+			"type": "mondobook:item",
+			"data": "minecraft:potion",
+			"attributes": {"tag": "{Potion:\"minecraft:fire_resistance\"}"}
+		},
+		{
+			"type": "mondobook:item_tag",
+			"data": "minecraft:rails",
+			"classes": ["margined_border"]
+		},
+		{
+			"type": "mondobook:item_tag",
+			"data": "minecraft:rails",
+			"classes": ["margined_border"],
+			"attributes":
+			{
+				"item_classes": "margined_border,bannered_background"
+			}
+		}
+	]
+}

@@ -26,7 +26,7 @@ public class RowElement extends Element
 			.map(childElement -> this.getChildDrawable(childElement, renderer, columnWidth))
 			.collect(Collectors.toList());
 		
-		return this.getStyle().getSingleStyledDrawable(new RowDrawable(columns));
+		return this.getStyle().getSingleStyledDrawable(new RowDrawable(columns), containerWidth);
 	}
 
 	protected Drawable getChildDrawable(Element childElement, DrawableRenderer renderer, int columnWidth)

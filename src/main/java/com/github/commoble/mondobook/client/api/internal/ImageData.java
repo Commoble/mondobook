@@ -1,9 +1,11 @@
 package com.github.commoble.mondobook.client.api.internal;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -89,15 +91,16 @@ public class ImageData
 		}
 
 		@Override
-		public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-		{
-			// TODO alt text?
-		}
-
-		@Override
 		public Optional<BookStyle> getStyle()
 		{
 			return Optional.of(this.style);
+		}
+
+
+		@Override
+		public List<DrawableWithOffset> getChildren()
+		{
+			return ImmutableList.of();
 		}
 	}
 }

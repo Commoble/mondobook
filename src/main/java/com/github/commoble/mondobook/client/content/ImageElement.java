@@ -24,7 +24,7 @@ public class ImageElement extends Element
 	@Override
 	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
 	{
-		return this.getStyle().getSingleStyledDrawable(new ImageData.ImageDrawable(this.image, this.getStyle()));
+		return this.getStyle().getSingleStyledDrawable(new ImageData.ImageDrawable(this.image, this.getStyle()), containerWidth);
 	}
 
 }

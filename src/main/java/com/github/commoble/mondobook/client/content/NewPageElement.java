@@ -7,6 +7,7 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
+import com.github.commoble.mondobook.client.api.internal.DrawableWithOffset;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.google.common.collect.ImmutableList;
 
@@ -49,14 +50,15 @@ public class NewPageElement extends Element
 		}
 
 		@Override
-		public void renderTooltip(DrawableRenderer renderer, int startX, int startY, int maxWidth, int mouseX, int mouseY)
-		{
-		}
-
-		@Override
 		public Optional<BookStyle> getStyle()
 		{
 			return Optional.empty();
+		}
+
+		@Override
+		public List<DrawableWithOffset> getChildren()
+		{
+			return ImmutableList.of();
 		}
 	});
 }

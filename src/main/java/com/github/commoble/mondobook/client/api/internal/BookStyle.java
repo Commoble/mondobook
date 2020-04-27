@@ -105,11 +105,15 @@ public class BookStyle
 		return totalWidth - this.margins.left - this.margins.right - this.borders.getSizes().left - this.borders.getSizes().right;
 	}
 	
-	public List<Drawable> getSingleStyledDrawable(Drawable drawable)
+	public List<Drawable> getSingleStyledDrawable(Drawable drawable, int containerWidth)
 	{
+		int widthForAlignedDrawable = this.getInteriorWidth(containerWidth);
+		
+//		return ImmutableList.of(new AlignedPaddedDrawable(this.getAlignment(), this.getMargins(), this.getBorders(),
+//			drawable, containerWidth));
 		return ImmutableList.of(
 			PaddedDrawable.of(
-				this.getMargins(), this.getBorders(), AlignedDrawable.of(this.getAlignment(), drawable)));
+				this.getMargins(), this.getBorders(), containerWidth, AlignedDrawable.of(this.getAlignment(), drawable, widthForAlignedDrawable)));
 	}
 	
 	/**
@@ -119,7 +123,7 @@ public class BookStyle
 	 * The following style properties are applied: Alignment, borders, margins.
 	 * Other styling is left up to the individual drawables.
 	 */
-	public <T> List<Drawable> styleMultipleDrawables(List<T> sources, BiFunction<T, BookStyle, Drawable> factory)
+	public <T> List<Drawable> styleMultipleDrawables(List<T> sources, BiFunction<T, BookStyle, Drawable> factory, int containerWidth)
 	{
 		int sourceSize = sources.size();
 		if (sourceSize < 1)
@@ -132,7 +136,7 @@ public class BookStyle
 		
 		if (sourceSize == 1)
 		{
-			return ImmutableList.of(PaddedDrawable.of(padding, this.borders, AlignedDrawable.of(alignment, factory.apply(sources.get(0), this))));
+			return this.getSingleStyledDrawable(factory.apply(sources.get(0), this), containerWidth);
 		}
 		
 		// the first line has the top border and padding, but not the bottom
@@ -146,10 +150,19 @@ public class BookStyle
 		SideSizes lastPadding = padding.without(BoxSide.TOP);
 		Borders lastBorders = this.borders.without(BoxSide.TOP);
 		
+		int widthForFirstAlignedDrawable = containerWidth - firstPadding.left - firstPadding.right - firstBorders.getSizes().left - firstBorders.getSizes().right;
+		int widthForMiddleAlignedDrawables = containerWidth - middlePadding.left - middlePadding.right - middleBorders.getSizes().left - middleBorders.getSizes().right;
+		int widthForLastAlignedDrawable = containerWidth - lastPadding.left - lastPadding.right - lastBorders.getSizes().left - lastBorders.getSizes().right;
+		
 		return ListUtil.mapFirstMiddleLast(sources,
-			x -> PaddedDrawable.of(firstPadding, firstBorders, AlignedDrawable.of(alignment, factory.apply(x, this))),
-			x -> PaddedDrawable.of(middlePadding, middleBorders, AlignedDrawable.of(alignment, factory.apply(x, this))),
-			x -> PaddedDrawable.of(lastPadding, lastBorders, AlignedDrawable.of(alignment, factory.apply(x, this))));
+//			x -> new AlignedPaddedDrawable(alignment, firstPadding, firstBorders, factory.apply(x, this), widthForFirstAlignedDrawable),
+//			x -> new AlignedPaddedDrawable(alignment, middlePadding, middleBorders, factory.apply(x, this), widthForMiddleAlignedDrawables),
+//			x -> new AlignedPaddedDrawable(alignment, lastPadding, lastBorders, factory.apply(x, this), widthForLastAlignedDrawable));
+			
+			
+			x -> PaddedDrawable.of(firstPadding, firstBorders, containerWidth, AlignedDrawable.of(alignment, factory.apply(x, this), widthForFirstAlignedDrawable)),
+			x -> PaddedDrawable.of(middlePadding, middleBorders, containerWidth, AlignedDrawable.of(alignment, factory.apply(x, this), widthForMiddleAlignedDrawables)),
+			x -> PaddedDrawable.of(lastPadding, lastBorders, containerWidth, AlignedDrawable.of(alignment, factory.apply(x, this), widthForLastAlignedDrawable)));
 	
 	}
 }
