@@ -3,5 +3,9 @@
 	[
 		"mondobook:lorem_ipsum",
 		"mondobook:debug"
+	],
+	"redstone":
+	[
+		"mondobook:debug"
 	]
 }

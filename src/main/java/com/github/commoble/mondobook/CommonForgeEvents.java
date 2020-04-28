@@ -12,6 +12,5 @@ public class CommonForgeEvents
 	
 	public static void onServerAboutToStart(FMLServerAboutToStartEvent event)
 	{
-//		event.getServer().getResourceManager().addReloadListener(new BookDataManager());
 	}
 }

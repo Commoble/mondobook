@@ -1,3 +1,5 @@
 {
-	"item.mondobook.mondobook": "Mondobook"
+	"item.mondobook.mondobook": "Mondobook",
+	"item.mondobook.title.mondobook.lorem_ipsum": "Lorem Ipsum",
+	"item.mondobook.title.mondobook.debug": "Debug Book"
 }
