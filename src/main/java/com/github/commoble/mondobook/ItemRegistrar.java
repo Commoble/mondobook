@@ -27,5 +27,5 @@ public class ItemRegistrar
 		ITEMS.register(modBus);
 	}
 	public static final RegistryObject<MondobookItem> MONDOBOOK = ITEMS.register(ObjectNames.MONDO_BOOK, () ->
-		new MondobookItem(new Item.Properties().group(MONDOBOOK_TAB)));
+		new MondobookItem(new Item.Properties()));
 }
