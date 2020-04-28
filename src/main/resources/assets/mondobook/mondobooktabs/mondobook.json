@@ -1,11 +1,7 @@
 {
-	"misc":
+	"mondobook":
 	[
 		"mondobook:lorem_ipsum",
-		"mondobook:debug"
-	],
-	"redstone":
-	[
-		"mondobook:debug"
+		"mondobook:debug_book"
 	]
 }
