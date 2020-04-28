@@ -33,7 +33,8 @@ public abstract class Element
 			.collect(Collectors.toList());
 	}
 	
-	public abstract List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth);
+	/** if shrinkwrap is true, alignment will be ignored **/
+	public abstract List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap);
 	
 	public ResourceLocation getTypeID()
 	{
@@ -75,7 +76,7 @@ public abstract class Element
 	public static final Element NONE = new Element(ElementPrimer.NONE)
 	{
 		@Override
-		public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+		public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 		{
 			return ImmutableList.of();
 		}

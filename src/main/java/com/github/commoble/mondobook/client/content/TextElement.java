@@ -27,7 +27,7 @@ public class TextElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
 		BookStyle style = this.getStyle();
 		SideSizes padding = style.getMargins();
@@ -56,6 +56,6 @@ public class TextElement extends Element
 //			text -> PaddedDrawable.of(middlePadding, middleBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))),
 //			text -> PaddedDrawable.of(lastPadding, lastBorders, AlignedDrawable.of(alignment, TextLineDrawable.of(text,style))));
 		
-		return style.styleMultipleDrawables(lines, TextLineDrawable::of, containerWidth);
+		return style.styleMultipleDrawables(lines, TextLineDrawable::of, containerWidth, shrinkwrap);
 	}
 }

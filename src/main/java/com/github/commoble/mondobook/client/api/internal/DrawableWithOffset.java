@@ -34,7 +34,9 @@ public class DrawableWithOffset
 	{
 		int thisStartX = startX + this.x;
 		int thisStartY = startY + this.y;
-		if (MathUtil.isWithin(mouseX, mouseY, thisStartX, thisStartY, this.drawable.getWidth(), this.drawable.getHeight()))
+		int width = this.drawable.getWidth();
+		int height = this.drawable.getHeight();
+		if (MathUtil.isWithin(mouseX, mouseY, thisStartX, thisStartY, width, height))
 		{
 			return this.drawable.renderTooltips(renderer, startX + this.x, startY + this.y, mouseX, mouseY);
 		}

@@ -18,7 +18,7 @@ public class RowElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
 		int columnWidth = containerWidth / this.getChildren().size();	// TODO how to style or shrinkwrap this?
 		
@@ -26,11 +26,11 @@ public class RowElement extends Element
 			.map(childElement -> this.getChildDrawable(childElement, renderer, columnWidth))
 			.collect(Collectors.toList());
 		
-		return this.getStyle().getSingleStyledDrawable(new RowDrawable(columns), containerWidth);
+		return this.getStyle().getSingleStyledDrawable(new RowDrawable(columns), containerWidth, shrinkwrap);
 	}
 
 	protected Drawable getChildDrawable(Element childElement, DrawableRenderer renderer, int columnWidth)
-	{
-		return new ColumnDrawable(childElement.getColumnOfDrawables(renderer, columnWidth));
+	{	// TODO reconsider shrinkwrap
+		return new ColumnDrawable(childElement.getColumnOfDrawables(renderer, columnWidth, true));
 	}
 }

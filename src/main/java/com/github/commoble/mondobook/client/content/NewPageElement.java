@@ -19,7 +19,7 @@ public class NewPageElement extends Element
 	}
 	
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
 		return NEW_PAGE_DRAWABLE;
 	}
@@ -44,7 +44,7 @@ public class NewPageElement extends Element
 		}
 		
 		@Override
-		public boolean canAddToList(List<Drawable> drawables)
+		public boolean canAddToList(List<DrawableWithOffset> drawables)
 		{
 			return drawables.size() == 0;
 		}

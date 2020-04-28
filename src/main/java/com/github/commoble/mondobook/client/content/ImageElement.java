@@ -22,9 +22,9 @@ public class ImageElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
-		return this.getStyle().getSingleStyledDrawable(new ImageData.ImageDrawable(this.image, this.getStyle()), containerWidth);
+		return this.getStyle().getSingleStyledDrawable(new ImageData.ImageDrawable(this.image, this.getStyle()), containerWidth, shrinkwrap);
 	}
 
 }

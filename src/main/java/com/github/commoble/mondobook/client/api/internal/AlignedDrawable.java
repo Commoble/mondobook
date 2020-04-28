@@ -10,8 +10,9 @@ import com.google.common.collect.ImmutableList;
 public class AlignedDrawable implements Drawable
 {
 	private final Alignment alignment;
-	private final Drawable drawable;
 	private final List<DrawableWithOffset> children;
+	private final int width;
+	private final int height;
 	
 	public static AlignedDrawable of(Alignment alignment, Drawable drawable, int containerWidth)
 	{
@@ -20,11 +21,12 @@ public class AlignedDrawable implements Drawable
 	
 	private AlignedDrawable(Alignment alignment, Drawable drawable, int containerWidth)
 	{
-		this.drawable = drawable;
 		this.alignment = alignment;
 		int childWidth = drawable.getWidth();
 		int alignedStartX = this.alignment.getLeft(0, 0 + containerWidth, childWidth);
 		this.children = ImmutableList.of(new DrawableWithOffset(alignedStartX, 0, childWidth, drawable));
+		this.height = drawable.getHeight();
+		this.width = drawable.getWidth() + alignedStartX;
 	}
 	
 	@Override
@@ -37,13 +39,13 @@ public class AlignedDrawable implements Drawable
 	@Override
 	public int getHeight()
 	{
-		return this.drawable.getHeight();
+		return this.height;
 	}
 
 	@Override
 	public int getWidth()
 	{
-		return this.drawable.getWidth();
+		return this.width;
 	}
 
 	@Override

@@ -20,8 +20,9 @@ public class PaddedDrawable implements Drawable
 	private int leftBorder;
 	private int rightBorder;
 	private int borderColor;
-	private final Drawable drawable;
 	private final List<DrawableWithOffset> children;
+	private final int height;
+	private final int width;
 	
 	public static PaddedDrawable withoutPadding(Drawable drawable, int containerWidth)
 	{
@@ -48,14 +49,20 @@ public class PaddedDrawable implements Drawable
 		this.leftBorder = leftBorder;
 		this.rightBorder = rightBorder;
 		this.borderColor = borderColor;
-		this.drawable = drawable;
 		
 		int totalLeftPadding = this.leftPadding + this.leftBorder;
 		int totalRightPadding = this.rightPadding + this.rightBorder;
 		int totalTopPadding = this.topPadding + this.topBorder;
-		int totalWidthPadding = totalLeftPadding + totalRightPadding;
+		int totalBottomPadding = this.bottomPadding + this.bottomBorder;
 		
-		this.children = ImmutableList.of(new DrawableWithOffset(totalLeftPadding, totalTopPadding, containerWidth - totalWidthPadding, drawable));
+		int totalWidthPadding = totalLeftPadding + totalRightPadding;
+		int totalHeightPadding = totalTopPadding + totalBottomPadding;
+		
+		this.height = drawable.getHeight() + totalHeightPadding;
+		this.width = drawable.getWidth() + totalWidthPadding;
+		
+		this.children = ImmutableList.of(new DrawableWithOffset(totalLeftPadding, totalTopPadding, this.width, drawable));
+		
 	}
 
 	@Override
@@ -92,13 +99,13 @@ public class PaddedDrawable implements Drawable
 	@Override
 	public int getHeight()
 	{
-		return this.drawable.getHeight() + this.topPadding + this.topBorder + this.bottomPadding + this.bottomBorder;
+		return this.height;
 	}
 
 	@Override
 	public int getWidth()
 	{
-		return this.drawable.getWidth() + this.leftPadding + this.leftBorder + this.rightPadding + this.rightBorder;
+		return this.width;
 	}
 
 	@Override

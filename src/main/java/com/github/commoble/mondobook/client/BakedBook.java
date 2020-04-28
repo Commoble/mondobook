@@ -25,7 +25,7 @@ public class BakedBook
 		Deque<Drawable> drawables = new ArrayDeque<>();
 		
 		List<Element> bakedElements = rawBook.getBakedElements();
-		bakedElements.forEach(element -> drawables.addAll(element.getColumnOfDrawables(renderer, maxLineWidth)));
+		bakedElements.forEach(element -> drawables.addAll(element.getColumnOfDrawables(renderer, maxLineWidth, false)));
 
 		PageBuilder builder = new PageBuilder(pageHeightInPixels, maxLineWidth);
 		while (!drawables.isEmpty())

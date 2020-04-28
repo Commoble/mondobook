@@ -17,11 +17,11 @@ public class ColumnElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
 		int interiorSpace = this.getStyle().getInteriorWidth(containerWidth);
 		return this.getStyle().styleMultipleDrawables(this.getChildren(),
-			(childElement, parentStyle) -> new ColumnDrawable(childElement.getColumnOfDrawables(renderer, interiorSpace)), containerWidth);
+			(childElement, parentStyle) -> new ColumnDrawable(childElement.getColumnOfDrawables(renderer, interiorSpace, false)), containerWidth, shrinkwrap);
 	}
 
 

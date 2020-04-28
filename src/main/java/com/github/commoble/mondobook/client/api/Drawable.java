@@ -111,7 +111,7 @@ public interface Drawable
 	 * The page builder checks this first before comparing the height of this drawable to the height of the list.
 	 * If the given list is empty, this will not be called (to avoid infinite loops)
 	 */
-	default public boolean canAddToList(List<Drawable> drawables)
+	default public boolean canAddToList(List<DrawableWithOffset> drawables)
 	{
 		return true;
 	}

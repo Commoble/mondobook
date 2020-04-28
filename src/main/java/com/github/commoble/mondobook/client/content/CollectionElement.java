@@ -21,14 +21,14 @@ public class CollectionElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
 		BookStyle style = this.getStyle();
 		List<Element> children = this.getChildren();
 		
 		int interiorWidth = style.getInteriorWidth(containerWidth);
 		
-		List<Drawable> cells = ListUtil.map(children, (child -> new ColumnDrawable(child.getColumnOfDrawables(renderer, interiorWidth))));
+		List<Drawable> cells = ListUtil.map(children, (child -> new ColumnDrawable(child.getColumnOfDrawables(renderer, interiorWidth, true))));
 		
 		if (cells.isEmpty())
 		{
@@ -47,7 +47,7 @@ public class CollectionElement extends Element
 			cellsPerRow = 1;
 		}
 		
-		return style.styleMultipleDrawables(Lists.partition(cells, cellsPerRow), (list, parentStyle) -> new RowDrawable(list), containerWidth);
+		return style.styleMultipleDrawables(Lists.partition(cells, cellsPerRow), (list, parentStyle) -> new RowDrawable(list), containerWidth, shrinkwrap);
 	}
 
 }

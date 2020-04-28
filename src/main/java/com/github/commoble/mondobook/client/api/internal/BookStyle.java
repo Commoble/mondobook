@@ -105,15 +105,17 @@ public class BookStyle
 		return totalWidth - this.margins.left - this.margins.right - this.borders.getSizes().left - this.borders.getSizes().right;
 	}
 	
-	public List<Drawable> getSingleStyledDrawable(Drawable drawable, int containerWidth)
+	public List<Drawable> getSingleStyledDrawable(Drawable drawable, int containerWidth, boolean shrinkwrap)
 	{
 		int widthForAlignedDrawable = this.getInteriorWidth(containerWidth);
+		
+		Alignment alignment = shrinkwrap ? Alignment.LEFT : this.getAlignment();
 		
 //		return ImmutableList.of(new AlignedPaddedDrawable(this.getAlignment(), this.getMargins(), this.getBorders(),
 //			drawable, containerWidth));
 		return ImmutableList.of(
 			PaddedDrawable.of(
-				this.getMargins(), this.getBorders(), containerWidth, AlignedDrawable.of(this.getAlignment(), drawable, widthForAlignedDrawable)));
+				this.getMargins(), this.getBorders(), containerWidth, AlignedDrawable.of(alignment, drawable, widthForAlignedDrawable)));
 	}
 	
 	/**
@@ -123,7 +125,7 @@ public class BookStyle
 	 * The following style properties are applied: Alignment, borders, margins.
 	 * Other styling is left up to the individual drawables.
 	 */
-	public <T> List<Drawable> styleMultipleDrawables(List<T> sources, BiFunction<T, BookStyle, Drawable> factory, int containerWidth)
+	public <T> List<Drawable> styleMultipleDrawables(List<T> sources, BiFunction<T, BookStyle, Drawable> factory, int containerWidth, boolean shrinkwrap)
 	{
 		int sourceSize = sources.size();
 		if (sourceSize < 1)
@@ -132,11 +134,10 @@ public class BookStyle
 		}
 		
 		SideSizes padding = this.getMargins();
-		Alignment alignment = this.getAlignment();
 		
 		if (sourceSize == 1)
 		{
-			return this.getSingleStyledDrawable(factory.apply(sources.get(0), this), containerWidth);
+			return this.getSingleStyledDrawable(factory.apply(sources.get(0), this), containerWidth, shrinkwrap);
 		}
 		
 		// the first line has the top border and padding, but not the bottom
@@ -149,6 +150,8 @@ public class BookStyle
 		Borders middleBorders = firstBorders.without(BoxSide.TOP);
 		SideSizes lastPadding = padding.without(BoxSide.TOP);
 		Borders lastBorders = this.borders.without(BoxSide.TOP);
+		
+		Alignment alignment = shrinkwrap ? Alignment.LEFT : this.getAlignment();
 		
 		int widthForFirstAlignedDrawable = containerWidth - firstPadding.left - firstPadding.right - firstBorders.getSizes().left - firstBorders.getSizes().right;
 		int widthForMiddleAlignedDrawables = containerWidth - middlePadding.left - middlePadding.right - middleBorders.getSizes().left - middleBorders.getSizes().right;

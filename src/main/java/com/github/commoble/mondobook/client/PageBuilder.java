@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.commoble.mondobook.client.api.Drawable;
-import com.github.commoble.mondobook.client.api.internal.OffsetDrawable;
+import com.github.commoble.mondobook.client.api.internal.DrawableWithOffset;
 
 public class PageBuilder
 {
@@ -13,7 +13,7 @@ public class PageBuilder
 	private final int maxPixelHeight;
 	private final int maxPixelWidth;
 
-	private final List<Drawable> children = new ArrayList<>();
+	private final List<DrawableWithOffset> children = new ArrayList<>();
 
 	public PageBuilder(int maxPixelHeight, int maxPixelWidth)
 	{
@@ -33,7 +33,8 @@ public class PageBuilder
 
 	public void addDrawable(Drawable drawable)
 	{
-		this.children.add(new OffsetDrawable(0, this.currentHeight, this.maxPixelWidth, drawable));
+		this.children.add(new DrawableWithOffset(0, this.currentHeight, this.maxPixelWidth, drawable));
+//		this.children.add(new OffsetDrawable(0, this.currentHeight, this.maxPixelWidth, drawable));
 		this.currentHeight += drawable.getHeight();
 	}
 

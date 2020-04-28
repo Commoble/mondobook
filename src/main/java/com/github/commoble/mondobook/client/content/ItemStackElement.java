@@ -33,9 +33,9 @@ public class ItemStackElement extends Element
 	}
 
 	@Override
-	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth)
+	public List<Drawable> getColumnOfDrawables(DrawableRenderer renderer, int containerWidth, boolean shrinkwrap)
 	{
-		return this.getStyle().getSingleStyledDrawable(new ItemStackDrawable(this.stack, this.getStyle()), containerWidth);
+		return this.getStyle().getSingleStyledDrawable(new ItemStackDrawable(this.stack, this.getStyle()), containerWidth, shrinkwrap);
 	}
 
 }

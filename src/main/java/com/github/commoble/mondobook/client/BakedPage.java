@@ -7,19 +7,18 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.internal.BookStyle;
 import com.github.commoble.mondobook.client.api.internal.DrawableWithOffset;
-import com.github.commoble.mondobook.util.ListUtil;
 
 public class BakedPage implements Drawable
 {
-//	private final int width;
+	private final int width;
 	private final int height;
 	private final List<DrawableWithOffset> children;
 	
-	public BakedPage(int width, int height, List<Drawable> children)
+	public BakedPage(int width, int height, List<DrawableWithOffset> children)
 	{
-//		this.width = width;
+		this.width = width;
 		this.height = height;
-		this.children = ListUtil.map(children, child -> new DrawableWithOffset(0,0,width,child));
+		this.children = children;
 	}
 	
 	@Override
@@ -37,7 +36,7 @@ public class BakedPage implements Drawable
 	@Override
 	public int getWidth()
 	{
-		return this.height;
+		return this.width;
 	}
 
 	@Override
