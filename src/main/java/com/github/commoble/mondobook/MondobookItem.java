@@ -41,7 +41,7 @@ public class MondobookItem extends Item
 
 	public static ItemStack makeItemStackForBookTitle(String title)
 	{
-		ItemStack stack = new ItemStack(ItemRegistrar.LORE_BOOK.get());
+		ItemStack stack = new ItemStack(ItemRegistrar.MONDOBOOK.get());
 		stack.setTagInfo(BOOK, StringNBT.valueOf(title));
 		return stack;
 	}

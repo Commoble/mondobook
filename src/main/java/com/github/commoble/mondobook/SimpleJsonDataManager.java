@@ -113,7 +113,7 @@ public class SimpleJsonDataManager<T> extends JsonReloadListener
 
 	
 	/** The raw data that we parsed from json last time resources were reloaded **/
-	protected Map<ResourceLocation, T> data = new HashMap<>();
+	public Map<ResourceLocation, T> data = new HashMap<>();
 	
 	private final Class<T> dataClass;
 	
