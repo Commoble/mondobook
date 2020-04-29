@@ -7,7 +7,6 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
-import com.github.commoble.mondobook.client.api.internal.ItemStackDrawable;
 import com.github.commoble.mondobook.util.ExceptionUtil;
 
 import net.minecraft.item.ItemStack;

@@ -30,6 +30,19 @@ public class DrawableWithOffset
 		this.drawable.render(renderer, startX + this.x, startY + this.y, this.containerWidth, mouseX, mouseY);
 	}
 	
+	public boolean onClick(DrawableRenderer renderer, int startX, int startY, int mouseX, int mouseY)
+	{
+		int thisStartX = startX + this.x;
+		int thisStartY = startY + this.y;
+		int width = this.drawable.getWidth();
+		int height = this.drawable.getHeight();
+		if (MathUtil.isWithin(mouseX, mouseY, thisStartX, thisStartY, width, height))
+		{
+			return this.drawable.handleClicks(renderer, startX + this.x, startY + this.y, mouseX, mouseY);
+		}
+		return false;
+	}
+	
 	public boolean renderTooltip(DrawableRenderer renderer, int startX, int startY, int mouseX, int mouseY)
 	{
 		int thisStartX = startX + this.x;

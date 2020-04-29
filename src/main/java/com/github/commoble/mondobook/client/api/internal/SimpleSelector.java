@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.client.api.Specificity;
 
 public class SimpleSelector extends Selector
 {

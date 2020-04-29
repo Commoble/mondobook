@@ -3,6 +3,7 @@ package com.github.commoble.mondobook.client.api;
 import com.github.commoble.mondobook.client.api.internal.ElementPrimer;
 import com.github.commoble.mondobook.client.api.internal.RawSelector;
 import com.github.commoble.mondobook.client.api.internal.SimpleSelector;
+import com.github.commoble.mondobook.client.api.internal.Specificity;
 import com.github.commoble.mondobook.client.content.Selectors;
 
 public class AssetFactories

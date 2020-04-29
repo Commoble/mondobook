@@ -1,4 +1,4 @@
-package com.github.commoble.mondobook.client.api;
+package com.github.commoble.mondobook.client.api.internal;
 
 /**
  * CSS-like style selector specificity. Selectors are to be compared based on the

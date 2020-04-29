@@ -25,7 +25,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 	public static final int TEXT_START = 36;
 	public static final int TEXT_END = 150;
-	public static final int TEXT_WIDTH = TEXT_END - TEXT_START;
+	public static final int CONTENT_WIDTH = TEXT_END - TEXT_START;
 	public static final int BOOK_TEXTURE_START_X = 26;
 	public static final int BOOK_TEXTURE_END_X = 166;
 	public static final int BOOK_TEXTURE_START_Y = 1;
@@ -37,7 +37,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	public static final int LEFT_PAGE_OFFSET = BOOK_TEXTURE_WIDTH;
 	public static final int RIGHTWARD_SHIFT = LEFT_PAGE_OFFSET / 2;
 //	public static final int MAX_LINES_ON_PAGE = 14;
-	public static final int PAGE_TEXT_START = 32;
+	public static final int CONTENT_START_Y = 32;
 //	public static final int LINE_HEIGHT = 9;
 	public static final int PAGE_HEIGHT_IN_PIXELS = 128;	// the space we can put page content into
 	public static final int TEXT_OFFSET_FROM_BOOK_CENTER = 10;
@@ -65,7 +65,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	protected void init()
 	{
 		super.init();
-		this.book = new BakedBook(AssetManagers.BOOK_DATA.getData(this.bookID), PAGE_HEIGHT_IN_PIXELS, TEXT_WIDTH, this);
+		this.book = new BakedBook(AssetManagers.BOOK_DATA.getData(this.bookID), PAGE_HEIGHT_IN_PIXELS, CONTENT_WIDTH, this);
 		this.addDoneButton();
 		this.addChangePageButtons();
 	}
@@ -168,6 +168,18 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	}
 
 	@Override
+	public boolean mouseClicked(double x, double y, int clickID)
+	{
+		super.mouseClicked(x, y, clickID);
+		
+		int bookCenter = this.width / 2;
+		int leftPageXStart = bookCenter - CONTENT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER;
+		int rightPageXStart = bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER;
+		return this.cachedPageDrawables.getLeft().handleClicks(this, leftPageXStart, CONTENT_START_Y, (int)x, (int)y)
+			|| this.cachedPageDrawables.getRight().handleClicks(this, rightPageXStart, CONTENT_START_Y, (int)x, (int)y);
+	}
+
+	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
 		this.renderBackground();
@@ -209,11 +221,11 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		RenderSystem.popMatrix();
 
 		// draw the page number displays
-		MatchedPair<Integer> pageNumberOffsets = MatchedPair.of(screenX + RIGHTWARD_SHIFT - TEXT_WIDTH,
+		MatchedPair<Integer> pageNumberOffsets = MatchedPair.of(screenX + RIGHTWARD_SHIFT - CONTENT_WIDTH,
 			screenX + RIGHTWARD_SHIFT / 2 - pageNumberWidths.getRight() + PAGE_NUMBER_END);
 		pageNumberStrings.consumeWith(pageNumberOffsets, (string, offset) -> this.font.drawString(string, offset, PAGE_NUMBER_Y_START, BLACK));
 
-		MatchedPair<Integer> pageTextOffsets = MatchedPair.of(bookCenter - TEXT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER, bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER);
+		MatchedPair<Integer> pageTextOffsets = MatchedPair.of(bookCenter - CONTENT_WIDTH - TEXT_OFFSET_FROM_BOOK_CENTER, bookCenter + TEXT_OFFSET_FROM_BOOK_CENTER);
 
 
 		this.cachedPageDrawables.consumeWith(pageTextOffsets,
@@ -232,8 +244,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 	protected void drawPageDrawables(Drawable drawables, int xOffset, int mouseX, int mouseY)
 	{
-		drawables.render(this, xOffset, PAGE_TEXT_START, TEXT_WIDTH, mouseX, mouseY);
-		drawables.renderTooltips(this, xOffset, PAGE_TEXT_START, mouseX, mouseY);
+		drawables.render(this, xOffset, CONTENT_START_Y, CONTENT_WIDTH, mouseX, mouseY);
+		drawables.renderTooltips(this, xOffset, CONTENT_START_Y, mouseX, mouseY);
 	}
 
 	public Drawable getPageDrawables(int page)

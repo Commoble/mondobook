@@ -52,6 +52,30 @@ public interface Drawable
 	}
 	
 	/**
+	 * Return TRUE if a tooltip was rendered, FALSE otherwise.
+	 * The mouse position has been verified to be within the bounds of this drawable.
+	 * @return
+	 */
+	default boolean renderOwnTooltip(DrawableRenderer renderer, int mouseX, int mouseY)
+	{
+		return false;
+	}
+	
+	default boolean handleClicks(DrawableRenderer renderer, int startX, int startY, int mouseX, int mouseY)
+	{
+		boolean handledChildClick = this.getChildren().stream()
+			.map(child -> child.onClick(renderer, startX, startY, mouseX, mouseY))
+			.reduce(false, (a,b) -> a||b);
+		
+		return handledChildClick || this.handleOwnClick(renderer, mouseX, mouseY);
+	}
+	
+	default boolean handleOwnClick(DrawableRenderer renderer, int mouseX, int mouseY)
+	{
+		return false;
+	}
+	
+	/**
 	 * If this is overridden to return a present style, will fill in the background and hover colors.
 	 **/ 
 	public Optional<BookStyle> getStyle();
@@ -95,16 +119,6 @@ public interface Drawable
 	
 	/** The width in pixels that this thing takes up when rendered **/
 	public int getWidth();
-	
-	/**
-	 * Return TRUE if a tooltip was rendered, FALSE otherwise.
-	 * The mouse position has been verified to be within the bounds of this drawable.
-	 * @return
-	 */
-	default boolean renderOwnTooltip(DrawableRenderer renderer, int mouseX, int mouseY)
-	{
-		return false;
-	}
 	
 	/**
 	 * If this returns false, the drawable cannot be added to the given list.

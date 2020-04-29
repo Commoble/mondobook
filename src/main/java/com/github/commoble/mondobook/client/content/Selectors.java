@@ -2,7 +2,7 @@ package com.github.commoble.mondobook.client.content;
 
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.Selector;
-import com.github.commoble.mondobook.client.api.Specificity;
+import com.github.commoble.mondobook.client.api.internal.Specificity;
 
 /** Methods to use with SimpleSelector for matching styles to elements **/
 public class Selectors
