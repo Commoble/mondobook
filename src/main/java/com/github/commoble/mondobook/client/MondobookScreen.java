@@ -3,14 +3,18 @@ package com.github.commoble.mondobook.client;
 import java.util.List;
 import java.util.Optional;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.util.KeyUtil;
+import com.github.commoble.mondobook.client.util.PageDirection;
 import com.github.commoble.mondobook.util.MatchedPair;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
@@ -18,6 +22,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -175,16 +180,35 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		}
 		else
 		{
-			switch (KeyUtil.getKeyDirection(key))
+			PageDirection direction = KeyUtil.getKeyDirection(key);
+			boolean isShiftHeld = (GLFW.GLFW_MOD_SHIFT & modifiers) > 0;
+			if (isShiftHeld)
 			{
-				case LEFT:
-					this.buttonPreviousPage.onPress();
-					return true;
-				case RIGHT:
-					this.buttonNextPage.onPress();
-					return true;
-				default:
-					return false;
+				switch(direction)
+				{
+					case LEFT:
+						this.backButton.onPress();
+						return true;
+					case RIGHT:
+						this.forwardButton.onPress();
+						return true;
+					default:
+						return false;
+				}
+			}
+			else
+			{
+				switch (direction)
+				{
+					case LEFT:
+						this.buttonPreviousPage.onPress();
+						return true;
+					case RIGHT:
+						this.buttonNextPage.onPress();
+						return true;
+					default:
+						return false;
+				}
 			}
 		}
 	}
@@ -355,6 +379,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	{
 		MondobookScreen newScreen = new MondobookScreen(bookID, Optional.of(this), Optional.empty());
 		this.forwardScreen = Optional.of(newScreen);
+		this.getMinecraft().getSoundHandler().play(SimpleSound.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
 		this.forward();
 	}
 }
