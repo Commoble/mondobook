@@ -127,6 +127,14 @@
 				"type": "mondobook:class",
 				"match": "bordered"
 			}
+		},
+		{
+			"open_book_on_click": "mondobook:sub_book_test",
+			"selector":
+			{
+				"type": "mondobook:class",
+				"match": "potion"
+			}
 		}
 	],
 	"body":
@@ -218,6 +226,7 @@
 		{
 			"type": "mondobook:item",
 			"data": "minecraft:potion",
+			"classes": ["potion"],
 			"attributes": {"tag": "{Potion:\"minecraft:fire_resistance\"}"}
 		},
 		{

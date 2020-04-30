@@ -66,6 +66,7 @@ public class RawStyle
 	private String background_color;
 	private String foreground_hover_color;
 	private String background_hover_color;
+	private String open_book_on_click;	// subbook to open when clicked
 	
 	public Selector getSelector()
 	{
@@ -119,6 +120,7 @@ public class RawStyle
 		private @Nullable String backgroundColor;
 		private @Nullable String foregroundHoverColor;
 		private @Nullable String backgroundHoverColor;
+		private @Nullable String openBookOnClick;
 		
 		public StyleBuilder() {}
 		
@@ -175,6 +177,10 @@ public class RawStyle
 			{
 				this.backgroundHoverColor = style.background_hover_color;
 			}
+			if (style.open_book_on_click != null)
+			{
+				this.openBookOnClick = style.open_book_on_click;
+			}
 			
 			return this;
 		}
@@ -191,7 +197,8 @@ public class RawStyle
 		{
 			return new BookStyle(this.buildFont(), this.buildTextStyle(), this.buildTextColor(),
 				this.buildMargins(), this.buildAlignment(), this.buildBorders(), this.buildBackgroundImage(),
-				this.buildBackgroundColor(), this.buildForegroundHoverColor(), this.buildBackgroundHoverColor());
+				this.buildBackgroundColor(), this.buildForegroundHoverColor(), this.buildBackgroundHoverColor(),
+				this.buildSubBook());
 		}
 		
 		private Alignment buildAlignment()
@@ -293,6 +300,12 @@ public class RawStyle
 		private int buildBackgroundHoverColor()
 		{
 			return this.getColorOrInvisibleIfNull(this.backgroundHoverColor);
+		}
+		
+		private Optional<ResourceLocation> buildSubBook()
+		{
+			return Optional.ofNullable(this.openBookOnClick)
+				.map(ResourceLocation::new);
 		}
 		
 		/** if colorString is null, returns a 0-alpha color **/

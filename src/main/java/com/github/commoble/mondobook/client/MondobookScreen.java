@@ -1,6 +1,7 @@
 package com.github.commoble.mondobook.client;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Drawable;
@@ -9,6 +10,7 @@ import com.github.commoble.mondobook.client.util.KeyUtil;
 import com.github.commoble.mondobook.util.MatchedPair;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ChangePageButton;
@@ -30,6 +32,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	public static final int BOOK_TEXTURE_END_X = 166;
 	public static final int BOOK_TEXTURE_START_Y = 1;
 	public static final int BOOK_TEXTURE_END_Y = 180;
+	public static final int BOOK_START_ON_SCREEN_Y = 2;
 	public static final int BOOK_TEXTURE_WIDTH = BOOK_TEXTURE_END_X - BOOK_TEXTURE_START_X;
 	public static final int BOOK_TEXTURE_HEIGHT = BOOK_TEXTURE_END_Y - BOOK_TEXTURE_START_Y;
 	public static final int PAGE_NUMBER_END = 148;
@@ -45,6 +48,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 	private ChangePageButton buttonNextPage;
 	private ChangePageButton buttonPreviousPage;
+	private Button backButton;
+	private Button forwardButton;
 
 	private int cachedPage = -1; // the left page!
 	private int currentPage = 0; // also the left page
@@ -53,11 +58,15 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 	private final ResourceLocation bookID;
 	private BakedBook book;
+	private Optional<MondobookScreen> backScreen;
+	private Optional<MondobookScreen> forwardScreen;
 
-	public MondobookScreen(ResourceLocation bookID)
+	public MondobookScreen(ResourceLocation bookID, Optional<MondobookScreen> backScreen, Optional<MondobookScreen> forwardScreen)
 	{
 		super(new TranslationTextComponent(bookID.toString()));
 		this.bookID = bookID;
+		this.backScreen = backScreen;
+		this.forwardScreen = forwardScreen;
 	}
 
 	// called by Minecraft after the screen is constructed and its font has been set
@@ -68,6 +77,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		this.book = new BakedBook(AssetManagers.BOOK_DATA.getData(this.bookID), PAGE_HEIGHT_IN_PIXELS, CONTENT_WIDTH, this);
 		this.addDoneButton();
 		this.addChangePageButtons();
+		this.addForwardBackButtons();
+		this.updateButtons();
 	}
 
 	// from readBookScreen
@@ -86,7 +97,20 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		this.buttonPreviousPage = this.addButton(new ChangePageButton(i + 43, 159, false, (p_214158_1_) -> {
 			this.previousPage();
 		}, true));
-		this.updateButtons();
+	}
+	
+	protected void addForwardBackButtons()
+	{
+		int center = (this.width/2);
+		int buttonWidth = 20;
+		int buttonHeight = 20;
+		int xPadding = 5;
+		int y = (BOOK_START_ON_SCREEN_Y + BOOK_TEXTURE_HEIGHT) / 2 - buttonHeight / 2;
+		int leftX = center - BOOK_TEXTURE_WIDTH - xPadding - buttonWidth;
+		int rightX = center + BOOK_TEXTURE_WIDTH + xPadding;
+		this.backButton = this.addButton(new Button(leftX, y, buttonWidth, buttonHeight, "<-", button -> this.back()));
+		this.forwardButton = this.addButton(new Button(rightX, y, buttonWidth, buttonHeight, "->", button -> this.forward()));
+		
 	}
 
 	/**
@@ -108,6 +132,24 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 
 		this.updateButtons();
 	}
+	
+	public void forward()
+	{
+		this.forwardScreen.ifPresent(screen ->{
+			Minecraft.getInstance().displayGuiScreen(screen);
+			screen.backScreen = Optional.of(this);
+			screen.updateButtons();
+		});
+	}
+	
+	public void back()
+	{
+		this.backScreen.ifPresent(screen ->{
+			Minecraft.getInstance().displayGuiScreen(screen);
+			screen.forwardScreen = Optional.of(this);
+			screen.updateButtons();
+		});
+	}
 
 	// from readBookScreen
 	protected void updateButtons()
@@ -118,6 +160,9 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		// we allow the next page button to be visible if currentPage < (pageCount - 2)
 		this.buttonNextPage.visible = this.currentPage < this.getActualPageCount() - 2;
 		this.buttonPreviousPage.visible = this.currentPage > 0;
+		this.backButton.visible = this.backScreen.isPresent();
+		this.forwardButton.visible = this.forwardScreen.isPresent();
+		
 	}
 
 	// from readBookScreen
@@ -185,7 +230,7 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		this.renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int screenX = (this.width - BOOK_TEXTURE_WIDTH) / 2;
-		int screenY = 2;
+		int screenY = BOOK_START_ON_SCREEN_Y;
 		int imageX = BOOK_TEXTURE_START_X;
 		int imageY = BOOK_TEXTURE_START_Y;
 		int screenWidth = BOOK_TEXTURE_WIDTH;
@@ -303,5 +348,13 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	public void renderItemTooltip(ItemStack stack, int mouseX, int mouseY)
 	{
 		this.renderTooltip(stack, mouseX, mouseY);
+	}
+
+	@Override
+	public void newBook(ResourceLocation bookID)
+	{
+		MondobookScreen newScreen = new MondobookScreen(bookID, Optional.of(this), Optional.empty());
+		this.forwardScreen = Optional.of(newScreen);
+		this.forward();
 	}
 }

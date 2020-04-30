@@ -1,5 +1,6 @@
 package com.github.commoble.mondobook.client;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.github.commoble.mondobook.network.OpenLoreBookS2CPacket;
@@ -21,6 +22,6 @@ public class ClientPacketHandlers
 
 	public static void handleOpenLoreBookPacket(OpenLoreBookS2CPacket packet, Supplier<NetworkEvent.Context> context)
 	{
-		handlePacket(context, () -> Minecraft.getInstance().displayGuiScreen(new MondobookScreen(packet.getBookID())));
+		handlePacket(context, () -> Minecraft.getInstance().displayGuiScreen(new MondobookScreen(packet.getBookID(), Optional.empty(), Optional.empty())));
 	}
 }

@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.util.ResourceLocation;
 
 /** Interface of things that we can render on a book page **/
 public interface Drawable
@@ -72,7 +73,9 @@ public interface Drawable
 	
 	default boolean handleOwnClick(DrawableRenderer renderer, int mouseX, int mouseY)
 	{
-		return false;
+		Optional<ResourceLocation> bookID = this.getStyle().flatMap(BookStyle::getSubBook);
+		bookID.ifPresent(renderer::newBook);
+		return bookID.isPresent();
 	}
 	
 	/**

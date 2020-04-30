@@ -1,0 +1,21 @@
+{
+	"styles":
+	[
+		{
+			"foreground_hover_color": "80FFFFFF",
+			"open_book_on_click": "mondobook:inner_sub_book_test",
+			"selector":
+			{
+				"type": "mondobook:element",
+				"match": "mondobook:text"
+			}
+		}
+	],
+	"body":
+	[
+		{
+			"type": "mondobook:text",
+			"data": "(insert sub-book here)"
+		}
+	]
+}

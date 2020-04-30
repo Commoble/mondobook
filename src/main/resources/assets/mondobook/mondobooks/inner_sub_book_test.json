@@ -1,0 +1,12 @@
+{
+	"styles":
+	[
+	],
+	"body":
+	[
+		{
+			"type": "mondobook:text",
+			"data": "We need to go deeper!"
+		}
+	]
+}

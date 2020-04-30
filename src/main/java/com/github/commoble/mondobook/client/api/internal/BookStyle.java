@@ -28,10 +28,11 @@ public class BookStyle
 	private final int backgroundColor;
 	private final int foregroundHoverColor;
 	private final int backgroundHoverColor;
+	private Optional<ResourceLocation> subBook;
 	
 	public BookStyle(ResourceLocation fontID, Style textStyle, int textColor,
 		SideSizes margins, Alignment alignment, Borders borders, Optional<ImageData> backgroundImage,
-		int backgroundColor, int foregroundHoverColor, int backgroundHoverColor)
+		int backgroundColor, int foregroundHoverColor, int backgroundHoverColor, Optional<ResourceLocation> subBook)
 	{
 		this.fontID = fontID;
 		this.textStyle = textStyle;
@@ -43,6 +44,7 @@ public class BookStyle
 		this.backgroundColor = backgroundColor;
 		this.foregroundHoverColor = foregroundHoverColor;
 		this.backgroundHoverColor = backgroundHoverColor;
+		this.subBook = subBook;
 	}
 	
 	public ResourceLocation getFont()
@@ -98,6 +100,11 @@ public class BookStyle
 	public int getBackgroundHoverColor()
 	{
 		return this.backgroundHoverColor;
+	}
+	
+	public Optional<ResourceLocation> getSubBook()
+	{
+		return this.subBook;
 	}
 	
 	public int getInteriorWidth(int totalWidth)
