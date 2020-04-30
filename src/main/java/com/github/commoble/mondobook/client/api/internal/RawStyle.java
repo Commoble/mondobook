@@ -225,7 +225,7 @@ public class RawStyle
 			}
 		}
 		
-		private int parseColorString(String colorString)
+		public static int parseColorString(String colorString)
 		{
 			
 			// the color logic is as follows:
@@ -268,7 +268,7 @@ public class RawStyle
 		
 		private int buildTextColor()
 		{
-			return this.parseColorString(this.textColor) | 0xFF000000;
+			return parseColorString(this.textColor) | 0xFF000000;
 		}
 		
 		private SideSizes buildMargins()
@@ -278,7 +278,7 @@ public class RawStyle
 		
 		private Borders buildBorders()
 		{
-			return new Borders(new SideSizes(this.borderSizes), this.parseColorString(this.borderColor));
+			return new Borders(new SideSizes(this.borderSizes), parseColorString(this.borderColor));
 		}
 		
 		private Optional<ImageData> buildBackgroundImage()
@@ -317,7 +317,7 @@ public class RawStyle
 			}
 			else
 			{
-				return this.parseColorString(colorString);
+				return parseColorString(colorString);
 			}
 		}
 	}

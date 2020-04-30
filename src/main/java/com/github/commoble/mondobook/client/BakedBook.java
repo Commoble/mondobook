@@ -9,17 +9,20 @@ import com.github.commoble.mondobook.client.api.Drawable;
 import com.github.commoble.mondobook.client.api.DrawableRenderer;
 import com.github.commoble.mondobook.client.api.Element;
 import com.github.commoble.mondobook.client.api.internal.RawBook;
+import com.github.commoble.mondobook.client.api.internal.RawFormat;
 
 public class BakedBook
 {
 	private final List<BakedPage> pages;
+	public final RawFormat format;
 	
-	public BakedBook(RawBook rawBook, int pageHeightInPixels, int maxLineWidth, DrawableRenderer renderer)
+	public BakedBook(RawBook rawBook, DrawableRenderer renderer)
 	{
-		this.pages = this.bakePages(rawBook, pageHeightInPixels, maxLineWidth, renderer);
+		this.format = rawBook.getFormat();
+		this.pages = this.bakePages(rawBook, this.format.content_width, this.format.content_height, renderer);
 	}
 	
-	public List<BakedPage> bakePages(RawBook rawBook, int pageHeightInPixels, int maxLineWidth, DrawableRenderer renderer)
+	public List<BakedPage> bakePages(RawBook rawBook, int maxLineWidth, int pageHeightInPixels, DrawableRenderer renderer)
 	{
 		List<BakedPage> pages = new ArrayList<>();
 		Deque<Drawable> drawables = new ArrayDeque<>();

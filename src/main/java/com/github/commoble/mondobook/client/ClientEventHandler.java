@@ -48,6 +48,7 @@ public class ClientEventHandler
 			reloader.addReloadListener(AssetManagers.IMAGE_DATA);
 			reloader.addReloadListener(AssetManagers.STYLE_DATA);
 			reloader.addReloadListener(AssetManagers.TABS);
+			reloader.addReloadListener(AssetManagers.BOOK_FORMATS);
 		}
 	}
 

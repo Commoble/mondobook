@@ -7,15 +7,47 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.commoble.mondobook.client.api.AssetFactories;
+import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Element;
+
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Instances of this class are intended to be deserialized from a mondobook json from a GSON deserializer in BookDataManager
  */
 public class RawBook
 {
+	private String format;
 	private RawStyle[] styles;
 	private RawElement[] body;
+	
+	private transient RawFormat rawFormat;
+	
+	public static final ResourceLocation DEFAULT_FORMAT = new ResourceLocation("mondobook:default");
+	public RawFormat getFormat()
+	{
+		if (this.rawFormat == null)
+		{
+			if (this.format == null)
+			{
+				this.rawFormat = AssetManagers.BOOK_FORMATS.getData(DEFAULT_FORMAT);
+			}
+			else
+			{
+				RawFormat format = AssetManagers.BOOK_FORMATS.getData(new ResourceLocation(this.format));
+				if (format == null)
+				{
+					this.rawFormat = AssetManagers.BOOK_FORMATS.getData(DEFAULT_FORMAT);
+				}
+				else
+				{
+					this.rawFormat = format;
+				}
+			}
+		}
+		
+		return this.rawFormat;
+	}
 	
 	public List<RawElement> getElements()
 	{
