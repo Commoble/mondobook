@@ -22,6 +22,18 @@ public class RawFormat
 	public int content_height;
 	public int book_start_on_screen_y;
 	public int content_offset_from_center;
+	public int next_page_button_u;
+	public int next_page_button_hover_u;
+	public int next_page_button_v;
+	public int next_page_button_hover_v;
+	public int previous_page_button_u;
+	public int previous_page_button_hover_u;
+	public int previous_page_button_v;
+	public int previous_page_button_hover_v;
+	public int page_button_x;
+	public int page_button_y;
+	public int page_button_width;
+	public int page_button_height;
 	public boolean show_page_numbers;
 	public int page_number_y;
 	public int page_number_end_x;

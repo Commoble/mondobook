@@ -18,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.ChangePageButton;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -52,8 +51,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 //	public static final int TEXT_OFFSET_FROM_BOOK_CENTER = 10;
 //	public static final int BLACK = 0x0;
 
-	private ChangePageButton buttonNextPage;
-	private ChangePageButton buttonPreviousPage;
+	private Button buttonNextPage;
+	private Button buttonPreviousPage;
 	private Button backButton;
 	private Button forwardButton;
 
@@ -98,13 +97,22 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 	// from readBookScreen, mostly
 	protected void addChangePageButtons()
 	{
-		int i = (this.width - 192) / 2;
-		this.buttonNextPage = this.addButton(new ChangePageButton(i + 116, 159, true, (p_214159_1_) -> {
-			this.nextPage();
-		}, true));
-		this.buttonPreviousPage = this.addButton(new ChangePageButton(i + 43, 159, false, (p_214158_1_) -> {
-			this.previousPage();
-		}, true));
+		int buttonWidth = 23;	//TODO allow custom page buttons
+		int buttonOffsetX = this.format.page_button_x;
+		int buttonY = this.format.page_button_y;
+		int centerX = (this.width / 2);
+		this.buttonNextPage = this.addButton(
+			new FormattedChangePageButton(this.format, centerX + buttonOffsetX, buttonY, PageDirection.RIGHT,
+				button -> this.nextPage()));
+//		this.buttonNextPage = this.addButton(new ChangePageButton(centerX + buttonOffsetX, buttonY, true, (p_214159_1_) -> {
+//			this.nextPage();
+//		}, true));
+		this.buttonPreviousPage = this.addButton(
+			new FormattedChangePageButton(this.format, centerX - buttonOffsetX - buttonWidth, buttonY, PageDirection.LEFT,
+				button -> this.previousPage()));
+//		this.buttonPreviousPage = this.addButton(new ChangePageButton(centerX - buttonOffsetX - buttonWidth, buttonY, false, (p_214158_1_) -> {
+//			this.previousPage();
+//		}, true));
 	}
 	
 	protected void addForwardBackButtons()
@@ -116,8 +124,8 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		int y = (this.format.book_start_on_screen_y + this.format.texture_height) / 2 - buttonHeight/2;
 		int leftX = center - this.format.texture_width - xPadding - buttonWidth;
 		int rightX = center + this.format.texture_width + xPadding;
-		this.backButton = this.addButton(new Button(leftX, y, buttonWidth, buttonHeight, "<-", button -> this.back()));
-		this.forwardButton = this.addButton(new Button(rightX, y, buttonWidth, buttonHeight, "->", button -> this.forward()));
+		this.backButton = this.addButton(new ChangeBookButton(leftX, y, buttonWidth, buttonHeight, "<-", button -> this.back()));
+		this.forwardButton = this.addButton(new ChangeBookButton(rightX, y, buttonWidth, buttonHeight, "->", button -> this.forward()));
 		
 	}
 
@@ -185,18 +193,20 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 		{
 			PageDirection direction = KeyUtil.getKeyDirection(key);
 			boolean isShiftHeld = (GLFW.GLFW_MOD_SHIFT & modifiers) > 0;
+			boolean paged = false;
 			if (isShiftHeld)
 			{
 				switch(direction)
 				{
 					case LEFT:
+						paged = this.backScreen.isPresent();
 						this.backButton.onPress();
-						return true;
+						break;
 					case RIGHT:
+						paged = this.forwardScreen.isPresent();
 						this.forwardButton.onPress();
-						return true;
+						break;
 					default:
-						return false;
 				}
 			}
 			else
@@ -204,15 +214,22 @@ public class MondobookScreen extends Screen implements DrawableRenderer
 				switch (direction)
 				{
 					case LEFT:
+						paged = this.currentPage > 0;
 						this.buttonPreviousPage.onPress();
-						return true;
+						break;
 					case RIGHT:
+						paged = this.currentPage+2 < this.getPageCountForPageNumberRendering();
 						this.buttonNextPage.onPress();
-						return true;
+						break;
 					default:
-						return false;
 				}
 			}
+			
+			if (paged)
+			{
+				this.getMinecraft().getSoundHandler().play(SimpleSound.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
+			}
+			return paged;
 		}
 	}
 
