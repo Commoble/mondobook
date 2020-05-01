@@ -2,6 +2,7 @@
 	"mondobook":
 	[
 		"mondobook:lorem_ipsum",
-		"mondobook:debug_book"
+		"mondobook:debug_book",
+		"mondobook:cheese_book"
 	]
 }

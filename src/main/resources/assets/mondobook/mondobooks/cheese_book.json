@@ -1,0 +1,27 @@
+{
+	"format": "mondobook:cheese_book",
+	"styles":
+	[
+	],
+	"body":
+	[
+		{
+			"type": "mondobook:text",
+			"data": "This is potentially a book about cheese."
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "This is potentially the second page in a book about cheese."
+		},
+		{
+			"type": "mondobook:new_page"
+		},
+		{
+			"type": "mondobook:text",
+			"data": "probably not though."
+		}
+	]
+}
