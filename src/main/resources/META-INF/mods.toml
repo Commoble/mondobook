@@ -24,7 +24,7 @@ displayName="Mondobook" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="mondobook.png" #optional
 # A text field displayed in the mod UI
-credits="I hear the Minecraft Mod Development discord channel is the cat's bananas" #optional
+credits="Thanks to Melonslise and gigaherz for help with the model java" #optional
 # A text field displayed in the mod UI
 authors="Commoble"
 # The description text for the mod (multi line!) (#mandatory)

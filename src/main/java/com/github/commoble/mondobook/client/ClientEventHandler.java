@@ -2,11 +2,13 @@ package com.github.commoble.mondobook.client;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
 import com.github.commoble.mondobook.MondobookItem;
 import com.github.commoble.mondobook.MondobookMod;
+import com.github.commoble.mondobook.ObjectNames;
 import com.github.commoble.mondobook.client.api.AssetFactories;
 import com.github.commoble.mondobook.client.api.AssetManagers;
 import com.github.commoble.mondobook.client.api.Element;
@@ -26,11 +28,16 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -39,6 +46,8 @@ public class ClientEventHandler
 	public static void subscribeClientEvents(IEventBus modBus, IEventBus forgeBus)
 	{
 		modBus.addListener(ClientEventHandler::onClientSetup);
+		modBus.addListener(ClientEventHandler::onRegisterModels);
+		modBus.addListener(ClientEventHandler::onBakeModels);
 
 		IResourceManager manager = Minecraft.getInstance().getResourceManager();
 		if (manager instanceof IReloadableResourceManager)
@@ -70,6 +79,23 @@ public class ClientEventHandler
 		registerSimpleSelector("or", Selectors::matchAnyChildren, Selectors::getOrSpecificity);
 		registerSimpleSelector("and", Selectors::matchAllChildren, Selectors::getAndSpecificity);
 		
+	}
+	
+	private static void onRegisterModels(ModelRegistryEvent event)
+	{
+		ModelVariantLoader.registerSpecialModels();
+	}
+	
+	public static final ModelResourceLocation MONDOBOOK_MODEL_ID = new ModelResourceLocation(new ResourceLocation(MondobookMod.MODID, ObjectNames.MONDO_BOOK), "inventory");
+	
+	private static void onBakeModels(ModelBakeEvent event)
+	{
+		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+		IBakedModel baseModel = modelRegistry.get(MONDOBOOK_MODEL_ID);
+		if (baseModel != null)
+		{
+			modelRegistry.put(MONDOBOOK_MODEL_ID, new MondobookModel(baseModel));
+		}
 	}
 	
 	public static void registerSimpleSelector(String name, BiPredicate<Element, Selector> predicate, BiFunction<Element, Selector, Specificity> specificityGetter)

@@ -18,24 +18,21 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class MondobookMod
 {
 	public static final String MODID = "mondobook";
-    public static final Logger LOGGER = LogManager.getLogger();
-    
-    public MondobookMod()
-    {
+	public static final Logger LOGGER = LogManager.getLogger();
+
+	public MondobookMod()
+	{
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
-		
-		subscribeDeferredRegisters(modBus,
-			ItemRegistrar::registerRegistry);
-		
-		
+		subscribeDeferredRegisters(modBus, ItemRegistrar::registerRegistry);
+
 		CommonModEvents.subscribeEvents(modBus);
 		CommonForgeEvents.subscribeEvents(forgeBus);
-		
+
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientEventHandler.subscribeClientEvents(modBus, forgeBus));
-    }
-	
+	}
+
 	@SafeVarargs
 	public static void subscribeDeferredRegisters(IEventBus modBus, Consumer<IEventBus>... subscribers)
 	{
