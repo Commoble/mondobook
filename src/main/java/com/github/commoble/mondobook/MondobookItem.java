@@ -115,7 +115,6 @@ public class MondobookItem extends Item
 	{
 		if (player instanceof ServerPlayerEntity)
 		{
-			getBookIDFromItemStack(player.getHeldItem(hand)).ifPresent(id -> System.out.println(id));
 			getBookIDFromItemStack(player.getHeldItem(hand)).ifPresent(id ->
 				PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenLoreBookS2CPacket(id)));
 		}

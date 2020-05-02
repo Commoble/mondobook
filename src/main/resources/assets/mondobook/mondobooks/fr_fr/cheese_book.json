@@ -1,0 +1,13 @@
+{
+	"format": "mondobook:cheese_book",
+	"styles":
+	[
+	],
+	"body":
+	[
+		{
+			"type": "mondobook:text",
+			"data": "Livre du fromage."
+		}
+	]
+}
